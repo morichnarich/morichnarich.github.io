@@ -6,14 +6,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Nariのブログ">
-    <title>hexoテーマのカスタマイズ - Nariのブログ - 未来の自分に残すメモ - </title>
+    <title>hexoテーマのカスタマイズ - Nariのブログ - 明日の自分に残すメモ - </title>
     <meta name="author" content="Narichika Morinaga">
     
         <meta name="keywords" content="hexo,javascript,">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\n\n\n\nHexoテーマのカスタマイズHexoのテーマをカスタマイズしようとして得た知識を記録に残しておきます。\nオリジナルのcssファイルやjsファイルを追加▶  詳細\n\n\nオリジナルのカスタムcssやjsファイルを追加するには、まずsourceディレクトリにカスタムcssやjsを入れておく。themes/tranquilpeakのlayoutディレクトリ直下にlayout.ejsがあるので、コードに\n123&lt;%- css(&#39;○○○○.css&#39;) %&gt;  #&lt;&#x2F;head&gt;の直前に&lt;%- js(&#39;○○○○.js&#39;) %&gt;    #&lt;&#x2F;body&gt;の直前に\n\nを追加する。layout.ejs は、サイト全体で共通化させたい要素を入れる template ファイル。\nこうすることで…\n各ページが読み込まれる時に、layout.ejs が読み込まれる。&lt;%- body %&gt;が各テンプレートに置き換わる。 トップページなら index.ejs の中身が&lt;%- body %&gt;に入る。といった処理が hexo 内で行われ、サイト全体で要素の共通化できます。\n\n\nejsファイルを編集した後にするコマンド▶  詳細\n\n\nejsファイル等を変更後は themes/tranquilpeak で npm run prod\n面倒くさいので…\n1cd themes/tranquilpeak &amp;&amp; npm run prod &amp;&amp; cd ../ &amp;&amp; cd ../\n\nワンライナーで戻れるようにしています。\n\n\n画像を使い回す方法▶  詳細\n\n\nまず、sourceフォルダの直下にimagesフォルダを作成します。そして、その中に画像を入れます。\n記事には![](/images/hoge.jpeg)とするだけです。\nこれで、画像を一つのフォルダにまとめられ、他の記事からも参照できます。\n\n","dateCreated":"2020-11-23T18:52:16+09:00","dateModified":"2020-11-24T00:02:45+09:00","datePublished":"2020-11-23T18:52:16+09:00","description":"welcome to my blog","headline":"hexoテーマのカスタマイズ","image":["img_main19.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2020/11/23/hexo-customize/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2020/11/23/hexo-customize/","keywords":"Hexo","thumbnailUrl":"img_main19.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\n\n\n\nHexoテーマのカスタマイズHexoのテーマをカスタマイズしようとして得た知識を記録に残しておきます。\nオリジナルのcssファイルやjsファイルを追加▶  詳細\n\n\nオリジナルのカスタムcssやjsファイルを追加するには、まずsourceディレクトリにカスタムcssやjsを入れておく。themes/tranquilpeakのlayoutディレクトリ直下にlayout.ejsがあるので、コードに\n123&lt;%- css(&#39;○○○○.css&#39;) %&gt;  #&lt;&#x2F;head&gt;の直前に&lt;%- js(&#39;○○○○.js&#39;) %&gt;    #&lt;&#x2F;body&gt;の直前に\n\nを追加する。layout.ejs は、サイト全体で共通化させたい要素を入れる template ファイル。\nこうすることで…\n各ページが読み込まれる時に、layout.ejs が読み込まれる。&lt;%- body %&gt;が各テンプレートに置き換わる。 トップページなら index.ejs の中身が&lt;%- body %&gt;に入る。といった処理が hexo 内で行われ、サイト全体で要素の共通化できます。\n\n\nejsファイルを編集した後にするコマンド▶  詳細\n\n\nejsファイル等を変更後は themes/tranquilpeak で npm run prod\n面倒くさいので…\n1cd themes/tranquilpeak &amp;&amp; npm run prod &amp;&amp; cd ../ &amp;&amp; cd ../\n\nワンライナーで戻れるようにしています。\n\n\n画像を使い回す方法▶  詳細\n\n\nまず、sourceフォルダの直下にimagesフォルダを作成します。そして、その中に画像を入れます。\n記事には![](/images/hoge.jpeg)とするだけです。\nこれで、画像を一つのフォルダにまとめられ、他の記事からも参照できます。\nHere is a danger alert without icon\n\n\n\n","dateCreated":"2020-11-23T18:52:16+09:00","dateModified":"2020-11-24T06:14:15+09:00","datePublished":"2020-11-23T18:52:16+09:00","description":"welcome to my blog","headline":"hexoテーマのカスタマイズ","image":["img_main19.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2020/11/23/hexo-customize/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2020/11/23/hexo-customize/","keywords":"Hexo","thumbnailUrl":"img_main19.jpg"}</script>
     <meta name="description" content="welcome to my blog">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="hexoテーマのカスタマイズ">
@@ -23,7 +23,7 @@
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://morichnarich.github.io/images/img_main19.jpg">
 <meta property="article:published_time" content="2020-11-23T09:52:16.000Z">
-<meta property="article:modified_time" content="2020-11-23T15:02:45.942Z">
+<meta property="article:modified_time" content="2020-11-23T21:14:15.679Z">
 <meta property="article:author" content="Narichika Morinaga">
 <meta property="article:tag" content="Hexo">
 <meta name="twitter:card" content="summary">
@@ -41,7 +41,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-0ipi2fmqkxaee5nmvgjaoxvivldi4qzauqiyuiytpwja78upo9dmzhq3rsyu.min.css">
+<link rel="stylesheet" href="/assets/css/style-nwhmakibv65xhsdkq7pht98suw06ytb1by3pl3uicngjtr8jerdnj02uz5dw.min.css">
 
     <!--STYLES END-->
     
@@ -97,7 +97,7 @@
                 Nariのブログ
             </h1>
             <h2 class="sidebar-subtitle">
-                - 未来の自分に残すメモ -
+                - 明日の自分に残すメモ -
             </h2>
         </a>
     </div>
@@ -353,7 +353,7 @@
 
     
     <i class="fas fa-redo-alt"></i>
-        <time datetime="2020-11-24T00:02:45+09:00">
+        <time datetime="2020-11-24T06:14:15+09:00">
         
         2020/11/24
         
@@ -411,6 +411,9 @@
 <p>まず、sourceフォルダの直下にimagesフォルダを作成します。そして、その中に画像を入れます。</p>
 <p>記事には<font color=#FF3860><code>![](/images/hoge.jpeg)</code></font>とするだけです。</p>
 <p>これで、画像を一つのフォルダにまとめられ、他の記事からも参照できます。</p>
+<div class="alert danger no-icon"><p>Here is a danger alert without icon</p>
+</div>
+
 </div>
 
             
@@ -463,7 +466,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -575,7 +578,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -716,7 +719,7 @@
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-gjdga7moqr1bjpg62stk9hvcpluwemplon2hyyexkifmuqqensrxxgu9izvg.min.js"></script>
+<script src="/assets/js/script-ixqwvefj8vfsqrsg5wx4vngxhhw8v1hzxnf8nzvk4ihpwzdrs4jr5wdtf9oq.min.js"></script>
 
 <!--SCRIPTS END-->
 
