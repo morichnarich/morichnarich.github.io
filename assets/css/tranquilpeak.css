@@ -2108,6 +2108,9 @@ a.fancybox {
     font-size: 1.3rem;
     font-weight: 400;
     color: #9eabb3; }
+    .post .post-meta i.fas {
+      width: 14px;
+      text-align: center; }
     .post .post-meta a {
       color: #9eabb3; }
   .post .post-content {
@@ -2251,6 +2254,9 @@ a.fancybox {
       letter-spacing: 0.05em;
       text-shadow: 0 1px 0 rgba(0, 0, 0, 0.9);
       margin: 0 auto; }
+      .post-header-cover .post-header .post-meta i.fas {
+        width: 14px;
+        text-align: center; }
       .post-header-cover .post-header .post-meta a {
         color: white; }
 
@@ -2382,6 +2388,9 @@ a.fancybox {
       text-decoration: none; }
   .postShorten .postShorten-meta {
     line-height: 1.5em; }
+    .postShorten .postShorten-meta i.fas {
+      width: 14px;
+      text-align: center; }
     .postShorten .postShorten-meta a {
       color: #9eabb3; }
   .postShorten .postShorten-meta,

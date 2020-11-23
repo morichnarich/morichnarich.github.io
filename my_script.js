@@ -24,5 +24,6 @@ function postTog(e) {
     } else {
         eTarget.style.setProperty('position', 'absolute')
         eTarget.style.setProperty('top', '-100000vh')
+        eTarget.style.setProperty('width', '90vw')
     } 
 }
