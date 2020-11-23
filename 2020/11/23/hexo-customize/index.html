@@ -13,7 +13,7 @@
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\n\n\n\n\n\n\nHexoテーマのカスタマイズHexoのテーマをカスタマイズしようとして得た知識を記録に残しておきます。\nオリジナルのcssファイルやjsファイルを追加▶  詳細\n\n\nオリジナルのカスタムcssやjsファイルを追加するには、まずsourceディレクトリにカスタムcssやjsを入れておく。themes/tranquilpeakのlayoutディレクトリ直下にlayout.ejsがあるので、コードに\n123&lt;%- css(&#39;○○○○.css&#39;) %&gt;  #&lt;&#x2F;head&gt;の直前に&lt;%- js(&#39;○○○○.js&#39;) %&gt;    #&lt;&#x2F;body&gt;の直前に\n\nを追加する。layout.ejs は、サイト全体で共通化させたい要素を入れる template ファイル。\nこうすることで…\n各ページが読み込まれる時に、layout.ejs が読み込まれる。&lt;%- body %&gt;が各テンプレートに置き換わる。 トップページなら index.ejs の中身が&lt;%- body %&gt;に入る。といった処理が hexo 内で行われ、サイト全体で要素の共通化できます。\n\n\nejsファイルを編集した後にするコマンド▶  詳細\n\n\nejsファイル等を変更後は themes/tranquilpeak で npm run prod\n面倒くさいので…\n1cd themes/tranquilpeak &amp;&amp; npm run prod &amp;&amp; cd ../ &amp;&amp; cd ../\n\nワンライナーで戻れるようにしています。\n\n","dateCreated":"2020-11-23T18:52:16+09:00","dateModified":"2020-11-23T22:39:57+09:00","datePublished":"2020-11-23T18:52:16+09:00","description":"welcome to my blog","headline":"hexoテーマのカスタマイズ","image":["img_main19.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2020/11/23/hexo-customize/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2020/11/23/hexo-customize/","keywords":"Hexo","thumbnailUrl":"img_main19.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\n\n\n\nHexoテーマのカスタマイズHexoのテーマをカスタマイズしようとして得た知識を記録に残しておきます。\nオリジナルのcssファイルやjsファイルを追加▶  詳細\n\n\nオリジナルのカスタムcssやjsファイルを追加するには、まずsourceディレクトリにカスタムcssやjsを入れておく。themes/tranquilpeakのlayoutディレクトリ直下にlayout.ejsがあるので、コードに\n123&lt;%- css(&#39;○○○○.css&#39;) %&gt;  #&lt;&#x2F;head&gt;の直前に&lt;%- js(&#39;○○○○.js&#39;) %&gt;    #&lt;&#x2F;body&gt;の直前に\n\nを追加する。layout.ejs は、サイト全体で共通化させたい要素を入れる template ファイル。\nこうすることで…\n各ページが読み込まれる時に、layout.ejs が読み込まれる。&lt;%- body %&gt;が各テンプレートに置き換わる。 トップページなら index.ejs の中身が&lt;%- body %&gt;に入る。といった処理が hexo 内で行われ、サイト全体で要素の共通化できます。\n\n\nejsファイルを編集した後にするコマンド▶  詳細\n\n\nejsファイル等を変更後は themes/tranquilpeak で npm run prod\n面倒くさいので…\n1cd themes/tranquilpeak &amp;&amp; npm run prod &amp;&amp; cd ../ &amp;&amp; cd ../\n\nワンライナーで戻れるようにしています。\n\n\n画像を使い回す方法▶  詳細\n\n\nまず、sourceフォルダの直下にimagesフォルダを作成します。そして、その中に画像を入れます。\n記事には![](/images/hoge.jpeg)とするだけです。\nこれで、画像を一つのフォルダにまとめられ、他の記事からも参照できます。\n\n","dateCreated":"2020-11-23T18:52:16+09:00","dateModified":"2020-11-24T00:02:45+09:00","datePublished":"2020-11-23T18:52:16+09:00","description":"welcome to my blog","headline":"hexoテーマのカスタマイズ","image":["img_main19.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2020/11/23/hexo-customize/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2020/11/23/hexo-customize/","keywords":"Hexo","thumbnailUrl":"img_main19.jpg"}</script>
     <meta name="description" content="welcome to my blog">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="hexoテーマのカスタマイズ">
@@ -21,11 +21,13 @@
 <meta property="og:site_name" content="Nariのブログ">
 <meta property="og:description" content="welcome to my blog">
 <meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://morichnarich.github.io/images/img_main19.jpg">
 <meta property="article:published_time" content="2020-11-23T09:52:16.000Z">
-<meta property="article:modified_time" content="2020-11-23T13:39:57.245Z">
+<meta property="article:modified_time" content="2020-11-23T15:02:45.942Z">
 <meta property="article:author" content="Narichika Morinaga">
 <meta property="article:tag" content="Hexo">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://morichnarich.github.io/images/img_main19.jpg">
     
     
         
@@ -351,9 +353,9 @@
 
     
     <i class="fas fa-redo-alt"></i>
-        <time datetime="2020-11-23T22:39:57+09:00">
+        <time datetime="2020-11-24T00:02:45+09:00">
         
-        2020/11/23
+        2020/11/24
         
         </time>
         <br>
@@ -363,7 +365,7 @@
         <i class="far fa-folder-open"></i>
         <span>カテゴリー </span>
         
-    <a class="category-link" href="/categories/Hexo/">Hexo</a>
+    <a class="category-link" href="/categories/Program/">Program</a>
 
 
     
@@ -375,13 +377,10 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <!-- ![カメラの画像](/images/Sunset_clouds_cityscapes_new_york_city_city_skyline_1920x1440.jpg) -->
-
-
-
+            <p><img src="/images/img_main19.jpg" alt="カメラの画像"></p>
 <!-- > これは引用です。 -->
 
-<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo%E3%83%86%E3%83%BC%E3%83%9E%E3%81%AE%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%9E%E3%82%A4%E3%82%BA"><span class="toc-text">Hexoテーマのカスタマイズ</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E3%81%AEcss%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%84js%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E8%BF%BD%E5%8A%A0"><span class="toc-text">オリジナルのcssファイルやjsファイルを追加</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ejs%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E7%B7%A8%E9%9B%86%E3%81%97%E3%81%9F%E5%BE%8C%E3%81%AB%E3%81%99%E3%82%8B%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89"><span class="toc-text">ejsファイルを編集した後にするコマンド</span></a></li></ol></li></ol>
+<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo%E3%83%86%E3%83%BC%E3%83%9E%E3%81%AE%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%9E%E3%82%A4%E3%82%BA"><span class="toc-text">Hexoテーマのカスタマイズ</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E3%81%AEcss%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%84js%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E8%BF%BD%E5%8A%A0"><span class="toc-text">オリジナルのcssファイルやjsファイルを追加</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ejs%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E7%B7%A8%E9%9B%86%E3%81%97%E3%81%9F%E5%BE%8C%E3%81%AB%E3%81%99%E3%82%8B%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89"><span class="toc-text">ejsファイルを編集した後にするコマンド</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%BB%E5%83%8F%E3%82%92%E4%BD%BF%E3%81%84%E5%9B%9E%E3%81%99%E6%96%B9%E6%B3%95"><span class="toc-text">画像を使い回す方法</span></a></li></ol></li></ol>
 
 <hr>
 <h2 id="Hexoテーマのカスタマイズ"><a href="#Hexoテーマのカスタマイズ" class="headerlink" title="Hexoテーマのカスタマイズ"></a>Hexoテーマのカスタマイズ</h2><p>Hexoのテーマをカスタマイズしようとして得た知識を記録に残しておきます。</p>
@@ -404,6 +403,14 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> themes/tranquilpeak &amp;&amp; npm run prod &amp;&amp; <span class="built_in">cd</span> ../ &amp;&amp; <span class="built_in">cd</span> ../</span><br></pre></td></tr></table></figure>
 
 <p>ワンライナーで戻れるようにしています。</p>
+</div>
+
+<h3 id="画像を使い回す方法"><a href="#画像を使い回す方法" class="headerlink" title="画像を使い回す方法"></a>画像を使い回す方法</h3><p class="postToggle">▶  詳細</p>
+<div class="postToggled postToggledClose">
+
+<p>まず、sourceフォルダの直下にimagesフォルダを作成します。そして、その中に画像を入れます。</p>
+<p>記事には<font color=#FF3860><code>![](/images/hoge.jpeg)</code></font>とするだけです。</p>
+<p>これで、画像を一つのフォルダにまとめられ、他の記事からも参照できます。</p>
 </div>
 
             
