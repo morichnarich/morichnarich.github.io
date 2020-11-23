@@ -1,0 +1,731 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Nariのブログ">
+    <title>hexoの始め方 - Nariのブログ - 未来の自分に残すメモ - </title>
+    <meta name="author" content="Narichika Morinaga">
+    
+        <meta name="keywords" content="hexo,javascript,">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\n\n\n\nGit Pagesの準備ホスティング用のレポジトリ生成１つもGit Pagesを作った事がないなら、&#123;userid&#125;.github.ioの名前でパブリック・レポジトリを生成するのが後々混乱せずに作成できます。上記の規則で作成したレポジトリは、自動的にGit Pagesの機能により、ウェブホスティングされます。\nindex.htmlをプッシュindex.htmlを作り、&#123;userid&#125;.github.ioレポジトリにをプッシュします。この作業を省略するとGit Pagesが作れないと思われるので必須です！\n12345678git clone https://github.com/&#123;userid&#125;/&#123;userid&#125;.github.io.gitcd &#123;userid&#125;.github.iogit add index.htmlgit commit -m &quot;first commit&quot;echo &quot;Hello World&quot; &gt; index.htmlgit add index.htmlgit commit -m &quot;second commit&quot;git push origin master\n\ngit page build結果確認Github Actionを見ると、上げたindex.htmlがGit Pagesとしてビルドされていることを確認できます。\n確認https://{userid}.github.ioにアクセスすると、Hello Worldが確認できます。\nこれで、ウェブページのホスティングの準備ができました。\nhexo 設置 &amp; 設定 (静的ページゼネレーター)Hexoを使うためには、まずnode&amp;npmのインストールが必要です。もし、インストールが必要な方は、以下の公式ページをご参考ください。\n●　nodejs with npmhttps://nodejs.org/ja/\nHexoの公式 docs &amp; Installationはこちらで参考できます。https://hexo.io/docs/\nHexoのインストールhexoをインストールします。\n12345npm install -g hexo-clicd &#123;作成する場所&#125;hexo init blogcd blognpm install\nhexo-deployer-git plugin インストールOne Commandで、githubにデプロイするためのプラグインを予めインストールします。プラグインの詳細はこちらで確認できます。\nhttps://github.com/hexojs/hexo-deployer-git\n1npm install hexo-deployer-git --save\n\n_config.yml 設定基本的なconfig設定を行います。\n\nurl\nGit PagesのURLを設定します。\n\n\nnew_post_name\nPost記事の生成時のファイル名を設定します。ここは必須に変える必要は無いですが、datetimeをつけたほうが管理しやすいと思います。\n\n\nDeployment\nhexo-deployer-gitのpluginをインストールしたので、gitのデプロイ設定ができます。\nmessageは、設定しないと基本メッセージとして、Site updated: YYYY-MM-DD HH:mm:ssの形式でコミットメッセージが残ります。\n\n\n\n123456789101112131415diff --git a/_config.yml b/_config.yml-url: http://yoursite.com+url: https://&#123;userid&#125;.github.io/-new_post_name: :title.md # File name of new posts+new_post_name: :year_:month_:day_:title.md # File name of new posts # Deployment ## Docs: https://hexo.io/docs/deployment.html deploy:-  type: &#x27;&#x27;+  type: git+  repo: https://github.com/&#123;userid&#125;/&#123;userid&#125;.github.io+  branch: master\nこれで、ブログの基本設定は終わりました。\n確認・デプロイLocalでブログ確認hexo serverコマンドを使うと、ウェブホスティングで公開する前に、ロケールで予めブログとコンテンツを確認できます。\n123$ hexo serverINFO  Start processingINFO  Hexo is running at http://localhost:4000 . Press Ctrl+C to stop.\n\n● localhost:4000\nDeploy to Git Pageshexo deployコマンドを使う前に、hexo cleanコマンドで１度キレイにします。hexo deployコマンドを使うと、設定したGithubレポジトリに自動でプッシュしてくれます。\n12345678$ hexo deploy -gINFO  Start processingINFO  Files loaded in 101 ms...To https://github.com/&#123;userid&#125;/&#123;userid&#125;.github.io + 69bd38f...fa420ac HEAD -&gt; master (forced update)Branch &#x27;master&#x27; set up to track remote branch &#x27;master&#x27; from &#x27;https://github.com/&#123;username&#125;/&#123;username&#125;.github.io&#x27;.INFO  Deploy done: git\n\ngitpagesのURLで確認Git Pagesとして動作しているレポジトリのMasterブランチにプッシュしたので、Github Actionでビルドが完了していると、https://{userid}.github.ioにアクセスすると、確認できます。\nこれで、自分のブログが出来上がりました。\n","dateCreated":"2020-11-23T13:07:54+09:00","dateModified":"2020-11-23T13:10:16+09:00","datePublished":"2020-11-23T13:07:54+09:00","description":"welcome to my blog","headline":"hexoの始め方","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2020/11/23/get-start-hexo/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2020/11/23/get-start-hexo/","keywords":"Hexo"}</script>
+    <meta name="description" content="welcome to my blog">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="hexoの始め方">
+<meta property="og:url" content="https://morichnarich.github.io/2020/11/23/get-start-hexo/index.html">
+<meta property="og:site_name" content="Nariのブログ">
+<meta property="og:description" content="welcome to my blog">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://morichnarich.github.io/images/Sunset_clouds_cityscapes_new_york_city_city_skyline_1920x1440.jpg">
+<meta property="article:published_time" content="2020-11-23T04:07:54.000Z">
+<meta property="article:modified_time" content="2020-11-23T04:10:16.100Z">
+<meta property="article:author" content="Narichika Morinaga">
+<meta property="article:tag" content="Hexo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://morichnarich.github.io/images/Sunset_clouds_cityscapes_new_york_city_city_skyline_1920x1440.jpg">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-gehdyjft3m4585ay0xewdxnu3fru8ej5ea8ytzedek3onm0rbqjpw4yvkvhw.min.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Nariのブログ
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="リンクを開く: /#about"
+            >
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-header">
+        <a href=https://morichnarich.github.io>
+            <h1 class="sidebar-title">
+                Nariのブログ
+            </h1>
+            <h2 class="sidebar-subtitle">
+                - 未来の自分に残すメモ -
+            </h2>
+        </a>
+    </div>
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="ホーム"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">ホーム</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="カテゴリー"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">カテゴリー</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="タグ"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">タグ</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="アーカイブ"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">アーカイブ</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="検索"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">検索</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="プロフィール"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">プロフィール</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="http://stackoverflow.com/users"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Stack Overflow"
+                        >
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://twitter.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://facebook.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://plus.google.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Google Plus"
+                        >
+                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Google Plus</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/profile/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/mailto"
+                            
+                            rel="noopener"
+                            title="メール"
+                        >
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">メール</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            hexoの始め方
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2020-11-23T13:07:54+09:00">
+	
+		    2020/11/23
+    	
+    </time>
+    
+        <span>カテゴリー </span>
+        
+    <a class="category-link" href="/categories/Hexo/">Hexo</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p><img src="/images/Sunset_clouds_cityscapes_new_york_city_city_skyline_1920x1440.jpg" alt="カメラの画像"></p>
+<!-- > これは引用です。 -->
+
+<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Git-Pages%E3%81%AE%E6%BA%96%E5%82%99"><span class="toc-text">Git Pagesの準備</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%83%9B%E3%82%B9%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E7%94%A8%E3%81%AE%E3%83%AC%E3%83%9D%E3%82%B8%E3%83%88%E3%83%AA%E7%94%9F%E6%88%90"><span class="toc-text">ホスティング用のレポジトリ生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#index-html%E3%82%92%E3%83%97%E3%83%83%E3%82%B7%E3%83%A5"><span class="toc-text">index.htmlをプッシュ</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git-page-build%E7%B5%90%E6%9E%9C%E7%A2%BA%E8%AA%8D"><span class="toc-text">git page build結果確認</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A2%BA%E8%AA%8D"><span class="toc-text">確認</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo-%E8%A8%AD%E7%BD%AE-amp-%E8%A8%AD%E5%AE%9A-%E9%9D%99%E7%9A%84%E3%83%9A%E3%83%BC%E3%82%B8%E3%82%BC%E3%83%8D%E3%83%AC%E3%83%BC%E3%82%BF%E3%83%BC"><span class="toc-text">hexo 設置 &amp; 設定 (静的ページゼネレーター)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hexo%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="toc-text">Hexoのインストール</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hexo-deployer-git-plugin-%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="toc-text">hexo-deployer-git plugin インストール</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#config-yml-%E8%A8%AD%E5%AE%9A"><span class="toc-text">_config.yml 設定</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A2%BA%E8%AA%8D%E3%83%BB%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4"><span class="toc-text">確認・デプロイ</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Local%E3%81%A7%E3%83%96%E3%83%AD%E3%82%B0%E7%A2%BA%E8%AA%8D"><span class="toc-text">Localでブログ確認</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-Git-Pages"><span class="toc-text">Deploy to Git Pages</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gitpages%E3%81%AEURL%E3%81%A7%E7%A2%BA%E8%AA%8D"><span class="toc-text">gitpagesのURLで確認</span></a></li></ol></li></ol>
+
+<hr>
+<h2 id="Git-Pagesの準備"><a href="#Git-Pagesの準備" class="headerlink" title="Git Pagesの準備"></a>Git Pagesの準備</h2><h3 id="ホスティング用のレポジトリ生成"><a href="#ホスティング用のレポジトリ生成" class="headerlink" title="ホスティング用のレポジトリ生成"></a>ホスティング用のレポジトリ生成</h3><p>１つもGit Pagesを作った事がないなら、<font color=#FF6600><code>&#123;userid&#125;.github.io</code></font>の名前でパブリック・レポジトリを生成するのが後々混乱せずに作成できます。<br>上記の規則で作成したレポジトリは、自動的にGit Pagesの機能により、ウェブホスティングされます。</p>
+<h3 id="index-htmlをプッシュ"><a href="#index-htmlをプッシュ" class="headerlink" title="index.htmlをプッシュ"></a>index.htmlをプッシュ</h3><p><code>index.html</code>を作り、<code>&#123;userid&#125;.github.io</code>レポジトリにをプッシュします。<br>この作業を省略するとGit Pagesが作れないと思われるので必須です！</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/&#123;userid&#125;/&#123;userid&#125;.github.io.git</span><br><span class="line"><span class="built_in">cd</span> &#123;userid&#125;.github.io</span><br><span class="line">git add index.html</span><br><span class="line">git commit -m <span class="string">&quot;first commit&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Hello World&quot;</span> &gt; index.html</span><br><span class="line">git add index.html</span><br><span class="line">git commit -m <span class="string">&quot;second commit&quot;</span></span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
+
+<h3 id="git-page-build結果確認"><a href="#git-page-build結果確認" class="headerlink" title="git page build結果確認"></a>git page build結果確認</h3><p>Github Actionを見ると、上げたindex.htmlがGit Pagesとしてビルドされていることを確認できます。</p>
+<h3 id="確認"><a href="#確認" class="headerlink" title="確認"></a>確認</h3><p>https://{userid}.github.ioにアクセスすると、Hello Worldが確認できます。</p>
+<p>これで、ウェブページのホスティングの準備ができました。</p>
+<h2 id="hexo-設置-amp-設定-静的ページゼネレーター"><a href="#hexo-設置-amp-設定-静的ページゼネレーター" class="headerlink" title="hexo 設置 &amp; 設定 (静的ページゼネレーター)"></a>hexo 設置 &amp; 設定 (静的ページゼネレーター)</h2><p>Hexoを使うためには、まず<code>node</code>&amp;<code>npm</code>のインストールが必要です。<br>もし、インストールが必要な方は、以下の公式ページをご参考ください。</p>
+<p>●　nodejs with npm<br><a target="_blank" rel="noopener" href="https://nodejs.org/ja/">https://nodejs.org/ja/</a></p>
+<p>Hexoの公式 docs &amp; Installationはこちらで参考できます。<br><a target="_blank" rel="noopener" href="https://hexo.io/docs/">https://hexo.io/docs/</a></p>
+<h3 id="Hexoのインストール"><a href="#Hexoのインストール" class="headerlink" title="Hexoのインストール"></a>Hexoのインストール</h3><p>hexoをインストールします。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br><span class="line"><span class="built_in">cd</span> &#123;作成する場所&#125;</span><br><span class="line">hexo init blog</span><br><span class="line"><span class="built_in">cd</span> blog</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+<h3 id="hexo-deployer-git-plugin-インストール"><a href="#hexo-deployer-git-plugin-インストール" class="headerlink" title="hexo-deployer-git plugin インストール"></a>hexo-deployer-git plugin インストール</h3><p>One Commandで、githubにデプロイするためのプラグインを予めインストールします。<br>プラグインの詳細はこちらで確認できます。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo-deployer-git">https://github.com/hexojs/hexo-deployer-git</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<h3 id="config-yml-設定"><a href="#config-yml-設定" class="headerlink" title="_config.yml 設定"></a>_config.yml 設定</h3><p>基本的なconfig設定を行います。</p>
+<ul>
+<li><strong>url</strong><ul>
+<li>Git PagesのURLを設定します。</li>
+</ul>
+</li>
+<li><strong>new_post_name</strong><ul>
+<li>Post記事の生成時のファイル名を設定します。ここは必須に変える必要は無いですが、datetimeをつけたほうが管理しやすいと思います。</li>
+</ul>
+</li>
+<li><strong>Deployment</strong><ul>
+<li>hexo-deployer-gitのpluginをインストールしたので、gitのデプロイ設定ができます。</li>
+<li>messageは、設定しないと基本メッセージとして、Site updated: YYYY-MM-DD HH:mm:ssの形式でコミットメッセージが残ります。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">diff --git a/_config.yml b/_config.yml</span><br><span class="line"></span><br><span class="line">-url: http://yoursite.com</span><br><span class="line">+url: https://&#123;userid&#125;.github.io/</span><br><span class="line"></span><br><span class="line">-new_post_name: :title.md <span class="comment"># File name of new posts</span></span><br><span class="line">+new_post_name: :year_:month_:day_:title.md <span class="comment"># File name of new posts</span></span><br><span class="line"></span><br><span class="line"> <span class="comment"># Deployment</span></span><br><span class="line"> <span class="comment">## Docs: https://hexo.io/docs/deployment.html</span></span><br><span class="line"> deploy:</span><br><span class="line">-  <span class="built_in">type</span>: <span class="string">&#x27;&#x27;</span></span><br><span class="line">+  <span class="built_in">type</span>: git</span><br><span class="line">+  repo: https://github.com/&#123;userid&#125;/&#123;userid&#125;.github.io</span><br><span class="line">+  branch: master</span><br></pre></td></tr></table></figure>
+<p>これで、ブログの基本設定は終わりました。</p>
+<h2 id="確認・デプロイ"><a href="#確認・デプロイ" class="headerlink" title="確認・デプロイ"></a>確認・デプロイ</h2><h3 id="Localでブログ確認"><a href="#Localでブログ確認" class="headerlink" title="Localでブログ確認"></a>Localでブログ確認</h3><p>hexo serverコマンドを使うと、ウェブホスティングで公開する前に、ロケールで予めブログとコンテンツを確認できます。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br><span class="line">INFO  Start processing</span><br><span class="line">INFO  Hexo is running at http://localhost:4000 . Press Ctrl+C to stop.</span><br></pre></td></tr></table></figure>
+
+<p>● localhost:4000</p>
+<h3 id="Deploy-to-Git-Pages"><a href="#Deploy-to-Git-Pages" class="headerlink" title="Deploy to Git Pages"></a>Deploy to Git Pages</h3><p>hexo deployコマンドを使う前に、hexo cleanコマンドで１度キレイにします。<br>hexo deployコマンドを使うと、設定したGithubレポジトリに自動でプッシュしてくれます。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy -g</span><br><span class="line">INFO  Start processing</span><br><span class="line">INFO  Files loaded <span class="keyword">in</span> 101 ms</span><br><span class="line">...</span><br><span class="line">To https://github.com/&#123;userid&#125;/&#123;userid&#125;.github.io</span><br><span class="line"> + 69bd38f...fa420ac HEAD -&gt; master (forced update)</span><br><span class="line">Branch <span class="string">&#x27;master&#x27;</span> <span class="built_in">set</span> up to track remote branch <span class="string">&#x27;master&#x27;</span> from <span class="string">&#x27;https://github.com/&#123;username&#125;/&#123;username&#125;.github.io&#x27;</span>.</span><br><span class="line">INFO  Deploy <span class="keyword">done</span>: git</span><br></pre></td></tr></table></figure>
+
+<h3 id="gitpagesのURLで確認"><a href="#gitpagesのURLで確認" class="headerlink" title="gitpagesのURLで確認"></a>gitpagesのURLで確認</h3><p>Git Pagesとして動作しているレポジトリのMasterブランチにプッシュしたので、Github Actionでビルドが完了していると、https://{userid}.github.ioにアクセスすると、確認できます。</p>
+<p>これで、自分のブログが出来上がりました。</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">タグ</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Hexo/" rel="tag">Hexo</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/11/23/markdown-basic/"
+                    data-tooltip="markdown-basic"
+                    aria-label="前: markdown-basic"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">前</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/11/23/hello-world/"
+                    data-tooltip="Hello World"
+                    aria-label="次: Hello World"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">次</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/11/23/get-start-hexo/"
+                    title="Facebookで共有"
+                    aria-label="Facebookで共有"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/11/23/get-start-hexo/"
+                    title="Twitterで共有"
+                    aria-label="Twitterで共有"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/11/23/get-start-hexo/"
+                    title="Google+で共有"
+                    aria-label="Google+で共有"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目次">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2020 Narichika Morinaga. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/11/23/markdown-basic/"
+                    data-tooltip="markdown-basic"
+                    aria-label="前: markdown-basic"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">前</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/11/23/hello-world/"
+                    data-tooltip="Hello World"
+                    aria-label="次: Hello World"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">次</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/11/23/get-start-hexo/"
+                    title="Facebookで共有"
+                    aria-label="Facebookで共有"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/11/23/get-start-hexo/"
+                    title="Twitterで共有"
+                    aria-label="Twitterで共有"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/11/23/get-start-hexo/"
+                    title="Google+で共有"
+                    aria-label="Google+で共有"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目次">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/11/23/get-start-hexo/"
+                        aria-label="Facebookで共有"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Facebookで共有</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/11/23/get-start-hexo/"
+                        aria-label="Twitterで共有"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Twitterで共有</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/11/23/get-start-hexo/"
+                        aria-label="Google+で共有"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Google+で共有</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <h4 id="about-card-name">Narichika Morinaga</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-cpsmdv54h9jlo5zbpouwrcy6tsedq8cikc7taep8czdwwprd4u1jfjesvhtf.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+    </body>
+</html>
