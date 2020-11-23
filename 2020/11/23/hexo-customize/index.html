@@ -6,24 +6,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Nariのブログ">
-    <title>markdown-basic - Nariのブログ - 未来の自分に残すメモ - </title>
+    <title>hexoテーマのカスタマイズ - Nariのブログ - 未来の自分に残すメモ - </title>
     <meta name="author" content="Narichika Morinaga">
     
         <meta name="keywords" content="hexo,javascript,">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\n\n\n\nMarkdown記法Markdown で連続した複数の空白行を入れる方法▶  詳細\n\n\n方法：&lt;br /&gt; タグを直接書きます。\nindex.html1234567891011121行目&lt;br /&gt;&lt;br /&gt;2行目&lt;br /&gt;&lt;br /&gt;3行目&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;4行目\n\n↓\n1行目2行目3行目4行目\n\n\n\nMarkdown で連続した複数の空白行を入れる方法▶  詳細\n\n\n方法：&lt;br /&gt; タグを直接書きます。\nindex.html1234567891011121行目&lt;br /&gt;&lt;br /&gt;2行目&lt;br /&gt;&lt;br /&gt;3行目&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;4行目\n\n↓\n1行目2行目3行目4行目\n\n\n\n\n    // var postToggles = document.getElementsByClassName('postToggle')\n    // var postToggleds = document.getElementsByClassName('postToggled')\n    //     postToggles = [].slice.call(postToggles)\n\n    // postToggleds = [].slice.call(postToggleds)\n    // for(let i=0; i","dateCreated":"2020-11-23T13:11:12+09:00","dateModified":"2020-11-23T18:54:08+09:00","datePublished":"2020-11-23T13:11:12+09:00","description":"welcome to my blog","headline":"markdown-basic","image":["Sunset_clouds_cityscapes_new_york_city_city_skyline_1920x1440.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2020/11/23/markdown-basic/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2020/11/23/markdown-basic/","keywords":"Hexo","thumbnailUrl":"Sunset_clouds_cityscapes_new_york_city_city_skyline_1920x1440.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\n\n\n\nHexoテーマのカスタマイズHexoのテーマをカスタマイズしようとして得た知識を記録に残しておきます。\nオリジナルのcssファイルやjsファイルを追加▶  詳細\n\n\nオリジナルのカスタムcssやjsファイルを追加するには、まずsourceディレクトリにカスタムcssやjsを入れておく。themes/tranquilpeakのlayoutディレクトリ直下にlayout.ejsがあるので、コードに\n123&lt;%- css(&#39;○○○○.css&#39;) %&gt;  #&lt;&#x2F;head&gt;の直前に&lt;%- js(&#39;○○○○.js&#39;) %&gt;    #&lt;&#x2F;body&gt;の直前に\n\nを追加する。layout.ejs は、サイト全体で共通化させたい要素を入れる template ファイル。\nこうすることで…\n各ページが読み込まれる時に、layout.ejs が読み込まれる。&lt;%- body %&gt;が各テンプレートに置き換わる。 トップページなら index.ejs の中身が&lt;%- body %&gt;に入る。といった処理が hexo 内で行われ、サイト全体で要素の共通化できます。\n\n\n\nejsファイルを編集した後にするコマンド▶  詳細\n\n\nejsファイル等を変更後は themes/tranquilpeak で npm run prod\n面倒くさいので…\n1cd themes/tranquilpeak &amp;&amp; npm run prod &amp;&amp; cd ../ &amp;&amp; cd ../\n\nワンライナーで戻れるようにしています。\n\n\n","dateCreated":"2020-11-23T18:52:16+09:00","dateModified":"2020-11-23T19:34:25+09:00","datePublished":"2020-11-23T18:52:16+09:00","description":"welcome to my blog","headline":"hexoテーマのカスタマイズ","image":["Sunset_clouds_cityscapes_new_york_city_city_skyline_1920x1440.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2020/11/23/hexo-customize/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2020/11/23/hexo-customize/","keywords":"Hexo","thumbnailUrl":"Sunset_clouds_cityscapes_new_york_city_city_skyline_1920x1440.jpg"}</script>
     <meta name="description" content="welcome to my blog">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="markdown-basic">
-<meta property="og:url" content="https://morichnarich.github.io/2020/11/23/markdown-basic/index.html">
+<meta property="og:title" content="hexoテーマのカスタマイズ">
+<meta property="og:url" content="https://morichnarich.github.io/2020/11/23/hexo-customize/index.html">
 <meta property="og:site_name" content="Nariのブログ">
 <meta property="og:description" content="welcome to my blog">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://morichnarich.github.io/images/Sunset_clouds_cityscapes_new_york_city_city_skyline_1920x1440.jpg">
-<meta property="article:published_time" content="2020-11-23T04:11:12.000Z">
-<meta property="article:modified_time" content="2020-11-23T09:54:08.290Z">
+<meta property="article:published_time" content="2020-11-23T09:52:16.000Z">
+<meta property="article:modified_time" content="2020-11-23T10:34:25.264Z">
 <meta property="article:author" content="Narichika Morinaga">
 <meta property="article:tag" content="Hexo">
 <meta name="twitter:card" content="summary">
@@ -34,8 +34,8 @@
     
     
     
-        <meta property="og:image" content="https://morichnarich.github.io/2020/11/23/markdown-basic/Sunset_clouds_cityscapes_new_york_city_city_skyline_1920x1440.jpg"/>
-        <meta class="swiftype" name="image" data-type="enum" content="https://morichnarich.github.io/2020/11/23/markdown-basic/Sunset_clouds_cityscapes_new_york_city_city_skyline_1920x1440.jpg"/>
+        <meta property="og:image" content="https://morichnarich.github.io/2020/11/23/hexo-customize/Sunset_clouds_cityscapes_new_york_city_city_skyline_1920x1440.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://morichnarich.github.io/2020/11/23/hexo-customize/Sunset_clouds_cityscapes_new_york_city_city_skyline_1920x1440.jpg"/>
     
     
     
@@ -336,12 +336,12 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            markdown-basic
+            hexoテーマのカスタマイズ
         </h1>
     
     
         <div class="post-meta">
-    <time datetime="2020-11-23T13:11:12+09:00">
+    <time datetime="2020-11-23T18:52:16+09:00">
 	
 		    2020/11/23
     	
@@ -364,53 +364,33 @@
             <p><img src="/images/Sunset_clouds_cityscapes_new_york_city_city_skyline_1920x1440.jpg" alt="カメラの画像"></p>
 <!-- > これは引用です。 -->
 
-<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Markdown%E8%A8%98%E6%B3%95"><span class="toc-text">Markdown記法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Markdown-%E3%81%A7%E9%80%A3%E7%B6%9A%E3%81%97%E3%81%9F%E8%A4%87%E6%95%B0%E3%81%AE%E7%A9%BA%E7%99%BD%E8%A1%8C%E3%82%92%E5%85%A5%E3%82%8C%E3%82%8B%E6%96%B9%E6%B3%95"><span class="toc-text">Markdown で連続した複数の空白行を入れる方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Markdown-%E3%81%A7%E9%80%A3%E7%B6%9A%E3%81%97%E3%81%9F%E8%A4%87%E6%95%B0%E3%81%AE%E7%A9%BA%E7%99%BD%E8%A1%8C%E3%82%92%E5%85%A5%E3%82%8C%E3%82%8B%E6%96%B9%E6%B3%95-1"><span class="toc-text">Markdown で連続した複数の空白行を入れる方法</span></a></li></ol></li></ol>
+<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo%E3%83%86%E3%83%BC%E3%83%9E%E3%81%AE%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%9E%E3%82%A4%E3%82%BA"><span class="toc-text">Hexoテーマのカスタマイズ</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E3%81%AEcss%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%84js%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E8%BF%BD%E5%8A%A0"><span class="toc-text">オリジナルのcssファイルやjsファイルを追加</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ejs%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E7%B7%A8%E9%9B%86%E3%81%97%E3%81%9F%E5%BE%8C%E3%81%AB%E3%81%99%E3%82%8B%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89"><span class="toc-text">ejsファイルを編集した後にするコマンド</span></a></li></ol></li></ol>
 
 <hr>
-<h2 id="Markdown記法"><a href="#Markdown記法" class="headerlink" title="Markdown記法"></a>Markdown記法</h2><h3 id="Markdown-で連続した複数の空白行を入れる方法"><a href="#Markdown-で連続した複数の空白行を入れる方法" class="headerlink" title="Markdown で連続した複数の空白行を入れる方法"></a>Markdown で連続した複数の空白行を入れる方法</h3><p class="postToggle">▶  詳細
+<h2 id="Hexoテーマのカスタマイズ"><a href="#Hexoテーマのカスタマイズ" class="headerlink" title="Hexoテーマのカスタマイズ"></a>Hexoテーマのカスタマイズ</h2><p>Hexoのテーマをカスタマイズしようとして得た知識を記録に残しておきます。</p>
+<h3 id="オリジナルのcssファイルやjsファイルを追加"><a href="#オリジナルのcssファイルやjsファイルを追加" class="headerlink" title="オリジナルのcssファイルやjsファイルを追加"></a>オリジナルのcssファイルやjsファイルを追加</h3><p class="postToggle">▶  詳細
 <div class="postToggled" style="position:absolute; top:-1000vh">
 
-<p>方法：&lt;br /&gt; タグを直接書きます。</p>
-<figure class="highlight html"><figcaption><span>index.html</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">1行目</span><br><span class="line"><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line">2行目</span><br><span class="line"><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line">3行目</span><br><span class="line"><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line">4行目</span><br></pre></td></tr></table></figure>
+<p>オリジナルのカスタムcssやjsファイルを追加するには、まず<code>source</code>ディレクトリにカスタムcssやjsを入れておく。<br>themes/tranquilpeakの<strong>layout</strong>ディレクトリ直下に<strong>layout.ejs</strong>があるので、コードに</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;%- css(&#39;○○○○.css&#39;) %&gt;  #&lt;&#x2F;head&gt;の直前に</span><br><span class="line"></span><br><span class="line">&lt;%- js(&#39;○○○○.js&#39;) %&gt;    #&lt;&#x2F;body&gt;の直前に</span><br></pre></td></tr></table></figure>
 
-<p>↓</p>
-<p>1行目<br><br /><br>2行目<br><br /><br>3行目<br><br /><br><br /><br>4行目</p>
+<p>を追加する。<br><code>layout.ejs</code> は、サイト全体で共通化させたい要素を入れる template ファイル。</p>
+<p>こうすることで…</p>
+<p>各ページが読み込まれる時に、<code>layout.ejs</code> が読み込まれる。<br>&lt;%- body %&gt;が各テンプレートに置き換わる。 トップページなら index.ejs の中身が&lt;%- body %&gt;に入る。<br>といった処理が hexo 内で行われ、サイト全体で要素の共通化できます。</p>
 </div>
 </p>
 
-<h3 id="Markdown-で連続した複数の空白行を入れる方法-1"><a href="#Markdown-で連続した複数の空白行を入れる方法-1" class="headerlink" title="Markdown で連続した複数の空白行を入れる方法"></a>Markdown で連続した複数の空白行を入れる方法</h3><p class="postToggle">▶  詳細
-<div class="postToggled" style="position:absolute; top:-100000vh">
+<h3 id="ejsファイルを編集した後にするコマンド"><a href="#ejsファイルを編集した後にするコマンド" class="headerlink" title="ejsファイルを編集した後にするコマンド"></a>ejsファイルを編集した後にするコマンド</h3><p class="postToggle">▶  詳細
+<div class="postToggled" style="position:absolute; top:-1000vh">
 
-<p>方法：&lt;br /&gt; タグを直接書きます。</p>
-<figure class="highlight html"><figcaption><span>index.html</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">1行目</span><br><span class="line"><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line">2行目</span><br><span class="line"><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line">3行目</span><br><span class="line"><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line">4行目</span><br></pre></td></tr></table></figure>
+<p>ejsファイル等を変更後は <code>themes/tranquilpeak</code> で <code>npm run prod</code></p>
+<p>面倒くさいので…</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> themes/tranquilpeak &amp;&amp; npm run prod &amp;&amp; <span class="built_in">cd</span> ../ &amp;&amp; <span class="built_in">cd</span> ../</span><br></pre></td></tr></table></figure>
 
-<p>↓</p>
-<p>1行目<br><br /><br>2行目<br><br /><br>3行目<br><br /><br><br /><br>4行目</p>
+<p>ワンライナーで戻れるようにしています。</p>
 </div>
 </p>
 
-<script>
-    // var postToggles = document.getElementsByClassName('postToggle')
-    // var postToggleds = document.getElementsByClassName('postToggled')
-    //     postToggles = [].slice.call(postToggles)
-
-    // postToggleds = [].slice.call(postToggleds)
-    // for(let i=0; i<postToggles.length; i++) {
-    //     postToggles[i].addEventListener('click', postTog, false)
-    // }
-    // function postTog(e) {
-
-    //     const eTarget = e.currentTarget.nextElementSibling
-
-    //     if (eTarget.hasAttribute('style')) {
-    //         eTarget.removeAttribute('style')
-    //     } else {
-    //         eTarget.style.setProperty('position', 'absolute')
-    //         eTarget.style.setProperty('top', '-100000vh')
-    //     } 
-    // }
-
-</script>
             
 
 
@@ -431,14 +411,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/11/23/hexo-customize/"
-                    data-tooltip="hexoテーマのカスタマイズ"
-                    aria-label="前: hexoテーマのカスタマイズ"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">前</span>
                     </a>
@@ -448,9 +425,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/11/23/get-start-hexo/"
-                    data-tooltip="hexoの始め方"
-                    aria-label="次: hexoの始め方"
+                    href="/2020/11/23/markdown-basic/"
+                    data-tooltip="markdown-basic"
+                    aria-label="次: markdown-basic"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">次</span>
@@ -475,7 +452,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/11/23/markdown-basic/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/11/23/hexo-customize/"
                     title="Facebookで共有"
                     aria-label="Facebookで共有"
                 >
@@ -488,7 +465,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/11/23/markdown-basic/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/11/23/hexo-customize/"
                     title="Twitterで共有"
                     aria-label="Twitterで共有"
                 >
@@ -501,7 +478,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/11/23/markdown-basic/"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/11/23/hexo-customize/"
                     title="Google+で共有"
                     aria-label="Google+で共有"
                 >
@@ -546,14 +523,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/11/23/hexo-customize/"
-                    data-tooltip="hexoテーマのカスタマイズ"
-                    aria-label="前: hexoテーマのカスタマイズ"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">前</span>
                     </a>
@@ -563,9 +537,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/11/23/get-start-hexo/"
-                    data-tooltip="hexoの始め方"
-                    aria-label="次: hexoの始め方"
+                    href="/2020/11/23/markdown-basic/"
+                    data-tooltip="markdown-basic"
+                    aria-label="次: markdown-basic"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">次</span>
@@ -590,7 +564,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/11/23/markdown-basic/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/11/23/hexo-customize/"
                     title="Facebookで共有"
                     aria-label="Facebookで共有"
                 >
@@ -603,7 +577,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/11/23/markdown-basic/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/11/23/hexo-customize/"
                     title="Twitterで共有"
                     aria-label="Twitterで共有"
                 >
@@ -616,7 +590,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/11/23/markdown-basic/"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/11/23/hexo-customize/"
                     title="Google+で共有"
                     aria-label="Google+で共有"
                 >
@@ -650,7 +624,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/11/23/markdown-basic/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/11/23/hexo-customize/"
                         aria-label="Facebookで共有"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Facebookで共有</span>
@@ -663,7 +637,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/11/23/markdown-basic/"
+                        href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/11/23/hexo-customize/"
                         aria-label="Twitterで共有"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Twitterで共有</span>
@@ -676,7 +650,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/11/23/markdown-basic/"
+                        href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/11/23/hexo-customize/"
                         aria-label="Google+で共有"
                     >
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>Google+で共有</span>
