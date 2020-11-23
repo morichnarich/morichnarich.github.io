@@ -19,11 +19,16 @@ function postTog(e) {
     
     const eTarget = e.currentTarget.nextElementSibling
 
-    if (eTarget.hasAttribute('style')) {
-        eTarget.removeAttribute('style')
+    // if (eTarget.hasAttribute('style')) {
+    //     eTarget.removeAttribute('style')
+    // } else {
+    //     eTarget.style.setProperty('position', 'absolute')
+    //     eTarget.style.setProperty('top', '-100000vh')
+    //     eTarget.style.setProperty('width', '90vw')
+    // }
+    if (eTarget.classList.contains('postToggledClose')) {
+        eTarget.classList.remove('postToggledClose')
     } else {
-        eTarget.style.setProperty('position', 'absolute')
-        eTarget.style.setProperty('top', '-100000vh')
-        eTarget.style.setProperty('width', '90vw')
-    } 
+        eTarget.classList.add('postToggledClose')
+    }
 }

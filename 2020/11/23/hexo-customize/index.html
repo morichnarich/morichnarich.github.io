@@ -13,7 +13,7 @@
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\n\n\n\nHexoテーマのカスタマイズHexoのテーマをカスタマイズしようとして得た知識を記録に残しておきます。\nオリジナルのcssファイルやjsファイルを追加▶  詳細\n\n\nオリジナルのカスタムcssやjsファイルを追加するには、まずsourceディレクトリにカスタムcssやjsを入れておく。themes/tranquilpeakのlayoutディレクトリ直下にlayout.ejsがあるので、コードに\n123&lt;%- css(&#39;○○○○.css&#39;) %&gt;  #&lt;&#x2F;head&gt;の直前に&lt;%- js(&#39;○○○○.js&#39;) %&gt;    #&lt;&#x2F;body&gt;の直前に\n\nを追加する。layout.ejs は、サイト全体で共通化させたい要素を入れる template ファイル。\nこうすることで…\n各ページが読み込まれる時に、layout.ejs が読み込まれる。&lt;%- body %&gt;が各テンプレートに置き換わる。 トップページなら index.ejs の中身が&lt;%- body %&gt;に入る。といった処理が hexo 内で行われ、サイト全体で要素の共通化できます。\n\n\nejsファイルを編集した後にするコマンド▶  詳細\n\n\nejsファイル等を変更後は themes/tranquilpeak で npm run prod\n面倒くさいので…\n1cd themes/tranquilpeak &amp;&amp; npm run prod &amp;&amp; cd ../ &amp;&amp; cd ../\n\nワンライナーで戻れるようにしています。\n\n","dateCreated":"2020-11-23T18:52:16+09:00","dateModified":"2020-11-23T21:39:18+09:00","datePublished":"2020-11-23T18:52:16+09:00","description":"welcome to my blog","headline":"hexoテーマのカスタマイズ","image":["Sunset_clouds_cityscapes_new_york_city_city_skyline_1920x1440.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2020/11/23/hexo-customize/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2020/11/23/hexo-customize/","keywords":"Hexo","thumbnailUrl":"Sunset_clouds_cityscapes_new_york_city_city_skyline_1920x1440.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\n\n\n\n\n\n\nHexoテーマのカスタマイズHexoのテーマをカスタマイズしようとして得た知識を記録に残しておきます。\nオリジナルのcssファイルやjsファイルを追加▶  詳細\n\n\nオリジナルのカスタムcssやjsファイルを追加するには、まずsourceディレクトリにカスタムcssやjsを入れておく。themes/tranquilpeakのlayoutディレクトリ直下にlayout.ejsがあるので、コードに\n123&lt;%- css(&#39;○○○○.css&#39;) %&gt;  #&lt;&#x2F;head&gt;の直前に&lt;%- js(&#39;○○○○.js&#39;) %&gt;    #&lt;&#x2F;body&gt;の直前に\n\nを追加する。layout.ejs は、サイト全体で共通化させたい要素を入れる template ファイル。\nこうすることで…\n各ページが読み込まれる時に、layout.ejs が読み込まれる。&lt;%- body %&gt;が各テンプレートに置き換わる。 トップページなら index.ejs の中身が&lt;%- body %&gt;に入る。といった処理が hexo 内で行われ、サイト全体で要素の共通化できます。\n\n\nejsファイルを編集した後にするコマンド▶  詳細\n\n\nejsファイル等を変更後は themes/tranquilpeak で npm run prod\n面倒くさいので…\n1cd themes/tranquilpeak &amp;&amp; npm run prod &amp;&amp; cd ../ &amp;&amp; cd ../\n\nワンライナーで戻れるようにしています。\n\n","dateCreated":"2020-11-23T18:52:16+09:00","dateModified":"2020-11-23T22:39:57+09:00","datePublished":"2020-11-23T18:52:16+09:00","description":"welcome to my blog","headline":"hexoテーマのカスタマイズ","image":["img_main19.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2020/11/23/hexo-customize/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2020/11/23/hexo-customize/","keywords":"Hexo","thumbnailUrl":"img_main19.jpg"}</script>
     <meta name="description" content="welcome to my blog">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="hexoテーマのカスタマイズ">
@@ -21,27 +21,25 @@
 <meta property="og:site_name" content="Nariのブログ">
 <meta property="og:description" content="welcome to my blog">
 <meta property="og:locale" content="ja_JP">
-<meta property="og:image" content="https://morichnarich.github.io/images/Sunset_clouds_cityscapes_new_york_city_city_skyline_1920x1440.jpg">
 <meta property="article:published_time" content="2020-11-23T09:52:16.000Z">
-<meta property="article:modified_time" content="2020-11-23T12:39:18.291Z">
+<meta property="article:modified_time" content="2020-11-23T13:39:57.245Z">
 <meta property="article:author" content="Narichika Morinaga">
 <meta property="article:tag" content="Hexo">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://morichnarich.github.io/images/Sunset_clouds_cityscapes_new_york_city_city_skyline_1920x1440.jpg">
     
     
         
     
     
     
-        <meta property="og:image" content="https://morichnarich.github.io/2020/11/23/hexo-customize/Sunset_clouds_cityscapes_new_york_city_city_skyline_1920x1440.jpg"/>
-        <meta class="swiftype" name="image" data-type="enum" content="https://morichnarich.github.io/2020/11/23/hexo-customize/Sunset_clouds_cityscapes_new_york_city_city_skyline_1920x1440.jpg"/>
+        <meta property="og:image" content="https://morichnarich.github.io/2020/11/23/hexo-customize/img_main19.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://morichnarich.github.io/2020/11/23/hexo-customize/img_main19.jpg"/>
     
     
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-xqwpxk70ovmztw4auyv8nslrzijcqxmiscn8ld1g8e6crxqaau8asq0me7u2.min.css">
+<link rel="stylesheet" href="/assets/css/style-0ipi2fmqkxaee5nmvgjaoxvivldi4qzauqiyuiytpwja78upo9dmzhq3rsyu.min.css">
 
     <!--STYLES END-->
     
@@ -52,6 +50,9 @@
         
     
 </head>
+
+    
+<link rel="stylesheet" href="/my_css.css">
 
     <body>
         <div id="blog">
@@ -350,7 +351,7 @@
 
     
     <i class="fas fa-redo-alt"></i>
-        <time datetime="2020-11-23T21:39:18+09:00">
+        <time datetime="2020-11-23T22:39:57+09:00">
         
         2020/11/23
         
@@ -374,7 +375,10 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p><img src="/images/Sunset_clouds_cityscapes_new_york_city_city_skyline_1920x1440.jpg" alt="カメラの画像"></p>
+            <!-- ![カメラの画像](/images/Sunset_clouds_cityscapes_new_york_city_city_skyline_1920x1440.jpg) -->
+
+
+
 <!-- > これは引用です。 -->
 
 <h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo%E3%83%86%E3%83%BC%E3%83%9E%E3%81%AE%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%9E%E3%82%A4%E3%82%BA"><span class="toc-text">Hexoテーマのカスタマイズ</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E3%81%AEcss%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%84js%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E8%BF%BD%E5%8A%A0"><span class="toc-text">オリジナルのcssファイルやjsファイルを追加</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ejs%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E7%B7%A8%E9%9B%86%E3%81%97%E3%81%9F%E5%BE%8C%E3%81%AB%E3%81%99%E3%82%8B%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89"><span class="toc-text">ejsファイルを編集した後にするコマンド</span></a></li></ol></li></ol>
@@ -382,7 +386,7 @@
 <hr>
 <h2 id="Hexoテーマのカスタマイズ"><a href="#Hexoテーマのカスタマイズ" class="headerlink" title="Hexoテーマのカスタマイズ"></a>Hexoテーマのカスタマイズ</h2><p>Hexoのテーマをカスタマイズしようとして得た知識を記録に残しておきます。</p>
 <h3 id="オリジナルのcssファイルやjsファイルを追加"><a href="#オリジナルのcssファイルやjsファイルを追加" class="headerlink" title="オリジナルのcssファイルやjsファイルを追加"></a>オリジナルのcssファイルやjsファイルを追加</h3><p class="postToggle">▶  詳細</p>
-<div class="postToggled" style="position:absolute; width:90vw; top:-1000vh">
+<div class="postToggled postToggledClose">
 
 <p>オリジナルのカスタムcssやjsファイルを追加するには、まず<code>source</code>ディレクトリにカスタムcssやjsを入れておく。<br>themes/tranquilpeakの<strong>layout</strong>ディレクトリ直下に<strong>layout.ejs</strong>があるので、コードに</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;%- css(&#39;○○○○.css&#39;) %&gt;  #&lt;&#x2F;head&gt;の直前に</span><br><span class="line"></span><br><span class="line">&lt;%- js(&#39;○○○○.js&#39;) %&gt;    #&lt;&#x2F;body&gt;の直前に</span><br></pre></td></tr></table></figure>
@@ -393,7 +397,7 @@
 </div>
 
 <h3 id="ejsファイルを編集した後にするコマンド"><a href="#ejsファイルを編集した後にするコマンド" class="headerlink" title="ejsファイルを編集した後にするコマンド"></a>ejsファイルを編集した後にするコマンド</h3><p class="postToggle">▶  詳細</p>
-<div class="postToggled" style="position:absolute; width:90vw; top:-1000vh">
+<div class="postToggled postToggledClose">
 
 <p>ejsファイル等を変更後は <code>themes/tranquilpeak</code> で <code>npm run prod</code></p>
 <p>面倒くさいので…</p>
@@ -437,8 +441,8 @@
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2020/11/23/markdown-basic/"
-                    data-tooltip="markdown-basic"
-                    aria-label="次: markdown-basic"
+                    data-tooltip="Markdown記法"
+                    aria-label="次: Markdown記法"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">次</span>
@@ -452,7 +456,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -549,8 +553,8 @@
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2020/11/23/markdown-basic/"
-                    data-tooltip="markdown-basic"
-                    aria-label="次: markdown-basic"
+                    data-tooltip="Markdown記法"
+                    aria-label="次: Markdown記法"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">次</span>
@@ -564,7 +568,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -705,7 +709,7 @@
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-wrqtisqux4cw1qbkjmmjkynfpep60ma1hwscy8lhdttkr54juus5nnrlioyq.min.js"></script>
+<script src="/assets/js/script-gjdga7moqr1bjpg62stk9hvcpluwemplon2hyyexkifmuqqensrxxgu9izvg.min.js"></script>
 
 <!--SCRIPTS END-->
 
