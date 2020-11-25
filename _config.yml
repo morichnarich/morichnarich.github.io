@@ -109,7 +109,7 @@ sidebarBehavior: 2
 deploy:
   type: git
   repo: https://github.com/morichnarich/morichnarich.github.io
-  branch: gh-pages
+  branch: master
 
 # # sitemap
 # sitemap:
