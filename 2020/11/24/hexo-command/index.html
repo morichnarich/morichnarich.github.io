@@ -6,38 +6,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Nariのブログ">
-    <title>hexoテーマのカスタマイズ - Nariのブログ - 明日の自分に残すメモ - </title>
+    <title>Hexoでのコマンドの仕方 - Nariのブログ - 明日の自分に残すメモ - </title>
     <meta name="author" content="Narichika Morinaga">
     
         <meta name="keywords" content="hexo,javascript,">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\n\n\n\nHexoテーマのカスタマイズHexoのテーマをカスタマイズしようとして得た知識を記録に残しておきます。\nオリジナルのcssファイルやjsファイルを追加▶  詳細\n\n\nオリジナルのカスタムcssやjsファイルを追加するには、まずsourceディレクトリにカスタムcssやjsを入れておく。themes/tranquilpeakのlayoutディレクトリ直下にlayout.ejsがあるので、コードに\n123&lt;%- css(&#39;○○○○.css&#39;) %&gt;  #&lt;&#x2F;head&gt;の直前に&lt;%- js(&#39;○○○○.js&#39;) %&gt;    #&lt;&#x2F;body&gt;の直前に\n\nを追加する。layout.ejs は、サイト全体で共通化させたい要素を入れる template ファイル。\nこうすることで…\n各ページが読み込まれる時に、layout.ejs が読み込まれる。&lt;%- body %&gt;が各テンプレートに置き換わる。 トップページなら index.ejs の中身が&lt;%- body %&gt;に入る。といった処理が hexo 内で行われ、サイト全体で要素の共通化できます。\n\n\nejsファイルを編集した後にするコマンド▶  詳細\n\n\nejsファイル等を変更後は themes/tranquilpeak で npm run prod\n面倒くさいので…\n1cd themes/tranquilpeak &amp;&amp; npm run prod &amp;&amp; cd ../ &amp;&amp; cd ../\n\nワンライナーで戻れるようにしています。\n\n\n画像を使い回す方法▶  詳細\n\n\nまず、sourceフォルダの直下にimagesフォルダを作成します。そして、その中に画像を入れます。\n記事には![](/images/hoge.jpeg)とするだけです。\nこれで、画像を一つのフォルダにまとめられ、他の記事からも参照できます。\nHere is a danger alert without icon\n\n\n\n","dateCreated":"2020-11-23T18:52:16+09:00","dateModified":"2020-11-24T06:14:15+09:00","datePublished":"2020-11-23T18:52:16+09:00","description":"welcome to my blog","headline":"hexoテーマのカスタマイズ","image":["img_main19.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2020/11/23/hexo-customize/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2020/11/23/hexo-customize/","keywords":"Hexo","thumbnailUrl":"img_main19.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\n\n\n\n\n\n\n記事を作る▶  詳細\n\n\nhexoコマンドにnewオプションを付けて記事を書きます。通常はポスト(公開用)として作成されますが、下書き用のオプションもあります。\n1234# 新記事ポストhexo new &quot;記事タイトル&quot;# ドラフトで作成hexo new draft &quot;記事タイトル&quot;\n\n\n\nコマンドは短縮できる▶  詳細\n\n\nnewはn、serverはsというように短縮コマンドが用意されています。\n12345678# 新記事作成hexo n &quot;記事名&quot;# サイトのジェネレートhexo g# サーバー開始hexo s\n\n\n\n\n\n\n\n\n\n\n\n\n\n","dateCreated":"2020-11-24T23:08:16+09:00","dateModified":"2020-11-25T10:01:18+09:00","datePublished":"2020-11-24T23:08:16+09:00","description":"welcome to my blog","headline":"Hexoでのコマンドの仕方","image":["hexo_002_01.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2020/11/24/hexo-command/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2020/11/24/hexo-command/","keywords":"hexo","thumbnailUrl":"hexo_002_01.png"}</script>
     <meta name="description" content="welcome to my blog">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="hexoテーマのカスタマイズ">
-<meta property="og:url" content="https://morichnarich.github.io/2020/11/23/hexo-customize/index.html">
+<meta property="og:title" content="Hexoでのコマンドの仕方">
+<meta property="og:url" content="https://morichnarich.github.io/2020/11/24/hexo-command/index.html">
 <meta property="og:site_name" content="Nariのブログ">
 <meta property="og:description" content="welcome to my blog">
 <meta property="og:locale" content="ja_JP">
-<meta property="og:image" content="https://morichnarich.github.io/images/img_main19.jpg">
-<meta property="article:published_time" content="2020-11-23T09:52:16.000Z">
-<meta property="article:modified_time" content="2020-11-23T21:14:15.679Z">
+<meta property="og:image" content="https://morichnarich.github.io/images/hexo_002_01.png">
+<meta property="article:published_time" content="2020-11-24T14:08:16.000Z">
+<meta property="article:modified_time" content="2020-11-25T01:01:18.225Z">
 <meta property="article:author" content="Narichika Morinaga">
-<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="hexo">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://morichnarich.github.io/images/img_main19.jpg">
+<meta name="twitter:image" content="https://morichnarich.github.io/images/hexo_002_01.png">
     
     
         
     
     
     
-        <meta property="og:image" content="https://morichnarich.github.io/2020/11/23/hexo-customize/img_main19.jpg"/>
-        <meta class="swiftype" name="image" data-type="enum" content="https://morichnarich.github.io/2020/11/23/hexo-customize/img_main19.jpg"/>
+        <meta property="og:image" content="https://morichnarich.github.io/2020/11/24/hexo-command/hexo_002_01.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://morichnarich.github.io/2020/11/24/hexo-command/hexo_002_01.png"/>
     
     
+    
+        
+            <meta property="og:image" content="https://pbs.twimg.com/media/Cnj02OSWIAABbLC"/>
+            <meta class="swiftype" name="image" data-type="enum" content="https://pbs.twimg.com/media/Cnj02OSWIAABbLC"/>
+        
+            <meta property="og:image" content="https://pbs.twimg.com/media/Cnj02OlWcAA6I0T"/>
+            <meta class="swiftype" name="image" data-type="enum" content="https://pbs.twimg.com/media/Cnj02OlWcAA6I0T"/>
+        
     
     <!--STYLES-->
     
@@ -339,23 +347,23 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            hexoテーマのカスタマイズ
+            Hexoでのコマンドの仕方
         </h1>
     
     
         <div class="post-meta">
     <i class="fas fa-file-alt"></i>
-    <time datetime="2020-11-23T18:52:16+09:00">
+    <time datetime="2020-11-24T23:08:16+09:00">
 	
-		    2020/11/23
+		    2020/11/24
     	
     </time>
 
     
     <i class="fas fa-redo-alt"></i>
-        <time datetime="2020-11-24T06:14:15+09:00">
+        <time datetime="2020-11-25T10:01:18+09:00">
         
-        2020/11/24
+        2020/11/25
         
         </time>
         <br>
@@ -365,7 +373,7 @@
         <i class="far fa-folder-open"></i>
         <span>カテゴリー </span>
         
-    <a class="category-link" href="/categories/Program/">Program</a>
+    <a class="category-link" href="/categories/program/">program</a>
 
 
     
@@ -377,46 +385,156 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p><img src="/images/img_main19.jpg" alt="カメラの画像"></p>
-<!-- > これは引用です。 -->
+            <!-- > これは引用です。 -->
 
-<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo%E3%83%86%E3%83%BC%E3%83%9E%E3%81%AE%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%9E%E3%82%A4%E3%82%BA"><span class="toc-text">Hexoテーマのカスタマイズ</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E3%81%AEcss%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%84js%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E8%BF%BD%E5%8A%A0"><span class="toc-text">オリジナルのcssファイルやjsファイルを追加</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ejs%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E7%B7%A8%E9%9B%86%E3%81%97%E3%81%9F%E5%BE%8C%E3%81%AB%E3%81%99%E3%82%8B%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89"><span class="toc-text">ejsファイルを編集した後にするコマンド</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%BB%E5%83%8F%E3%82%92%E4%BD%BF%E3%81%84%E5%9B%9E%E3%81%99%E6%96%B9%E6%B3%95"><span class="toc-text">画像を使い回す方法</span></a></li></ol></li></ol>
+<p><img src="/images/hexo_002_01.png" alt="カメラの画像"></p>
+<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A8%98%E4%BA%8B%E3%82%92%E4%BD%9C%E3%82%8B"><span class="toc-text">記事を作る</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%81%AF%E7%9F%AD%E7%B8%AE%E3%81%A7%E3%81%8D%E3%82%8B"><span class="toc-text">コマンドは短縮できる</span></a></li></ol>
 
-<hr>
-<h2 id="Hexoテーマのカスタマイズ"><a href="#Hexoテーマのカスタマイズ" class="headerlink" title="Hexoテーマのカスタマイズ"></a>Hexoテーマのカスタマイズ</h2><p>Hexoのテーマをカスタマイズしようとして得た知識を記録に残しておきます。</p>
-<h3 id="オリジナルのcssファイルやjsファイルを追加"><a href="#オリジナルのcssファイルやjsファイルを追加" class="headerlink" title="オリジナルのcssファイルやjsファイルを追加"></a>オリジナルのcssファイルやjsファイルを追加</h3><p class="postToggle">▶  詳細</p>
+<!-- # 見出し1
+## 見出し2
+### 見出し3
+#### 見出し4
+##### 見出し5
+###### 見出し6 -->
+
+<!-- [Google先生](https://www.google.co.jp/)
+![キャプチャです](/yyyy/mm/dd/記事タイトル/ファイル名 "キャプチャです") -->
+
+<h3 id="記事を作る"><a href="#記事を作る" class="headerlink" title="記事を作る"></a>記事を作る</h3><p class="postToggle">▶  詳細</p>
 <div class="postToggled postToggledClose">
 
-<p>オリジナルのカスタムcssやjsファイルを追加するには、まず<code>source</code>ディレクトリにカスタムcssやjsを入れておく。<br>themes/tranquilpeakの<strong>layout</strong>ディレクトリ直下に<strong>layout.ejs</strong>があるので、コードに</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;%- css(&#39;○○○○.css&#39;) %&gt;  #&lt;&#x2F;head&gt;の直前に</span><br><span class="line"></span><br><span class="line">&lt;%- js(&#39;○○○○.js&#39;) %&gt;    #&lt;&#x2F;body&gt;の直前に</span><br></pre></td></tr></table></figure>
+<p><font color=#FF3860><code>hexoコマンド</code></font>に<font color=#FF3860><code>new</code></font>オプションを付けて記事を書きます。<br>通常はポスト(公開用)として作成されますが、下書き用のオプションもあります。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 新記事ポスト</span></span><br><span class="line">hexo new <span class="string">&quot;記事タイトル&quot;</span></span><br><span class="line"><span class="comment"># ドラフトで作成</span></span><br><span class="line">hexo new draft <span class="string">&quot;記事タイトル&quot;</span></span><br></pre></td></tr></table></figure>
 
-<p>を追加する。<br><code>layout.ejs</code> は、サイト全体で共通化させたい要素を入れる template ファイル。</p>
-<p>こうすることで…</p>
-<p>各ページが読み込まれる時に、<code>layout.ejs</code> が読み込まれる。<br>&lt;%- body %&gt;が各テンプレートに置き換わる。 トップページなら index.ejs の中身が&lt;%- body %&gt;に入る。<br>といった処理が hexo 内で行われ、サイト全体で要素の共通化できます。</p>
 </div>
 
-<h3 id="ejsファイルを編集した後にするコマンド"><a href="#ejsファイルを編集した後にするコマンド" class="headerlink" title="ejsファイルを編集した後にするコマンド"></a>ejsファイルを編集した後にするコマンド</h3><p class="postToggle">▶  詳細</p>
+<h3 id="コマンドは短縮できる"><a href="#コマンドは短縮できる" class="headerlink" title="コマンドは短縮できる"></a>コマンドは短縮できる</h3><p class="postToggle">▶  詳細</p>
 <div class="postToggled postToggledClose">
 
-<p>ejsファイル等を変更後は <code>themes/tranquilpeak</code> で <code>npm run prod</code></p>
-<p>面倒くさいので…</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> themes/tranquilpeak &amp;&amp; npm run prod &amp;&amp; <span class="built_in">cd</span> ../ &amp;&amp; <span class="built_in">cd</span> ../</span><br></pre></td></tr></table></figure>
+<p><font color=#FF3860><code>new</code></font>は<font color=#FF3860><code>n</code></font>、<font color=#FF3860><code>server</code></font>は<font color=#FF3860><code>s</code></font>というように短縮コマンドが用意されています。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 新記事作成</span></span><br><span class="line">hexo n <span class="string">&quot;記事名&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># サイトのジェネレート</span></span><br><span class="line">hexo g</span><br><span class="line"></span><br><span class="line"><span class="comment"># サーバー開始</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
 
-<p>ワンライナーで戻れるようにしています。</p>
 </div>
 
-<h3 id="画像を使い回す方法"><a href="#画像を使い回す方法" class="headerlink" title="画像を使い回す方法"></a>画像を使い回す方法</h3><p class="postToggle">▶  詳細</p>
+<!-- <p class="postToggle">▶  詳細</p>
 <div class="postToggled postToggledClose">
 
-<p>まず、sourceフォルダの直下にimagesフォルダを作成します。そして、その中に画像を入れます。</p>
-<p>記事には<font color=#FF3860><code>![](/images/hoge.jpeg)</code></font>とするだけです。</p>
-<p>これで、画像を一つのフォルダにまとめられ、他の記事からも参照できます。</p>
-<div class="alert danger no-icon"><p>Here is a danger alert without icon</p>
-</div>
+背景強調は`こんな感じ`です。
 
-</div>
+<font color=#FF3860>`{userid}.github.io`</font>
+
+
+</div> -->
+
+<!-- 
+- リスト1
+  - ネスト リスト1_1
+    - ネスト リスト1_1_1
+    - ネスト リスト1_1_2
+  - ネスト リスト1_2
+- リスト2
+- リスト3 -->
+<!-- 
+1. 番号付きリスト1
+  1. 番号付きリスト1_1
+  1. 番号付きリスト1_2
+1. 番号付きリスト2
+1. 番号付きリスト3
+
+> お世話になります。xxxです。
+>> あの新機能バグってるっすね -->
+
+<!-- # Tab
+｀｀｀python
+class Hoge
+  def hoge
+    print 'hoge'
+  end
+end
+｀｀｀ -->
+<!-- 
+normal *italic* normal
+normal _italic_ normal
+
+normal **bold** normal
+normal __bold__ normal
+
+normal ***bold*** normal
+normal ___bold___ normal
+
+*** -->
+
+<!-- ___
+
+---
+
+*    *    *
+
+~~取り消し線~~ -->
+
+<!-- ## はじめに
+## TL;DR
+- a
+- b
+- c
+## 目的・やったこと
+
+## 環境・条件
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="詳細"><a href="#詳細" class="headerlink" title="詳細"></a>詳細</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="まとめ"><a href="#まとめ" class="headerlink" title="まとめ"></a>まとめ</h2><h2 id="その他・メモ"><a href="#その他・メモ" class="headerlink" title="その他・メモ"></a>その他・メモ</h2><h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li>a –&gt;</li>
+</ul>
 
             
+
+    
+    <div class="image-gallery">
+        <div class="image-gallery-metabar">
+            <span>ギャラリー: 2 イメージ</span>
+        </div>
+        <div class="image-gallery-photos ">
+            
+            
+            <div class="photo-box">
+                <a
+                    class="photo-box-inner fancybox"
+                    data-fancybox="gallery-ckhwok5u80009asoqf4slguu5"
+                    data-caption=""
+                    title=""
+                    target="_blank" rel="noopener" href="https://pbs.twimg.com/media/Cnj02OSWIAABbLC?format=jpg#.jpg"
+                    aria-label=""
+                >
+                    
+
+                        <img
+                                class="photo" src="https://pbs.twimg.com/media/Cnj02OSWIAABbLC?format=jpg#.jpg"
+                        >
+                    
+                </a>
+            </div>
+            
+            
+            <div class="photo-box">
+                <a
+                    class="photo-box-inner fancybox"
+                    data-fancybox="gallery-ckhwok5u80009asoqf4slguu5"
+                    data-caption=""
+                    title=""
+                    target="_blank" rel="noopener" href="https://pbs.twimg.com/media/Cnj02OlWcAA6I0T?format=jpg#.jpg"
+                    aria-label=""
+                >
+                    
+
+                        <img
+                                class="photo" src="https://pbs.twimg.com/media/Cnj02OlWcAA6I0T?format=jpg#.jpg"
+                        >
+                    
+                </a>
+            </div>
+            
+        </div>
+    </div>
 
 
         </div>
@@ -426,7 +544,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">タグ</span><br/>
                 
-    <a class="tag tag--primary tag--small t-none-link" href="/tags/Hexo/" rel="tag">Hexo</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/hexo/" rel="tag">hexo</a>
 
             </div>
         
@@ -436,14 +554,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/11/24/how-to-use-github/"
-                    data-tooltip="githubの使い方"
-                    aria-label="前: githubの使い方"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">前</span>
                     </a>
@@ -453,9 +568,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/11/23/markdown-basic/"
-                    data-tooltip="Markdown記法"
-                    aria-label="次: Markdown記法"
+                    href="/2020/11/24/how-to-use-github/"
+                    data-tooltip="githubの使い方"
+                    aria-label="次: githubの使い方"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">次</span>
@@ -480,7 +595,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/11/23/hexo-customize/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/11/24/hexo-command/"
                     title="Facebookで共有"
                     aria-label="Facebookで共有"
                 >
@@ -493,7 +608,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/11/23/hexo-customize/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/11/24/hexo-command/"
                     title="Twitterで共有"
                     aria-label="Twitterで共有"
                 >
@@ -506,7 +621,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/11/23/hexo-customize/"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/11/24/hexo-command/"
                     title="Google+で共有"
                     aria-label="Google+で共有"
                 >
@@ -551,14 +666,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/11/24/how-to-use-github/"
-                    data-tooltip="githubの使い方"
-                    aria-label="前: githubの使い方"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">前</span>
                     </a>
@@ -568,9 +680,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/11/23/markdown-basic/"
-                    data-tooltip="Markdown記法"
-                    aria-label="次: Markdown記法"
+                    href="/2020/11/24/how-to-use-github/"
+                    data-tooltip="githubの使い方"
+                    aria-label="次: githubの使い方"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">次</span>
@@ -595,7 +707,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/11/23/hexo-customize/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/11/24/hexo-command/"
                     title="Facebookで共有"
                     aria-label="Facebookで共有"
                 >
@@ -608,7 +720,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/11/23/hexo-customize/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/11/24/hexo-command/"
                     title="Twitterで共有"
                     aria-label="Twitterで共有"
                 >
@@ -621,7 +733,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/11/23/hexo-customize/"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/11/24/hexo-command/"
                     title="Google+で共有"
                     aria-label="Google+で共有"
                 >
@@ -655,7 +767,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/11/23/hexo-customize/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/11/24/hexo-command/"
                         aria-label="Facebookで共有"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Facebookで共有</span>
@@ -668,7 +780,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/11/23/hexo-customize/"
+                        href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/11/24/hexo-command/"
                         aria-label="Twitterで共有"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Twitterで共有</span>
@@ -681,7 +793,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/11/23/hexo-customize/"
+                        href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/11/24/hexo-command/"
                         aria-label="Google+で共有"
                     >
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>Google+で共有</span>
