@@ -1,0 +1,28 @@
+<div class="<%= (classes ? classes.join(' ') : '') %>">
+    <i class="fas fa-file-alt"></i>
+    <time datetime="<%= post.date.format() %>">
+	<% if (post.lang) { %>
+		    <%= post.date.locale(post.lang).format(__('date_format')) %>
+    	<% } else { %>
+		    <%= post.date.locale(page.lang).format(__('date_format')) %>
+    	<% } %>
+    </time>
+
+    <% if (post.updated) { %>
+    <i class="fas fa-redo-alt"></i>
+        <time datetime="<%= post.updated.format() %>">
+        <% if (post.lang) { %>
+        <%= post.updated.locale(post.lang).format(__('date_format')) %>
+        <% } else { %>
+        <%= post.updated.locale(page.lang).format(__('date_format')) %>
+        <% } %>
+        </time>
+        <br>
+    <% } %>
+    
+    <% if ((post.categories) && (post.categories.length > 0)) { %>
+        <i class="far fa-folder-open"></i>
+        <span><%= __('post.categorized_in')  %> </span>
+        <%- partial('category', {categories: post.categories})%>
+    <% } %>
+</div>
