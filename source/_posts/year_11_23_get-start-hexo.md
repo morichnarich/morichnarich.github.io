@@ -27,22 +27,23 @@ excerpt: welcome to my blog
 
 ## Git Pagesの準備
 
-### ホスティング用のレポジトリ生成
+### ホスティング用のローカルリポジトリ生成
 
-１つもGit Pagesを作った事がないなら、<font color=#FF3860>`{userid}.github.io`</font>の名前でパブリック・レポジトリを生成するのが後々混乱せずに作成できます。
-上記の規則で作成したレポジトリは、自動的にGit Pagesの機能により、ウェブホスティングされます。
+１つもGit Pagesを作った事がないなら、<font color=#FF3860>`{userid}.github.io`</font>の名前でパブリック・リポジトリを生成するのが後々混乱せずに作成できます。
+上記の規則で作成したローカルリポジトリは、自動的にGit Pagesの機能により、ウェブホスティングされます。
 
 ``` bash
+cd "ローカルリポジトリを作りたい場所"
 git clone https://github.com/{userid}/{userid}.github.io.git
 ```
 
 {% alert danger no-icon %}
-クローンして掘り込んだファイルはローカルディレクトリになるので削除してはいけません。
+クローンして作成したファイルはローカルリポジトリになるので削除してはいけません。
 {% endalert %}
 
 ### index.htmlをプッシュ
 
-`index.html`を作り、`{userid}.github.io`レポジトリにプッシュします。
+`index.html`を作り、`{userid}.github.io`リポジトリにプッシュします。
 この作業を省略するとGit Pagesが作れないと思われるので必須です！
 
 ``` bash
@@ -146,7 +147,7 @@ INFO  Hexo is running at http://localhost:4000 . Press Ctrl+C to stop.
 
 ### Deploy to Git Pages
 hexo deployコマンドを使う前に、hexo cleanコマンドで１度キレイにします。
-hexo deployコマンドを使うと、設定したGithubレポジトリに自動でプッシュしてくれます。
+hexo deployコマンドを使うと、設定したGithubリポジトリに自動でプッシュしてくれます。
 
 ``` bash
 $ hexo deploy -g
@@ -161,7 +162,7 @@ INFO  Deploy done: git
 
 ### gitpagesのURLで確認
 
-Git Pagesとして動作しているレポジトリのMasterブランチにプッシュしたので、Github Actionでビルドが完了していると、https://{userid}.github.ioにアクセスすると、確認できます。
+Git Pagesとして動作しているリポジトリのMasterブランチにプッシュしたので、Github Actionでビルドが完了していると、https://{userid}.github.ioにアクセスすると、確認できます。
 
 これで、自分のブログが出来上がりました。
 
