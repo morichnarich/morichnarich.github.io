@@ -13,11 +13,11 @@
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\n\n\n\nHexoテーマのカスタマイズHexoのテーマをカスタマイズしようとして得た知識を記録に残しておきます。\nオリジナルのcssファイルやjsファイルを追加▶  詳細\n\n\nオリジナルのカスタムcssやjsファイルを追加するには、まずsourceディレクトリにカスタムcssやjsを入れておく。themes/tranquilpeakのlayoutディレクトリ直下にlayout.ejsがあるので、コードに\n123&lt;%- css(&#39;○○○○.css&#39;) %&gt;  #&lt;&#x2F;head&gt;の直前に&lt;%- js(&#39;○○○○.js&#39;) %&gt;    #&lt;&#x2F;body&gt;の直前に\n\nを追加する。layout.ejs は、サイト全体で共通化させたい要素を入れる template ファイル。\nこうすることで…\n各ページが読み込まれる時に、layout.ejs が読み込まれる。&lt;%- body %&gt;が各テンプレートに置き換わる。 トップページなら index.ejs の中身が&lt;%- body %&gt;に入る。といった処理が hexo 内で行われ、サイト全体で要素の共通化できます。\n\n\nejsファイルを編集した後にするコマンド▶  詳細\n\n\nejsファイル等を変更後は themes/tranquilpeak で npm run prod\n面倒くさいので…\n1cd themes/tranquilpeak &amp;&amp; npm run prod &amp;&amp; cd ../ &amp;&amp; cd ../\n\nワンライナーで戻れるようにしています。\n\n\n画像を使い回す方法▶  詳細\n\n\nまず、sourceフォルダの直下にimagesフォルダを作成します。そして、その中に画像を入れます。\n記事には![](/images/hoge.jpeg)とするだけです。\nこれで、画像を一つのフォルダにまとめられ、他の記事からも参照できます。\nHere is a danger alert without icon\n\n\n\n","dateCreated":"2020-11-23T18:52:16+09:00","dateModified":"2020-11-24T06:14:15+09:00","datePublished":"2020-11-23T18:52:16+09:00","description":"welcome to my blog","headline":"hexoテーマのカスタマイズ","image":["img_main19.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/morichnarich.github.io/2020/11/23/hexo-customize/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/morichnarich.github.io/2020/11/23/hexo-customize/","keywords":"Hexo","thumbnailUrl":"img_main19.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\n\n\n\nHexoテーマのカスタマイズHexoのテーマをカスタマイズしようとして得た知識を記録に残しておきます。\nオリジナルのcssファイルやjsファイルを追加▶  詳細\n\n\nオリジナルのカスタムcssやjsファイルを追加するには、まずsourceディレクトリにカスタムcssやjsを入れておく。themes/tranquilpeakのlayoutディレクトリ直下にlayout.ejsがあるので、コードに\n123&lt;%- css(&#39;○○○○.css&#39;) %&gt;  #&lt;&#x2F;head&gt;の直前に&lt;%- js(&#39;○○○○.js&#39;) %&gt;    #&lt;&#x2F;body&gt;の直前に\n\nを追加する。layout.ejs は、サイト全体で共通化させたい要素を入れる template ファイル。\nこうすることで…\n各ページが読み込まれる時に、layout.ejs が読み込まれる。&lt;%- body %&gt;が各テンプレートに置き換わる。 トップページなら index.ejs の中身が&lt;%- body %&gt;に入る。といった処理が hexo 内で行われ、サイト全体で要素の共通化できます。\n\n\nejsファイルを編集した後にするコマンド▶  詳細\n\n\nejsファイル等を変更後は themes/tranquilpeak で npm run prod\n面倒くさいので…\n1cd themes/tranquilpeak &amp;&amp; npm run prod &amp;&amp; cd ../ &amp;&amp; cd ../\n\nワンライナーで戻れるようにしています。\n\n\n画像を使い回す方法▶  詳細\n\n\nまず、sourceフォルダの直下にimagesフォルダを作成します。そして、その中に画像を入れます。\n記事には![](/images/hoge.jpeg)とするだけです。\nこれで、画像を一つのフォルダにまとめられ、他の記事からも参照できます。\nHere is a danger alert without icon\n\n\n\n","dateCreated":"2020-11-23T18:52:16+09:00","dateModified":"2020-11-24T06:14:15+09:00","datePublished":"2020-11-23T18:52:16+09:00","description":"welcome to my blog","headline":"hexoテーマのカスタマイズ","image":["img_main19.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2020/11/23/hexo-customize/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2020/11/23/hexo-customize/","keywords":"Hexo","thumbnailUrl":"img_main19.jpg"}</script>
     <meta name="description" content="welcome to my blog">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="hexoテーマのカスタマイズ">
-<meta property="og:url" content="https://morichnarich.github.io/morichnarich.github.io/2020/11/23/hexo-customize/index.html">
+<meta property="og:url" content="https://morichnarich.github.io/2020/11/23/hexo-customize/index.html">
 <meta property="og:site_name" content="Nariのブログ">
 <meta property="og:description" content="welcome to my blog">
 <meta property="og:locale" content="ja_JP">
@@ -34,14 +34,14 @@
     
     
     
-        <meta property="og:image" content="https://morichnarich.github.io/morichnarich.github.io/2020/11/23/hexo-customize/img_main19.jpg"/>
-        <meta class="swiftype" name="image" data-type="enum" content="https://morichnarich.github.io/morichnarich.github.io/2020/11/23/hexo-customize/img_main19.jpg"/>
+        <meta property="og:image" content="https://morichnarich.github.io/2020/11/23/hexo-customize/img_main19.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://morichnarich.github.io/2020/11/23/hexo-customize/img_main19.jpg"/>
     
     
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="morichnarich.github.io/assets/css/style-nwhmakibv65xhsdkq7pht98suw06ytb1by3pl3uicngjtr8jerdnj02uz5dw.min.css">
+<link rel="stylesheet" href="/assets/css/style-nwhmakibv65xhsdkq7pht98suw06ytb1by3pl3uicngjtr8jerdnj02uz5dw.min.css">
 
     <!--STYLES END-->
     
@@ -54,7 +54,7 @@
 </head>
 
     
-<link rel="stylesheet" href="morichnarich.github.io/my_css.css">
+<link rel="stylesheet" href="/my_css.css">
 
     <body>
         <div id="blog">
@@ -68,7 +68,7 @@
     <div class="header-title">
         <a
             class="header-title-link"
-            href="morichnarich.github.io/"
+            href="/"
             aria-label=""
         >
             Nariのブログ
@@ -79,7 +79,7 @@
             <a
                 class="header-right-picture "
                 href="#about"
-                aria-label="リンクを開く: morichnarich.github.io/#about"
+                aria-label="リンクを開く: /#about"
             >
         
         
@@ -92,7 +92,7 @@
 
 <nav id="sidebar" data-behavior="4">
     <div class="sidebar-header">
-        <a href=https://morichnarich.github.io/morichnarich.github.io>
+        <a href=https://morichnarich.github.io>
             <h1 class="sidebar-title">
                 Nariのブログ
             </h1>
@@ -110,7 +110,7 @@
                     
                         <a
                             class="sidebar-button-link "
-                            href="morichnarich.github.io/"
+                            href="/"
                             
                             rel="noopener"
                             title="ホーム"
@@ -124,7 +124,7 @@
                     
                         <a
                             class="sidebar-button-link "
-                            href="morichnarich.github.io/all-categories"
+                            href="/all-categories"
                             
                             rel="noopener"
                             title="カテゴリー"
@@ -138,7 +138,7 @@
                     
                         <a
                             class="sidebar-button-link "
-                            href="morichnarich.github.io/all-tags"
+                            href="/all-tags"
                             
                             rel="noopener"
                             title="タグ"
@@ -152,7 +152,7 @@
                     
                         <a
                             class="sidebar-button-link "
-                            href="morichnarich.github.io/all-archives"
+                            href="/all-archives"
                             
                             rel="noopener"
                             title="アーカイブ"
@@ -294,7 +294,7 @@
                     
                         <a
                             class="sidebar-button-link "
-                            href="morichnarich.github.io/mailto"
+                            href="/mailto"
                             
                             rel="noopener"
                             title="メール"
@@ -312,7 +312,7 @@
                     
                         <a
                             class="sidebar-button-link "
-                            href="morichnarich.github.io/atom.xml"
+                            href="/atom.xml"
                             
                             rel="noopener"
                             title="RSS"
@@ -365,7 +365,7 @@
         <i class="far fa-folder-open"></i>
         <span>カテゴリー </span>
         
-    <a class="category-link" href="morichnarich.github.io/categories/Program/">Program</a>
+    <a class="category-link" href="/categories/Program/">Program</a>
 
 
     
@@ -426,7 +426,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">タグ</span><br/>
                 
-    <a class="tag tag--primary tag--small t-none-link" href="morichnarich.github.io/tags/Hexo/" rel="tag">Hexo</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Hexo/" rel="tag">Hexo</a>
 
             </div>
         
@@ -439,7 +439,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="morichnarich.github.io/2020/11/24/how-to-use-github/"
+                    href="/2020/11/24/how-to-use-github/"
                     data-tooltip="githubの使い方"
                     aria-label="前: githubの使い方"
                 >
@@ -453,7 +453,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="morichnarich.github.io/2020/11/23/markdown-basic/"
+                    href="/2020/11/23/markdown-basic/"
                     data-tooltip="Markdown記法"
                     aria-label="次: Markdown記法"
                 >
@@ -480,7 +480,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/morichnarich.github.io/2020/11/23/hexo-customize/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/11/23/hexo-customize/"
                     title="Facebookで共有"
                     aria-label="Facebookで共有"
                 >
@@ -493,7 +493,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/morichnarich.github.io/2020/11/23/hexo-customize/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/11/23/hexo-customize/"
                     title="Twitterで共有"
                     aria-label="Twitterで共有"
                 >
@@ -506,7 +506,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/morichnarich.github.io/2020/11/23/hexo-customize/"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/11/23/hexo-customize/"
                     title="Google+で共有"
                     aria-label="Google+で共有"
                 >
@@ -554,7 +554,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="morichnarich.github.io/2020/11/24/how-to-use-github/"
+                    href="/2020/11/24/how-to-use-github/"
                     data-tooltip="githubの使い方"
                     aria-label="前: githubの使い方"
                 >
@@ -568,7 +568,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="morichnarich.github.io/2020/11/23/markdown-basic/"
+                    href="/2020/11/23/markdown-basic/"
                     data-tooltip="Markdown記法"
                     aria-label="次: Markdown記法"
                 >
@@ -595,7 +595,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/morichnarich.github.io/2020/11/23/hexo-customize/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/11/23/hexo-customize/"
                     title="Facebookで共有"
                     aria-label="Facebookで共有"
                 >
@@ -608,7 +608,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/morichnarich.github.io/2020/11/23/hexo-customize/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/11/23/hexo-customize/"
                     title="Twitterで共有"
                     aria-label="Twitterで共有"
                 >
@@ -621,7 +621,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/morichnarich.github.io/2020/11/23/hexo-customize/"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/11/23/hexo-customize/"
                     title="Google+で共有"
                     aria-label="Google+で共有"
                 >
@@ -655,7 +655,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/morichnarich.github.io/2020/11/23/hexo-customize/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/11/23/hexo-customize/"
                         aria-label="Facebookで共有"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Facebookで共有</span>
@@ -668,7 +668,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/morichnarich.github.io/2020/11/23/hexo-customize/"
+                        href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/11/23/hexo-customize/"
                         aria-label="Twitterで共有"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Twitterで共有</span>
@@ -681,7 +681,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://plus.google.com/share?url=https://morichnarich.github.io/morichnarich.github.io/2020/11/23/hexo-customize/"
+                        href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/11/23/hexo-customize/"
                         aria-label="Google+で共有"
                     >
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>Google+で共有</span>
@@ -722,10 +722,10 @@
 
         
         
-<div id="cover" style="background-image:url('morichnarich.github.io/assets/images/cover.jpg');"></div>
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="morichnarich.github.io/assets/js/script-ixqwvefj8vfsqrsg5wx4vngxhhw8v1hzxnf8nzvk4ihpwzdrs4jr5wdtf9oq.min.js"></script>
+<script src="/assets/js/script-ixqwvefj8vfsqrsg5wx4vngxhhw8v1hzxnf8nzvk4ihpwzdrs4jr5wdtf9oq.min.js"></script>
 
 <!--SCRIPTS END-->
 
@@ -736,7 +736,7 @@
 
 
         
-<script src="morichnarich.github.io/my_script.js"></script>
+<script src="/my_script.js"></script>
 
     </body>
 </html>
