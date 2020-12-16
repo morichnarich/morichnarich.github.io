@@ -13,7 +13,7 @@
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\n\n\n見出し1見出し2見出し3見出し4見出し5見出し6Google先生\n▶  詳細\n\n\n背景強調はこんな感じです。\n&#123;userid&#125;.github.io\n\n\n\n\nリスト1\nネスト リスト1_1\nネスト リスト1_1_1\nネスト リスト1_1_2\n\n\nネスト リスト1_2\n\n\nリスト2\nリスト3\n\n\n番号付きリスト1\n番号付きリスト1_1\n番号付きリスト1_2\n番号付きリスト2\n番号付きリスト3\n\n\nお世話になります。xxxです。\n\nあの新機能バグってるっすね\n\n\nTab｀｀｀pythonclass Hoge  def hoge    print ‘hoge’  endend｀｀｀\nnormal italic normalnormal italic normal\nnormal bold normalnormal bold normal\nnormal bold normalnormal bold normal\n\n\n\n\n取り消し線\nはじめにTL;DR\na\nb\nc目的・やったこと\n\n環境・条件1\n詳細1\nまとめその他・メモ参考文献\na\n\n","dateCreated":"2020-12-15T22:26:45+09:00","dateModified":"2020-12-16T07:23:54+09:00","datePublished":"2020-12-15T22:26:45+09:00","description":"welcome to my blog","headline":"Cloud Functions for FirebaseとGmailを使って、各デバイスで作成した圧縮画像を別のデバイスでも気軽に利用できるwebサービスを作る","image":["compressor1.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2020/12/15/compressor-img-by-firebase/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2020/12/15/compressor-img-by-firebase/","keywords":"firebase, Gmail, Node.js","thumbnailUrl":"compressor1.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\n\n\n    \n        \n            コードタイトル\n        \n        \n            CODE TYPE\n            COPY CODE\n        \n    \n    1234567cd &#123;userid&#125;.github.iogit add index.htmlgit commit -m &quot;first commit&quot;echo &quot;Hello World&quot; &gt; index.htmlgit add index.htmlgit commit -m &quot;second commit&quot;git push origin master\n    \n","dateCreated":"2020-12-15T22:26:45+09:00","dateModified":"2020-12-16T17:13:36+09:00","datePublished":"2020-12-15T22:26:45+09:00","description":"welcome to my blog","headline":"Cloud Functions for FirebaseとGmailを使って、各デバイスで作成した圧縮画像を別のデバイスでも気軽に利用できるwebサービスを作る","image":["compressor1.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2020/12/15/compressor-img-by-firebase/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2020/12/15/compressor-img-by-firebase/","keywords":"firebase, Gmail, Node.js","thumbnailUrl":"compressor1.png"}</script>
     <meta name="description" content="welcome to my blog">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Cloud Functions for FirebaseとGmailを使って、各デバイスで作成した圧縮画像を別のデバイスでも気軽に利用できるwebサービスを作る">
@@ -23,7 +23,7 @@
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://morichnarich.github.io/images/compressor1.png">
 <meta property="article:published_time" content="2020-12-15T13:26:45.000Z">
-<meta property="article:modified_time" content="2020-12-15T22:23:54.833Z">
+<meta property="article:modified_time" content="2020-12-16T08:13:36.279Z">
 <meta property="article:author" content="Narichika Morinaga">
 <meta property="article:tag" content="firebase">
 <meta property="article:tag" content="Gmail">
@@ -53,6 +53,9 @@
     
         
     
+    <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.3.2/styles/androidstudio.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/highlight.min.js"></script>
 </head>
 
     
@@ -355,7 +358,7 @@
 
     
     <i class="fas fa-redo-alt"></i>
-        <time datetime="2020-12-16T07:23:54+09:00">
+        <time datetime="2020-12-16T17:13:36+09:00">
         
         2020/12/16
         
@@ -382,63 +385,20 @@
             <!-- > これは引用です。 -->
 
 <p><img src="/images/compressor1.png" alt="firebase init" title="firebase init"></p>
-<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%971"><span class="toc-text">見出し1</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%972"><span class="toc-text">見出し2</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%973"><span class="toc-text">見出し3</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%974"><span class="toc-text">見出し4</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%975"><span class="toc-text">見出し5</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%976"><span class="toc-text">見出し6</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Tab"><span class="toc-text">Tab</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB"><span class="toc-text">はじめに</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TL-DR"><span class="toc-text">TL;DR</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E7%9A%84%E3%83%BB%E3%82%84%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8"><span class="toc-text">目的・やったこと</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%92%B0%E5%A2%83%E3%83%BB%E6%9D%A1%E4%BB%B6"><span class="toc-text">環境・条件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A9%B3%E7%B4%B0"><span class="toc-text">詳細</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%81%BE%E3%81%A8%E3%82%81"><span class="toc-text">まとめ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%83%BB%E3%83%A1%E3%83%A2"><span class="toc-text">その他・メモ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-text">参考文献</span></a></li></ol></li></ol>
-
-<h1 id="見出し1"><a href="#見出し1" class="headerlink" title="見出し1"></a>見出し1</h1><h2 id="見出し2"><a href="#見出し2" class="headerlink" title="見出し2"></a>見出し2</h2><h3 id="見出し3"><a href="#見出し3" class="headerlink" title="見出し3"></a>見出し3</h3><h4 id="見出し4"><a href="#見出し4" class="headerlink" title="見出し4"></a>見出し4</h4><h5 id="見出し5"><a href="#見出し5" class="headerlink" title="見出し5"></a>見出し5</h5><h6 id="見出し6"><a href="#見出し6" class="headerlink" title="見出し6"></a>見出し6</h6><p><a target="_blank" rel="noopener" href="https://www.google.co.jp/">Google先生</a></p>
-<p class="postToggle">▶  詳細</p>
-<div class="postToggled postToggledClose">
-
-<p>背景強調は<code>こんな感じ</code>です。</p>
-<p><font color=#FF3860><code>&#123;userid&#125;.github.io</code></font></p>
+<h1 id="table-of-contents">目次</h1>
+<div class="docs">
+    <div class="control">
+        <div>
+            <p>コードタイトル</p>
+        </div>
+        <div>
+            <span class="code-type">CODE TYPE</span>
+            <button class="copy-button">COPY CODE</button>
+        </div>
+    </div>
+    <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> &#123;userid&#125;.github.io</span><br><span class="line">git add index.html</span><br><span class="line">git commit -m <span class="string">&quot;first commit&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Hello World&quot;</span> &gt; index.html</span><br><span class="line">git add index.html</span><br><span class="line">git commit -m <span class="string">&quot;second commit&quot;</span></span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
+    </code></pre>
 </div>
-
-
-<ul>
-<li>リスト1<ul>
-<li>ネスト リスト1_1<ul>
-<li>ネスト リスト1_1_1</li>
-<li>ネスト リスト1_1_2</li>
-</ul>
-</li>
-<li>ネスト リスト1_2</li>
-</ul>
-</li>
-<li>リスト2</li>
-<li>リスト3</li>
-</ul>
-<ol>
-<li>番号付きリスト1</li>
-<li>番号付きリスト1_1</li>
-<li>番号付きリスト1_2</li>
-<li>番号付きリスト2</li>
-<li>番号付きリスト3</li>
-</ol>
-<blockquote>
-<p>お世話になります。xxxです。</p>
-<blockquote>
-<p>あの新機能バグってるっすね</p>
-</blockquote>
-</blockquote>
-<h1 id="Tab"><a href="#Tab" class="headerlink" title="Tab"></a>Tab</h1><p>｀｀｀python<br>class Hoge<br>  def hoge<br>    print ‘hoge’<br>  end<br>end<br>｀｀｀</p>
-<p>normal <em>italic</em> normal<br>normal <em>italic</em> normal</p>
-<p>normal <strong>bold</strong> normal<br>normal <strong>bold</strong> normal</p>
-<p>normal <strong><em>bold</em></strong> normal<br>normal <strong><em>bold</em></strong> normal</p>
-<hr>
-<hr>
-<hr>
-<hr>
-<p><del>取り消し線</del></p>
-<h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><h2 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL;DR"></a>TL;DR</h2><ul>
-<li>a</li>
-<li>b</li>
-<li>c<h2 id="目的・やったこと"><a href="#目的・やったこと" class="headerlink" title="目的・やったこと"></a>目的・やったこと</h2><!-- more -->
-<!-- toc -->
-<h2 id="環境・条件"><a href="#環境・条件" class="headerlink" title="環境・条件"></a>環境・条件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="詳細"><a href="#詳細" class="headerlink" title="詳細"></a>詳細</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="まとめ"><a href="#まとめ" class="headerlink" title="まとめ"></a>まとめ</h2><h2 id="その他・メモ"><a href="#その他・メモ" class="headerlink" title="その他・メモ"></a>その他・メモ</h2><h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2></li>
-<li>a</li>
-</ul>
-
             
 
 

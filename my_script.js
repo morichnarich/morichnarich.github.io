@@ -32,3 +32,58 @@ function postTog(e) {
         eTarget.classList.add('postToggledClose')
     }
 }
+
+/*
+ * 自動でコピーボタン追加
+*/
+let copyToClipboard = (element) => {
+    let ranges = [];
+    let selection = window.getSelection();
+    let range = document.createRange();
+    let result = false;
+    for(let i = 0; i < selection.rangeCount; i += 1) {
+        ranges[i] = selection.getRangeAt(i);
+    }
+    range.selectNodeContents(element);
+    selection.removeAllRanges();
+    selection.addRange(range);
+    result = document.execCommand("copy");
+    selection.removeAllRanges();
+    for(let i = 0; i < ranges.length; i += 1) {
+        selection.addRange(ranges[i]);
+    }
+    return result;
+};
+/* ボタン位置が異なるため､少し手直し! bodyからイベントを拾うように変更*/
+let body = document.querySelector("body");
+let active = [];
+body.addEventListener("click",(e) => {
+    try{
+        const target = e.target;
+        if(!target.classList.contains('copy-button'))return;
+        
+        const pre = target.closest("pre");
+        let result = false;
+        if(active.indexOf(target) !== -1) return;
+        if(pre){
+            result = copyToClipboard(pre);
+            target.innerText = (result ? "COPIED!" : "FAILED!");
+            target.classList.add((result ? "success" : "failed"));
+            active.push(target);
+            setTimeout(() => {
+                let index =  active.indexOf(target);
+                target.className = "copy-button";
+                target.innerText = "COPY CODE";
+                if(index !== -1)active.splice(index, 1);
+            },2000);
+        }
+    } catch (e) {
+        //error 
+    }
+});
+/* highlightを拡張しコードブロックに自動的にボタンを追加する */
+hljs.addPlugin({
+    'after:highlightBlock': ({ block, result }) => {
+      result.value = `<button class="copy-button">COPY CODE</button>${result.value}`;
+    }
+});
