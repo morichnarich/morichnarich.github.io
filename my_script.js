@@ -88,15 +88,15 @@ function codeCopy(e) {
 //       result.value = `<button class="copy-button">COPY CODE</button>${result.value}`;
 //     }
 // });
-document.addEventListener('DOMContentLoaded', () => {
-    // code要素にファイル名などを付与する
-    let codeTitles = document.getElementsByClassName("codeTitle")
-    codeTitles = Array.from(codeTitles)
-    let highlights = document.getElementsByClassName("highlight")
-    highlights = Array.from(highlights)
+// document.addEventListener('DOMContentLoaded', () => {
+//     // code要素にファイル名などを付与する
+//     let codeTitles = document.getElementsByClassName("codeTitle")
+//     codeTitles = Array.from(codeTitles)
+//     let highlights = document.getElementsByClassName("highlight")
+//     highlights = Array.from(highlights)
 
-    for(let i=0; i<highlights.length; i++) {
-        var codeName =highlights[i].className.replace('highlight ', '')
-        codeTitles[i].textContent = codeName
-    }
-  })
+//     for(let i=0; i<highlights.length; i++) {
+//         var codeName =highlights[i].className.replace('highlight ', '')
+//         codeTitles[i].textContent = codeName
+//     }
+//   })
