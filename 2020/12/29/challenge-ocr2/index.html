@@ -1,0 +1,823 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Nariのブログ">
+    <title>OCRに挑戦してみる2 - Nariのブログ - 明日の自分に残すメモ - </title>
+    <meta name="author" content="Narichika Morinaga">
+    
+        <meta name="keywords" content="hexo,javascript,">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\n\n世の中便利になればなるほど忙しくなるので、毎日の生活の中から少しでも時短になることばかり考えているNariです。いよいよ！満を持してOCRに手を出してみます！どうなることやら・・・\n\nちょっと調べてみる調べたところ、\n\n完璧なOCRは今のところない。\n英数字のみのテキストのPDF：PyPDF2\n日本語を含むテキストのPDF：pdfminer.six、Apache Tika\n画像データのPDF、帳票PDF：Tesseract\n\nみたいですね！\niPhoneを使ってOCRでアプリが作れないかと考えてますので、Tesseractに挑戦してみたいと思います。\nTesseract の導入方法Tesseract は、Python のモジュールではありません。そのため、通常の「pip コマンド」ではなく、以下の手段を使ってインストールしなければなりません。\nPyOCR のインストール「PyOCR」は、Python から OCR エンジンを利用可能にするためのモジュールです。\n※PyOCR をインストールすると、画像処理ライブラリの「Pillow」もインストールされます。\nTesseract を利用する際の注意点Tesseractを Python から利用するためには、環境変数の PATH へ登録しておかなければなりません。以下の方法を用いて、Tesseract の登録を行いましょう。\nTesseract のオプションを設定する元の画像のままOCRを実行\n\n\n    \n      \n          python\n      \n      \n          \n      \n    \n  1234567891011121314151617181920212223# ocr_card.pyimport osfrom PIL import Imageimport pyocrimport pyocr.builders// 1.インストール済みのTesseractのパスを通すpath_tesseract = &quot;C:\\\\Program Files (x86)\\\\Tesseract-OCR&quot;if path_tesseract not in os.environ[&quot;PATH&quot;].split(os.pathsep):    os.environ[&quot;PATH&quot;] += os.pathsep + path_tesseract// 2.OCRエンジンの取得tools = pyocr.get_available_tools()tool = tools[0]// 3.原稿画像の読み込みimg_org = Image.open(&quot;./card_image/zairyucard_omote.jpg&quot;)// 4.ＯＣＲ実行builder = pyocr.builders.TextBuilder()result = tool.image_to_string(img_org, lang=&quot;jpn&quot;, builder=builder)print(result)\n\n\nTesseract + PyOCR プログラミングの基本的な手順（処理の流れ）上記のコードは以下の４つの手順で処理しています。これが Tesseract + PyOCR でプログラミングする時の基本的な流れです。以降のコードもこの手順で処理します。\n\nTesseract を OS 環境変数の PATH へ登録（Tesseractのパスを通す（または、通しておく））\nPyOCR で OCR の準備（OCRエンジン（Tesseract）をPyOCRで取得）\nPillow を使って画像を読み込む（原稿の画像をPIL.Imageで読み込む）\n読み取った結果を print する（Builderを指定してＯＣＲ実行）\n\n\n\n\n\nOCRを実行するには、Tesseractのインストール先のパスが通っている必要があります。Windowsの「環境変数」でPATHに登録しても構いませんが、ここではos.environを用いてコードで一時的にパスを通します。\npyocr.get_available_tools()で使用可能なOCRエンジンを取得できます。今回はTesseractしかインストールしていない状態なので、tools[0]で取得できます。\n画像の読み込みには、PyOCRと一緒にインストールされたPillowを用います。from PIL import ImageでインポートしたImageからopen()関数を呼び出します。\nOCRで文字認識を行うにはimage_to_string()関数を呼び出します。この関数には、画像、言語の他に、builderとして文字認識用のTextBuilder()を指定します。\n\n認識結果元の画像を加工してOCRを実行\n    \n      \n          python\n      \n      \n          \n      \n    \n  123456789101112131415161718192021222324252627282930313233// ocr_card_filter.pyimport osfrom PIL import Imageimport pyocrimport pyocr.builders// インストール済みのTesseractのパスを通すpath_tesseract = &quot;C:\\\\Program Files (x86)\\\\Tesseract-OCR&quot;if path_tesseract not in os.environ[&quot;PATH&quot;].split(os.pathsep):    os.environ[&quot;PATH&quot;] += path_tesseract// OCRエンジンの取得tools = pyocr.get_available_tools()tool = tools[0]// 原稿画像の読み込みimg_org = Image.open(&quot;./card_image/zairyucard_omote.jpg&quot;)img_rgb = img_org.convert(&quot;RGB&quot;)pixels = img_rgb.load()// 原稿画像加工（黒っぽい色以外は白=255,255,255にする）c_max = 169for j in range(img_rgb.size[1]):    for i in range(img_rgb.size[0]):        if (pixels[i, j][0] &gt; c_max or pixels[i, j][1] &gt; c_max or                pixels[i, j][0] &gt; c_max):            pixels[i, j] = (255, 255, 255)// ＯＣＲ実行builder = pyocr.builders.TextBuilder()result = tool.image_to_string(img_rgb, lang=&quot;jpn&quot;, builder=builder)print(result)\n\n\n認識結果Google先生\n▶  詳細\n\n\n背景強調はこんな感じです。\n&#123;userid&#125;.github.io\n\n\n\n見出し1見出し2見出し3見出し4見出し5見出し6Google先生\n▶  詳細\n\n\n背景強調はこんな感じです。\n&#123;userid&#125;.github.io\n\n\n\n\nリスト1\nネスト リスト1_1\nネスト リスト1_1_1\nネスト リスト1_1_2\n\n\nネスト リスト1_2\n\n\nリスト2\nリスト3\n\n\n番号付きリスト1\n番号付きリスト1_1\n番号付きリスト1_2\n番号付きリスト2\n番号付きリスト3\n\n\nお世話になります。xxxです。\n\nあの新機能バグってるっすね\n\n\nTab｀｀｀pythonclass Hoge  def hoge    print ‘hoge’  endend｀｀｀\nnormal italic normalnormal italic normal\nnormal bold normalnormal bold normal\nnormal bold normalnormal bold normal\n\n\n\n\n取り消し線\nはじめにTL;DR\na\nb\nc目的・やったこと\n\n環境・条件1\n詳細1\nまとめその他・メモ参考文献\na\n\n","dateCreated":"2020-12-29T21:06:56+09:00","dateModified":"2020-12-29T21:20:12+09:00","datePublished":"2020-12-29T21:06:56+09:00","description":"welcome to my blog","headline":"OCRに挑戦してみる2","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2020/12/29/challenge-ocr2/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2020/12/29/challenge-ocr2/","keywords":"OCR"}</script>
+    <meta name="description" content="welcome to my blog">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="OCRに挑戦してみる2">
+<meta property="og:url" content="https://morichnarich.github.io/2020/12/29/challenge-ocr2/index.html">
+<meta property="og:site_name" content="Nariのブログ">
+<meta property="og:description" content="welcome to my blog">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://morichnarich.github.io/images/1F538412-7BF4-4A48-90C5-8D4CA1667FC7.jpeg">
+<meta property="og:image" content="https://morichnarich.github.io/yyyy/mm/dd/%E8%A8%98%E4%BA%8B%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB/%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E5%90%8D">
+<meta property="article:published_time" content="2020-12-29T12:06:56.000Z">
+<meta property="article:modified_time" content="2020-12-29T12:20:12.431Z">
+<meta property="article:author" content="Narichika Morinaga">
+<meta property="article:tag" content="OCR">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://morichnarich.github.io/images/1F538412-7BF4-4A48-90C5-8D4CA1667FC7.jpeg">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-nwhmakibv65xhsdkq7pht98suw06ytb1by3pl3uicngjtr8jerdnj02uz5dw.min.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+    <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.3.2/styles/androidstudio.min.css">
+    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/highlight.min.js"></script> -->
+</head>
+
+    
+<link rel="stylesheet" href="/my_css.css">
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Nariのブログ
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="リンクを開く: /#about"
+            >
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-header">
+        <a href=https://morichnarich.github.io>
+            <h1 class="sidebar-title">
+                Nariのブログ
+            </h1>
+            <h2 class="sidebar-subtitle">
+                - 明日の自分に残すメモ -
+            </h2>
+        </a>
+    </div>
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="ホーム"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">ホーム</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="カテゴリー"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">カテゴリー</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="タグ"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">タグ</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="アーカイブ"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">アーカイブ</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="検索"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">検索</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="プロフィール"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">プロフィール</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="http://stackoverflow.com/users"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Stack Overflow"
+                        >
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://twitter.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://facebook.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://plus.google.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Google Plus"
+                        >
+                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Google Plus</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/profile/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/mailto"
+                            
+                            rel="noopener"
+                            title="メール"
+                        >
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">メール</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            OCRに挑戦してみる2
+        </h1>
+    
+    
+        <div class="post-meta">
+    <i class="fas fa-file-alt"></i>
+    <time datetime="2020-12-29T21:06:56+09:00">
+	
+		    2020/12/29
+    	
+    </time>
+
+    
+    <i class="fas fa-redo-alt"></i>
+        <time datetime="2020-12-29T21:20:12+09:00">
+        
+        2020/12/29
+        
+        </time>
+        <br>
+    
+    
+    
+        <i class="far fa-folder-open"></i>
+        <span>カテゴリー </span>
+        
+    <a class="category-link" href="/categories/programming/">programming</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <!-- > これは引用です。 -->
+<!-- > これは引用です。 -->
+<p><img src="/images/1F538412-7BF4-4A48-90C5-8D4CA1667FC7.jpeg" alt="OCRに挑戦してみる" title="OCRに挑戦してみる"></p>
+<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%81%A1%E3%82%87%E3%81%A3%E3%81%A8%E8%AA%BF%E3%81%B9%E3%81%A6%E3%81%BF%E3%82%8B"><span class="toc-text">ちょっと調べてみる</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tesseract-%E3%81%AE%E5%B0%8E%E5%85%A5%E6%96%B9%E6%B3%95"><span class="toc-text">Tesseract の導入方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PyOCR-%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="toc-text">PyOCR のインストール</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tesseract-%E3%82%92%E5%88%A9%E7%94%A8%E3%81%99%E3%82%8B%E9%9A%9B%E3%81%AE%E6%B3%A8%E6%84%8F%E7%82%B9"><span class="toc-text">Tesseract を利用する際の注意点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tesseract-%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B"><span class="toc-text">Tesseract のオプションを設定する</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%83%E3%81%AE%E7%94%BB%E5%83%8F%E3%81%AE%E3%81%BE%E3%81%BEOCR%E3%82%92%E5%AE%9F%E8%A1%8C"><span class="toc-text">元の画像のままOCRを実行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Tesseract-PyOCR-%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E3%81%AE%E5%9F%BA%E6%9C%AC%E7%9A%84%E3%81%AA%E6%89%8B%E9%A0%86%EF%BC%88%E5%87%A6%E7%90%86%E3%81%AE%E6%B5%81%E3%82%8C%EF%BC%89"><span class="toc-text">Tesseract + PyOCR プログラミングの基本的な手順（処理の流れ）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AA%8D%E8%AD%98%E7%B5%90%E6%9E%9C"><span class="toc-text">認識結果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%83%E3%81%AE%E7%94%BB%E5%83%8F%E3%82%92%E5%8A%A0%E5%B7%A5%E3%81%97%E3%81%A6OCR%E3%82%92%E5%AE%9F%E8%A1%8C"><span class="toc-text">元の画像を加工してOCRを実行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AA%8D%E8%AD%98%E7%B5%90%E6%9E%9C-1"><span class="toc-text">認識結果</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%971"><span class="toc-text">見出し1</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%972"><span class="toc-text">見出し2</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%973"><span class="toc-text">見出し3</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%974"><span class="toc-text">見出し4</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%975"><span class="toc-text">見出し5</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%976"><span class="toc-text">見出し6</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Tab"><span class="toc-text">Tab</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB"><span class="toc-text">はじめに</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TL-DR"><span class="toc-text">TL;DR</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E7%9A%84%E3%83%BB%E3%82%84%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8"><span class="toc-text">目的・やったこと</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%92%B0%E5%A2%83%E3%83%BB%E6%9D%A1%E4%BB%B6"><span class="toc-text">環境・条件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A9%B3%E7%B4%B0"><span class="toc-text">詳細</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%81%BE%E3%81%A8%E3%82%81"><span class="toc-text">まとめ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%83%BB%E3%83%A1%E3%83%A2"><span class="toc-text">その他・メモ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-text">参考文献</span></a></li></ol>
+<p>世の中便利になればなるほど忙しくなるので、毎日の生活の中から少しでも時短になることばかり考えているNariです。<br>いよいよ！満を持してOCRに手を出してみます！どうなることやら・・・</p>
+<!-- # 見出し1 -->
+<h2 id="ちょっと調べてみる"><a href="#ちょっと調べてみる" class="headerlink" title="ちょっと調べてみる"></a>ちょっと調べてみる</h2><p>調べたところ、</p>
+<ul>
+<li>完璧なOCRは今のところない。</li>
+<li>英数字のみのテキストのPDF：PyPDF2</li>
+<li>日本語を含むテキストのPDF：pdfminer.six、Apache Tika</li>
+<li>画像データのPDF、帳票PDF：Tesseract</li>
+</ul>
+<p>みたいですね！</p>
+<p>iPhoneを使ってOCRでアプリが作れないかと考えてますので、Tesseractに挑戦してみたいと思います。</p>
+<h2 id="Tesseract-の導入方法"><a href="#Tesseract-の導入方法" class="headerlink" title="Tesseract の導入方法"></a>Tesseract の導入方法</h2><p>Tesseract は、Python のモジュールではありません。<br>そのため、通常の「pip コマンド」ではなく、以下の手段を使ってインストールしなければなりません。</p>
+<h2 id="PyOCR-のインストール"><a href="#PyOCR-のインストール" class="headerlink" title="PyOCR のインストール"></a>PyOCR のインストール</h2><p>「PyOCR」は、Python から OCR エンジンを利用可能にするためのモジュールです。</p>
+<p>※PyOCR をインストールすると、画像処理ライブラリの「Pillow」もインストールされます。</p>
+<h2 id="Tesseract-を利用する際の注意点"><a href="#Tesseract-を利用する際の注意点" class="headerlink" title="Tesseract を利用する際の注意点"></a>Tesseract を利用する際の注意点</h2><p>Tesseractを Python から利用するためには、環境変数の PATH へ登録しておかなければなりません。<br>以下の方法を用いて、Tesseract の登録を行いましょう。</p>
+<h2 id="Tesseract-のオプションを設定する"><a href="#Tesseract-のオプションを設定する" class="headerlink" title="Tesseract のオプションを設定する"></a>Tesseract のオプションを設定する</h2><h2 id="元の画像のままOCRを実行"><a href="#元の画像のままOCRを実行" class="headerlink" title="元の画像のままOCRを実行"></a>元の画像のままOCRを実行</h2><br>
+
+<div class="docs">
+    <div class="control">
+      <div>
+          <span class='codeTitles'>python</span>
+      </div>
+      <div class="code-parent">
+          <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+      </div>
+    </div>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ocr_card.py</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> pyocr</span><br><span class="line"><span class="keyword">import</span> pyocr.builders</span><br><span class="line"></span><br><span class="line">// <span class="number">1.</span>インストール済みのTesseractのパスを通す</span><br><span class="line">path_tesseract = <span class="string">&quot;C:\\Program Files (x86)\\Tesseract-OCR&quot;</span></span><br><span class="line"><span class="keyword">if</span> path_tesseract <span class="keyword">not</span> <span class="keyword">in</span> os.environ[<span class="string">&quot;PATH&quot;</span>].split(os.pathsep):</span><br><span class="line">    os.environ[<span class="string">&quot;PATH&quot;</span>] += os.pathsep + path_tesseract</span><br><span class="line"></span><br><span class="line">// <span class="number">2.</span>OCRエンジンの取得</span><br><span class="line">tools = pyocr.get_available_tools()</span><br><span class="line">tool = tools[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">// <span class="number">3.</span>原稿画像の読み込み</span><br><span class="line">img_org = Image.<span class="built_in">open</span>(<span class="string">&quot;./card_image/zairyucard_omote.jpg&quot;</span>)</span><br><span class="line"></span><br><span class="line">// <span class="number">4.</span>ＯＣＲ実行</span><br><span class="line">builder = pyocr.builders.TextBuilder()</span><br><span class="line">result = tool.image_to_string(img_org, lang=<span class="string">&quot;jpn&quot;</span>, builder=builder)</span><br><span class="line"></span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+</div>
+
+<h3 id="Tesseract-PyOCR-プログラミングの基本的な手順（処理の流れ）"><a href="#Tesseract-PyOCR-プログラミングの基本的な手順（処理の流れ）" class="headerlink" title="Tesseract + PyOCR プログラミングの基本的な手順（処理の流れ）"></a>Tesseract + PyOCR プログラミングの基本的な手順（処理の流れ）</h3><p>上記のコードは以下の４つの手順で処理しています。これが Tesseract + PyOCR でプログラミングする時の基本的な流れです。以降のコードもこの手順で処理します。</p>
+<div class="alert success"><ul>
+<li>Tesseract を OS 環境変数の PATH へ登録（Tesseractのパスを通す（または、通しておく））</li>
+<li>PyOCR で OCR の準備（OCRエンジン（Tesseract）をPyOCRで取得）</li>
+<li>Pillow を使って画像を読み込む（原稿の画像をPIL.Imageで読み込む）</li>
+<li>読み取った結果を print する（Builderを指定してＯＣＲ実行）</li>
+</ul>
+</div>
+<br>
+
+<ol>
+<li>OCRを実行するには、Tesseractのインストール先のパスが通っている必要があります。Windowsの「環境変数」でPATHに登録しても構いませんが、ここではos.environを用いてコードで一時的にパスを通します。</li>
+<li>pyocr.get_available_tools()で使用可能なOCRエンジンを取得できます。今回はTesseractしかインストールしていない状態なので、tools[0]で取得できます。</li>
+<li>画像の読み込みには、PyOCRと一緒にインストールされたPillowを用います。from PIL import ImageでインポートしたImageからopen()関数を呼び出します。</li>
+<li>OCRで文字認識を行うにはimage_to_string()関数を呼び出します。この関数には、画像、言語の他に、builderとして文字認識用のTextBuilder()を指定します。</li>
+</ol>
+<h3 id="認識結果"><a href="#認識結果" class="headerlink" title="認識結果"></a>認識結果</h3><h2 id="元の画像を加工してOCRを実行"><a href="#元の画像を加工してOCRを実行" class="headerlink" title="元の画像を加工してOCRを実行"></a>元の画像を加工してOCRを実行</h2><div class="docs">
+    <div class="control">
+      <div>
+          <span class='codeTitles'>python</span>
+      </div>
+      <div class="code-parent">
+          <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+      </div>
+    </div>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">// ocr_card_filter.py</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> pyocr</span><br><span class="line"><span class="keyword">import</span> pyocr.builders</span><br><span class="line"></span><br><span class="line">// インストール済みのTesseractのパスを通す</span><br><span class="line">path_tesseract = <span class="string">&quot;C:\\Program Files (x86)\\Tesseract-OCR&quot;</span></span><br><span class="line"><span class="keyword">if</span> path_tesseract <span class="keyword">not</span> <span class="keyword">in</span> os.environ[<span class="string">&quot;PATH&quot;</span>].split(os.pathsep):</span><br><span class="line">    os.environ[<span class="string">&quot;PATH&quot;</span>] += path_tesseract</span><br><span class="line"></span><br><span class="line">// OCRエンジンの取得</span><br><span class="line">tools = pyocr.get_available_tools()</span><br><span class="line">tool = tools[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">// 原稿画像の読み込み</span><br><span class="line">img_org = Image.<span class="built_in">open</span>(<span class="string">&quot;./card_image/zairyucard_omote.jpg&quot;</span>)</span><br><span class="line">img_rgb = img_org.convert(<span class="string">&quot;RGB&quot;</span>)</span><br><span class="line">pixels = img_rgb.load()</span><br><span class="line"></span><br><span class="line">// 原稿画像加工（黒っぽい色以外は白=<span class="number">255</span>,<span class="number">255</span>,<span class="number">255</span>にする）</span><br><span class="line">c_max = <span class="number">169</span></span><br><span class="line"><span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(img_rgb.size[<span class="number">1</span>]):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(img_rgb.size[<span class="number">0</span>]):</span><br><span class="line">        <span class="keyword">if</span> (pixels[i, j][<span class="number">0</span>] &gt; c_max <span class="keyword">or</span> pixels[i, j][<span class="number">1</span>] &gt; c_max <span class="keyword">or</span></span><br><span class="line">                pixels[i, j][<span class="number">0</span>] &gt; c_max):</span><br><span class="line">            pixels[i, j] = (<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>)</span><br><span class="line"></span><br><span class="line">// ＯＣＲ実行</span><br><span class="line">builder = pyocr.builders.TextBuilder()</span><br><span class="line">result = tool.image_to_string(img_rgb, lang=<span class="string">&quot;jpn&quot;</span>, builder=builder)</span><br><span class="line"></span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+</div>
+
+<h3 id="認識結果-1"><a href="#認識結果-1" class="headerlink" title="認識結果"></a>認識結果</h3><p><a target="_blank" rel="noopener" href="https://www.google.co.jp/">Google先生</a></p>
+<p class="postToggle">▶  詳細</p>
+<div class="postToggled postToggledClose">
+
+<p>背景強調は<code>こんな感じ</code>です。</p>
+<p><font color=#FF3860><code>&#123;userid&#125;.github.io</code></font></p>
+</div>
+<!-- toc -->
+
+<h1 id="見出し1"><a href="#見出し1" class="headerlink" title="見出し1"></a>見出し1</h1><h2 id="見出し2"><a href="#見出し2" class="headerlink" title="見出し2"></a>見出し2</h2><h3 id="見出し3"><a href="#見出し3" class="headerlink" title="見出し3"></a>見出し3</h3><h4 id="見出し4"><a href="#見出し4" class="headerlink" title="見出し4"></a>見出し4</h4><h5 id="見出し5"><a href="#見出し5" class="headerlink" title="見出し5"></a>見出し5</h5><h6 id="見出し6"><a href="#見出し6" class="headerlink" title="見出し6"></a>見出し6</h6><p><a target="_blank" rel="noopener" href="https://www.google.co.jp/">Google先生</a><br><img src="/yyyy/mm/dd/%E8%A8%98%E4%BA%8B%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB/%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E5%90%8D" alt="キャプチャです" title="キャプチャです"></p>
+<p class="postToggle">▶  詳細</p>
+<div class="postToggled postToggledClose">
+
+<p>背景強調は<code>こんな感じ</code>です。</p>
+<p><font color=#FF3860><code>&#123;userid&#125;.github.io</code></font></p>
+</div>
+
+
+<ul>
+<li>リスト1<ul>
+<li>ネスト リスト1_1<ul>
+<li>ネスト リスト1_1_1</li>
+<li>ネスト リスト1_1_2</li>
+</ul>
+</li>
+<li>ネスト リスト1_2</li>
+</ul>
+</li>
+<li>リスト2</li>
+<li>リスト3</li>
+</ul>
+<ol>
+<li>番号付きリスト1</li>
+<li>番号付きリスト1_1</li>
+<li>番号付きリスト1_2</li>
+<li>番号付きリスト2</li>
+<li>番号付きリスト3</li>
+</ol>
+<blockquote>
+<p>お世話になります。xxxです。</p>
+<blockquote>
+<p>あの新機能バグってるっすね</p>
+</blockquote>
+</blockquote>
+<h1 id="Tab"><a href="#Tab" class="headerlink" title="Tab"></a>Tab</h1><p>｀｀｀python<br>class Hoge<br>  def hoge<br>    print ‘hoge’<br>  end<br>end<br>｀｀｀</p>
+<p>normal <em>italic</em> normal<br>normal <em>italic</em> normal</p>
+<p>normal <strong>bold</strong> normal<br>normal <strong>bold</strong> normal</p>
+<p>normal <strong><em>bold</em></strong> normal<br>normal <strong><em>bold</em></strong> normal</p>
+<hr>
+<hr>
+<hr>
+<hr>
+<p><del>取り消し線</del></p>
+<h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><h2 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL;DR"></a>TL;DR</h2><ul>
+<li>a</li>
+<li>b</li>
+<li>c<h2 id="目的・やったこと"><a href="#目的・やったこと" class="headerlink" title="目的・やったこと"></a>目的・やったこと</h2><!-- more -->
+<!-- toc -->
+<h2 id="環境・条件"><a href="#環境・条件" class="headerlink" title="環境・条件"></a>環境・条件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="詳細"><a href="#詳細" class="headerlink" title="詳細"></a>詳細</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="まとめ"><a href="#まとめ" class="headerlink" title="まとめ"></a>まとめ</h2><h2 id="その他・メモ"><a href="#その他・メモ" class="headerlink" title="その他・メモ"></a>その他・メモ</h2><h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2></li>
+<li>a</li>
+</ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">タグ</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/OCR/" rel="tag">OCR</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">前</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/12/28/challenge-ocr/"
+                    data-tooltip="OCRに挑戦してみる"
+                    aria-label="次: OCRに挑戦してみる"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">次</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/12/29/challenge-ocr2/"
+                    title="Facebookで共有"
+                    aria-label="Facebookで共有"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/12/29/challenge-ocr2/"
+                    title="Twitterで共有"
+                    aria-label="Twitterで共有"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/12/29/challenge-ocr2/"
+                    title="Google+で共有"
+                    aria-label="Google+で共有"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目次">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2020 Narichika Morinaga. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">前</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/12/28/challenge-ocr/"
+                    data-tooltip="OCRに挑戦してみる"
+                    aria-label="次: OCRに挑戦してみる"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">次</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/12/29/challenge-ocr2/"
+                    title="Facebookで共有"
+                    aria-label="Facebookで共有"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/12/29/challenge-ocr2/"
+                    title="Twitterで共有"
+                    aria-label="Twitterで共有"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/12/29/challenge-ocr2/"
+                    title="Google+で共有"
+                    aria-label="Google+で共有"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目次">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/12/29/challenge-ocr2/"
+                        aria-label="Facebookで共有"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Facebookで共有</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/12/29/challenge-ocr2/"
+                        aria-label="Twitterで共有"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Twitterで共有</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/12/29/challenge-ocr2/"
+                        aria-label="Google+で共有"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Google+で共有</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <h4 id="about-card-name">Narichika Morinaga</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-ixqwvefj8vfsqrsg5wx4vngxhhw8v1hzxnf8nzvk4ihpwzdrs4jr5wdtf9oq.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+        
+<script src="/my_script.js"></script>
+
+    </body>
+</html>

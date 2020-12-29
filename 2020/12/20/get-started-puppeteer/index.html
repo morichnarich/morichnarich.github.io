@@ -13,7 +13,7 @@
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\nこんにちは！自動化エンジニアのNariです。\n仕事がよりはかどることばかり考えております。\n個人の方でしたらブラウザはGoogle Chromeを使っているケースがほとんどではないかと思います。\nPuppeteerというライブラリはGoogleのChromeを開発しているチームで開発されていて、信頼性が高く、将来的にも期待できます。環境の準備が楽で実装も簡単であるため、好んで使用しています。\n今回は開発環境の準備からプログラムの実行までを行います。\n\n\n開発環境以下の環境を使用します。OSはMacでも問題ありません。Chromeはインストールしておいてください。node、npmについては導入方法を解説します。・OS：Windows10・ブラウザ：Chrome・node・npm\n開発準備Node.jsを使用するために、npmというパッケージ管理ツールをインストールする必要があります。\nプロジェクト作成今回開発で使用するフォルダを決めたらコンソールで以下のように「cd {フォルダパス}」コマンドを実行し、カレントディレクトリを変更してください。\n\n    \n      \n          bash\n      \n    \n  1cd C:\\\\puppeteer-test\n\n\n次に、Node.jsのプロジェクトを作成します。以下のコマンドを実行すると、カレントディレクトリに「package.json」というファイルが作成されます。「-y」のオプションがない場合はプロジェクト名や作者、説明などの質問がされます。考えるのが面倒な場合は「-y」をつけると質問をスキップしデフォルト値で作成されます。後からでも変更が可能であるため問題ありません。\n\n    \n      \n          bash\n      \n      \n          \n      \n    \n  123npm initまたはnpm init -y\n\n\nパッケージを追加\n    \n      \n          bash\n      \n      \n          \n      \n    \n  1npm install puppeteer-core\n\n\n先述した「Puppeteer」ではなく「puppeteer-core」を指定しましたが、PCにインストールしたChromeを使用するためこちらを使用します。「puppeteer」というものもありますが、こちらは「Chromium」というブラウザもダウンロードするためファイル容量が大きくなってしまいます。機能としてはほぼ変わらないため、今回はインストール済みのChromeを使用します。\nコード実装それでは、Chromeを操作するコードを実装します。まずはカレントディレクトリに「test.js」というjavascriptのファイルを作成し、任意のテキストエディタで開いてください。\nファイルを作成したら、以下のコードを実装してください。「executablePath」の値にPCにインストールされているChromeのパスを指定しているので、別のフォルダにインストールされている場合は変更してください。\n\n  \n    \n        test.js\n    \n  \n\n  1234567891011121314const puppeteer = require(&#x27;pupeteer-core&#x27;)(async () =&gt; &#123;  const browser = await puppeteer.launch(&#123;    executablePath: &#x27;C:\\\\Program Files\\ (x86)\\\\Google\\\\Chrome\\\\Application\\\\Chrome.exe&#x27;,    defaultViewport: null,    headless: false  &#125;)  const page = await browser.newPage()  await page.goto(&#x27;https://example.com&#x27;)  await page.screenShot(&#123;path: &#x27;example.com&#x27;&#125;)  await page.close()&#125;\n\n\n実行コードの実装ができたので、実行してみましょう。以下のコマンドでNode.jsのコードを実行します（.jsは省略可）。Chromeのウィンドウが起動し、ページが表示され、ウィンドウが閉じます。また、カレントディレクトリ（test.jsと同じフォルダ）にスクリーンショットの画像（example.png）が保存されます。\n\n    \n      \n          bash\n      \n      \n          \n      \n    \n  123node test.jsまたはnode test\n\n\n\nコード解説今回は公式のページに記載されているコードを使用しました。処理について解説します。\n１行目でインストールしたパッケージをプログラムで使えるようにするため、「require」で読み込んでいます。\n\n  \n    \n        test.js\n    \n  \n\n  1const puppeteer = require(&#x27;pupeteer-core&#x27;)\n\n\n２行目（11行目）で、「async」を指定し、中の処理を非同期で実行します。\n\n  \n    \n        test.js\n    \n  \n\n  123(async () =&gt; &#123;&#125;)()\n\n\n３行目の「puppeteer.launch」でブラウザを起動します。４～５行目でブラウザの起動設定のオプションを設定します。「executablePath」に起動するChromeのパスを指定します。「headless」に「false」を設定することで、ウィンドウが表示して実行されます。「true」を設定するとヘッドレスモードになり、ウィンドウが非表示で実行されます。実行時にウィンドウの確認が不要な場合は実装が完了したら「false」にするとよいでしょう。他のオプションもありますが、ここでは省略します。\n\n  \n    \n        test.js\n    \n  \n\n  1234  const browser = await puppeteer.launch(&#123;  executablePath: &#x27;C:\\\\Program Files\\ (x86)\\\\Google\\\\Chrome\\\\Application\\\\Chrome.exe&#x27;,  headless: false&#125;)\n\n\n７行目で、起動したブラウザに対し「newPage」を実行し、新規タブのページを作成します。変数に格納し、以降はこのページに対して操作を行います。ここで、「await」というものが処理の前についていますが、非同期で実行されているため処理が終わるまで待機しています。基本的に処理の前に「await」をつけておきます。\n\n  \n    \n        test.js\n    \n  \n\n  1const page = await browser.newPage()\n\n\n８行目で、ページに対し「goto」を実行し、指定したURLにアクセスします。\n\n  \n    \n        test.js\n    \n  \n\n  1await page.goto(&#x27;https://example.com&#x27;)\n\n\n９行目で、ページ対し「screenshot」を実行し、指定したパスにスクリーンショットを画像で保存しています。\n\n  \n    \n        test.js\n    \n  \n\n  1await page.screenshot(&#123;path: &#x27;example.png&#x27;&#125;)\n\n\n１０行目でブラウザに対し「close」を実行することで、ブラウザのウィンドウをクローズします。\n\n  \n    \n        test.js\n    \n  \n\n  1await browser.close()\n\n\nここまででPuppeteerの開発準備が整いましたので、次回は要素の操作について実装方法を紹介します。\n","dateCreated":"2020-12-20T13:09:35+09:00","dateModified":"2020-12-20T17:07:13+09:00","datePublished":"2020-12-20T13:09:35+09:00","description":"welcome to my blog","headline":"get-started-pupeteer","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2020/12/20/get-started-puppeteer/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2020/12/20/get-started-puppeteer/","keywords":"タグ名"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\nこんにちは！自動化エンジニアのNariです。\n仕事がよりはかどることばかり考えております。\n個人の方でしたらブラウザはGoogle Chromeを使っているケースがほとんどではないかと思います。\nPuppeteerというライブラリはGoogleのChromeを開発しているチームで開発されていて、信頼性が高く、将来的にも期待できます。環境の準備が楽で実装も簡単であるため、好んで使用しています。\n今回は開発環境の準備からプログラムの実行までを行います。\n\n\n開発環境以下の環境を使用します。OSはMacでも問題ありません。Chromeはインストールしておいてください。node、npmについては導入方法を解説します。・OS：Windows10・ブラウザ：Chrome・node・npm\n開発準備Node.jsを使用するために、npmというパッケージ管理ツールをインストールする必要があります。\nプロジェクト作成今回開発で使用するフォルダを決めたらコンソールで以下のように「cd {フォルダパス}」コマンドを実行し、カレントディレクトリを変更してください。\n\n    \n      \n          bash\n      \n    \n  1cd C:\\\\puppeteer-test\n\n\n次に、Node.jsのプロジェクトを作成します。以下のコマンドを実行すると、カレントディレクトリに「package.json」というファイルが作成されます。「-y」のオプションがない場合はプロジェクト名や作者、説明などの質問がされます。考えるのが面倒な場合は「-y」をつけると質問をスキップしデフォルト値で作成されます。後からでも変更が可能であるため問題ありません。\n\n    \n      \n          bash\n      \n      \n          \n      \n    \n  123npm initまたはnpm init -y\n\n\nパッケージを追加\n    \n      \n          bash\n      \n      \n          \n      \n    \n  1npm install puppeteer-core\n\n\n先述した「Puppeteer」ではなく「puppeteer-core」を指定しましたが、PCにインストールしたChromeを使用するためこちらを使用します。「puppeteer」というものもありますが、こちらは「Chromium」というブラウザもダウンロードするためファイル容量が大きくなってしまいます。機能としてはほぼ変わらないため、今回はインストール済みのChromeを使用します。\nコード実装それでは、Chromeを操作するコードを実装します。まずはカレントディレクトリに「test.js」というjavascriptのファイルを作成し、任意のテキストエディタで開いてください。\nファイルを作成したら、以下のコードを実装してください。「executablePath」の値にPCにインストールされているChromeのパスを指定しているので、別のフォルダにインストールされている場合は変更してください。\n\n  \n    \n        test.js\n    \n  \n\n  1234567891011121314const puppeteer = require(&#x27;pupeteer-core&#x27;)(async () =&gt; &#123;  const browser = await puppeteer.launch(&#123;    executablePath: &#x27;C:\\\\Program Files\\ (x86)\\\\Google\\\\Chrome\\\\Application\\\\Chrome.exe&#x27;,    defaultViewport: null,    headless: false  &#125;)  const page = await browser.newPage()  await page.goto(&#x27;https://example.com&#x27;)  await page.screenShot(&#123;path: &#x27;example.com&#x27;&#125;)  await page.close()&#125;\n\n\n実行コードの実装ができたので、実行してみましょう。以下のコマンドでNode.jsのコードを実行します（.jsは省略可）。Chromeのウィンドウが起動し、ページが表示され、ウィンドウが閉じます。また、カレントディレクトリ（test.jsと同じフォルダ）にスクリーンショットの画像（example.png）が保存されます。\n\n    \n      \n          bash\n      \n      \n          \n      \n    \n  123node test.jsまたはnode test\n\n\n\nコード解説今回は公式のページに記載されているコードを使用しました。処理について解説します。\n１行目でインストールしたパッケージをプログラムで使えるようにするため、「require」で読み込んでいます。\n\n  \n    \n        test.js\n    \n  \n\n  1const puppeteer = require(&#x27;pupeteer-core&#x27;)\n\n\n２行目（11行目）で、「async」を指定し、中の処理を非同期で実行します。\n\n  \n    \n        test.js\n    \n  \n\n  123(async () =&gt; &#123;&#125;)()\n\n\n３行目の「puppeteer.launch」でブラウザを起動します。４～５行目でブラウザの起動設定のオプションを設定します。「executablePath」に起動するChromeのパスを指定します。「headless」に「false」を設定することで、ウィンドウが表示して実行されます。「true」を設定するとヘッドレスモードになり、ウィンドウが非表示で実行されます。実行時にウィンドウの確認が不要な場合は実装が完了したら「false」にするとよいでしょう。他のオプションもありますが、ここでは省略します。\n\n  \n    \n        test.js\n    \n  \n\n  1234  const browser = await puppeteer.launch(&#123;  executablePath: &#x27;C:\\\\Program Files\\ (x86)\\\\Google\\\\Chrome\\\\Application\\\\Chrome.exe&#x27;,  headless: false&#125;)\n\n\n７行目で、起動したブラウザに対し「newPage」を実行し、新規タブのページを作成します。変数に格納し、以降はこのページに対して操作を行います。ここで、「await」というものが処理の前についていますが、非同期で実行されているため処理が終わるまで待機しています。基本的に処理の前に「await」をつけておきます。\n\n  \n    \n        test.js\n    \n  \n\n  1const page = await browser.newPage()\n\n\n８行目で、ページに対し「goto」を実行し、指定したURLにアクセスします。\n\n  \n    \n        test.js\n    \n  \n\n  1await page.goto(&#x27;https://example.com&#x27;)\n\n\n９行目で、ページ対し「screenshot」を実行し、指定したパスにスクリーンショットを画像で保存しています。\n\n  \n    \n        test.js\n    \n  \n\n  1await page.screenshot(&#123;path: &#x27;example.png&#x27;&#125;)\n\n\n１０行目でブラウザに対し「close」を実行することで、ブラウザのウィンドウをクローズします。\n\n  \n    \n        test.js\n    \n  \n\n  1await browser.close()\n\n\nここまででPuppeteerの開発準備が整いましたので、次回は要素の操作について実装方法を紹介します。\n","dateCreated":"2020-12-20T13:09:35+09:00","dateModified":"2020-12-28T21:55:56+09:00","datePublished":"2020-12-20T13:09:35+09:00","description":"welcome to my blog","headline":"get-started-pupeteer","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2020/12/20/get-started-puppeteer/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2020/12/20/get-started-puppeteer/","keywords":"タグ名"}</script>
     <meta name="description" content="welcome to my blog">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="get-started-pupeteer">
@@ -24,7 +24,7 @@
 <meta property="og:image" content="https://morichnarich.github.io/images/puppeteer.png">
 <meta property="og:image" content="https://morichnarich.github.io/images/example.png">
 <meta property="article:published_time" content="2020-12-20T04:09:35.000Z">
-<meta property="article:modified_time" content="2020-12-20T08:07:13.585Z">
+<meta property="article:modified_time" content="2020-12-28T12:55:56.451Z">
 <meta property="article:author" content="Narichika Morinaga">
 <meta property="article:tag" content="タグ名">
 <meta name="twitter:card" content="summary">
@@ -354,9 +354,9 @@
 
     
     <i class="fas fa-redo-alt"></i>
-        <time datetime="2020-12-20T17:07:13+09:00">
+        <time datetime="2020-12-28T21:55:56+09:00">
         
-        2020/12/20
+        2020/12/28
         
         </time>
         <br>
@@ -366,7 +366,7 @@
         <i class="far fa-folder-open"></i>
         <span>カテゴリー </span>
         
-    <a class="category-link" href="/categories/%E3%82%AB%E3%83%86%E3%82%B4%E3%83%AA%E5%90%8D/">カテゴリ名</a>
+    <a class="category-link" href="/categories/programming/">programming</a>
 
 
     
@@ -551,11 +551,14 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a
-                        class="post-action-btn btn btn--disabled"
-                        aria-hidden="true"
-                    >
-                        
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/12/28/challenge-ocr/"
+                    data-tooltip="OCRに挑戦してみる"
+                    aria-label="前: OCRに挑戦してみる"
+                >
+                    
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">前</span>
                     </a>
@@ -663,11 +666,14 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a
-                        class="post-action-btn btn btn--disabled"
-                        aria-hidden="true"
-                    >
-                        
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/12/28/challenge-ocr/"
+                    data-tooltip="OCRに挑戦してみる"
+                    aria-label="前: OCRに挑戦してみる"
+                >
+                    
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">前</span>
                     </a>

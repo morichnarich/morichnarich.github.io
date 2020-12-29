@@ -6,36 +6,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Nariのブログ">
-    <title>hexoテーマのカスタマイズ - Nariのブログ - 明日の自分に残すメモ - </title>
+    <title>OCRに挑戦してみる - Nariのブログ - 明日の自分に残すメモ - </title>
     <meta name="author" content="Narichika Morinaga">
     
         <meta name="keywords" content="hexo,javascript,">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\n\n\n\nHexoテーマのカスタマイズHexoのテーマをカスタマイズしようとして得た知識を記録に残しておきます。\nオリジナルのcssファイルやjsファイルを追加▶  詳細\n\n\nオリジナルのカスタムcssやjsファイルを追加するには、まずsourceディレクトリにカスタムcssやjsを入れておく。themes/tranquilpeakのlayoutディレクトリ直下にlayout.ejsがあるので、コードに\n123&lt;%- css(&#39;○○○○.css&#39;) %&gt;  #&lt;&#x2F;head&gt;の直前に&lt;%- js(&#39;○○○○.js&#39;) %&gt;    #&lt;&#x2F;body&gt;の直前に\n\nを追加する。layout.ejs は、サイト全体で共通化させたい要素を入れる template ファイル。\nこうすることで…\n各ページが読み込まれる時に、layout.ejs が読み込まれる。&lt;%- body %&gt;が各テンプレートに置き換わる。 トップページなら index.ejs の中身が&lt;%- body %&gt;に入る。といった処理が hexo 内で行われ、サイト全体で要素の共通化できます。\n\n\nejsファイルを編集した後にするコマンド▶  詳細\n\n\nejsファイル等を変更後は themes/tranquilpeak で npm run prod\n面倒くさいので…\n1cd themes/tranquilpeak &amp;&amp; npm run prod &amp;&amp; cd ../ &amp;&amp; cd ../\n\nワンライナーで戻れるようにしています。\n\n\n画像を使い回す方法▶  詳細\n\n\nまず、sourceフォルダの直下にimagesフォルダを作成します。そして、その中に画像を入れます。\n記事には![](/images/hoge.jpeg)とするだけです。\nこれで、画像を一つのフォルダにまとめられ、他の記事からも参照できます。\n\n","dateCreated":"2020-11-23T18:52:16+09:00","dateModified":"2020-12-28T21:56:57+09:00","datePublished":"2020-11-23T18:52:16+09:00","description":"welcome to my blog","headline":"hexoテーマのカスタマイズ","image":["img_main19.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2020/11/23/hexo-customize/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2020/11/23/hexo-customize/","keywords":"Hexo","thumbnailUrl":"img_main19.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\n世の中便利になればなるほど忙しくなるので、毎日の生活の中から少しでも時短になることばかり考えているNariです。いよいよ！満を持してOCRに手を出してみます！どうなることやら・・・\n\nちょっと調べてみる調べたところ、\n\n完璧なOCRは今のところない。\n英数字のみのテキストのPDF：PyPDF2\n日本語を含むテキストのPDF：pdfminer.six、Apache Tika\n画像データのPDF、帳票PDF：Tesseract\n\nみたいですね！\niPhoneを使ってOCRでアプリが作れないかと考えてますので、Tesseractに挑戦してみたいと思います。\nTesseract の導入方法Tesseract は、Python のモジュールではありません。\n\nLinuxやMacの場合：レポジトリからインストール\nWindowsの場合：インストーラ\n\n\n\n\nそのため、通常の「pip コマンド」ではなく、以下の手段を使ってインストールしなければなりません。\nマンハイム大学図書館（UBマンハイム）がwindows版を構築していますのでそのインストーラを利用します。\n今回は64ビット版を利用してみます。\n\ntesseract-ocr-w64-setup-v5.0.0-alpha.20201127.exe (64 bit) resp.\n\n\nTesseractのインストールダウンロードしたインストーラー（ここでは、tesseract-ocr-w64-setup-v5.0.0-alpha.20191010.exe）を実行し、インストーラーが起動するので、デフォルトのままクリックして進めます。\n\n追加スクリプトデータの選択「Choose Components」画面が表示されたところで、Additional script data(download)を展開します。\n\n展開した項目から以下、Japanese scriptとapanese vertical script「Japanese vertical script」にチェックを入れます。\n\n追加言語データの選択次に、Additional language data(download)を展開します。\nそして、JapaneseとJapanese(Vertical)にチェックを入れます。\n\nインストール完了この４箇所を追加で選択することで、日本語の読み込みが可能になります。\n選択が終わったら、インストーラを最後まで完了させましょう。\nこれで、Tesseract のインストールは完了です。\nPyOCR のインストール「PyOCR」は、Python から OCR エンジンを利用可能にするためのモジュールです。\n※PyOCR をインストールすると、画像処理ライブラリの「Pillow」もインストールされます。\nTesseract を利用する際の注意点Tesseractを Python から利用するためには、環境変数の PATH へ登録しておかなければなりません。以下の方法を用いて、Tesseract の登録を行いましょう。\nTesseract のオプションを設定する認識結果Google先生\n▶  詳細\n\n\n背景強調はこんな感じです。\n&#123;userid&#125;.github.io\n\n\n\n\nリスト1\nネスト リスト1_1\nネスト リスト1_1_1\nネスト リスト1_1_2\n\n\nネスト リスト1_2\n\n\nリスト2\nリスト3\n\n\n番号付きリスト1\n番号付きリスト1_1\n番号付きリスト1_2\n番号付きリスト2\n番号付きリスト3\n\n\nお世話になります。xxxです。\n\nあの新機能バグってるっすね\n\n\nTab｀｀｀pythonclass Hoge  def hoge    print ‘hoge’  endend｀｀｀\nnormal italic normalnormal italic normal\nnormal bold normalnormal bold normal\nnormal bold normalnormal bold normal\n\n\n\n\n取り消し線\nはじめにTL;DR\na\nb\nc目的・やったこと\n\n環境・条件1\n詳細1\nまとめその他・メモ参考文献\na\n\n","dateCreated":"2020-12-28T21:37:37+09:00","dateModified":"2020-12-29T23:06:51+09:00","datePublished":"2020-12-28T21:37:37+09:00","description":"welcome to my blog","headline":"OCRに挑戦してみる","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2020/12/28/challenge-ocr/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2020/12/28/challenge-ocr/","keywords":"OCR"}</script>
     <meta name="description" content="welcome to my blog">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="hexoテーマのカスタマイズ">
-<meta property="og:url" content="https://morichnarich.github.io/2020/11/23/hexo-customize/index.html">
+<meta property="og:title" content="OCRに挑戦してみる">
+<meta property="og:url" content="https://morichnarich.github.io/2020/12/28/challenge-ocr/index.html">
 <meta property="og:site_name" content="Nariのブログ">
 <meta property="og:description" content="welcome to my blog">
 <meta property="og:locale" content="ja_JP">
-<meta property="og:image" content="https://morichnarich.github.io/images/img_main19.jpg">
-<meta property="article:published_time" content="2020-11-23T09:52:16.000Z">
-<meta property="article:modified_time" content="2020-12-28T12:56:57.188Z">
+<meta property="og:image" content="https://morichnarich.github.io/images/1F538412-7BF4-4A48-90C5-8D4CA1667FC7.jpeg">
+<meta property="og:image" content="https://morichnarich.github.io/images/IMG_0028.jpg">
+<meta property="og:image" content="https://morichnarich.github.io/images/IMG-0029.JPG">
+<meta property="og:image" content="https://morichnarich.github.io/images/IMG-0030.JPG">
+<meta property="og:image" content="https://morichnarich.github.io/images/IMG-0033.JPG">
+<meta property="og:image" content="https://morichnarich.github.io/images/IMG-0034.JPG">
+<meta property="og:image" content="https://morichnarich.github.io/images/IMG-0035.JPG">
+<meta property="og:image" content="https://morichnarich.github.io/images/IMG-0036.JPG">
+<meta property="og:image" content="https://morichnarich.github.io/images/IMG-0037.JPG">
+<meta property="article:published_time" content="2020-12-28T12:37:37.000Z">
+<meta property="article:modified_time" content="2020-12-29T14:06:51.066Z">
 <meta property="article:author" content="Narichika Morinaga">
-<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="OCR">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://morichnarich.github.io/images/img_main19.jpg">
+<meta name="twitter:image" content="https://morichnarich.github.io/images/1F538412-7BF4-4A48-90C5-8D4CA1667FC7.jpeg">
     
     
         
     
     
-    
-        <meta property="og:image" content="https://morichnarich.github.io/2020/11/23/hexo-customize/img_main19.jpg"/>
-        <meta class="swiftype" name="image" data-type="enum" content="https://morichnarich.github.io/2020/11/23/hexo-customize/img_main19.jpg"/>
     
     
     
@@ -342,23 +347,23 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            hexoテーマのカスタマイズ
+            OCRに挑戦してみる
         </h1>
     
     
         <div class="post-meta">
     <i class="fas fa-file-alt"></i>
-    <time datetime="2020-11-23T18:52:16+09:00">
+    <time datetime="2020-12-28T21:37:37+09:00">
 	
-		    2020/11/23
+		    2020/12/28
     	
     </time>
 
     
     <i class="fas fa-redo-alt"></i>
-        <time datetime="2020-12-28T21:56:57+09:00">
+        <time datetime="2020-12-29T23:06:51+09:00">
         
-        2020/12/28
+        2020/12/29
         
         </time>
         <br>
@@ -380,41 +385,104 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p><img src="/images/img_main19.jpg" alt="カメラの画像"></p>
-<!-- > これは引用です。 -->
+            <!-- > これは引用です。 -->
+<p><img src="/images/1F538412-7BF4-4A48-90C5-8D4CA1667FC7.jpeg" alt="OCRに挑戦してみる" title="OCRに挑戦してみる"></p>
+<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%81%A1%E3%82%87%E3%81%A3%E3%81%A8%E8%AA%BF%E3%81%B9%E3%81%A6%E3%81%BF%E3%82%8B"><span class="toc-text">ちょっと調べてみる</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tesseract-%E3%81%AE%E5%B0%8E%E5%85%A5%E6%96%B9%E6%B3%95"><span class="toc-text">Tesseract の導入方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tesseract%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="toc-text">Tesseractのインストール</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%BD%E5%8A%A0%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%97%E3%83%88%E3%83%87%E3%83%BC%E3%82%BF%E3%81%AE%E9%81%B8%E6%8A%9E"><span class="toc-text">追加スクリプトデータの選択</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%BD%E5%8A%A0%E8%A8%80%E8%AA%9E%E3%83%87%E3%83%BC%E3%82%BF%E3%81%AE%E9%81%B8%E6%8A%9E"><span class="toc-text">追加言語データの選択</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E5%AE%8C%E4%BA%86"><span class="toc-text">インストール完了</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PyOCR-%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="toc-text">PyOCR のインストール</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tesseract-%E3%82%92%E5%88%A9%E7%94%A8%E3%81%99%E3%82%8B%E9%9A%9B%E3%81%AE%E6%B3%A8%E6%84%8F%E7%82%B9"><span class="toc-text">Tesseract を利用する際の注意点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tesseract-%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B"><span class="toc-text">Tesseract のオプションを設定する</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AA%8D%E8%AD%98%E7%B5%90%E6%9E%9C"><span class="toc-text">認識結果</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Tab"><span class="toc-text">Tab</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB"><span class="toc-text">はじめに</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TL-DR"><span class="toc-text">TL;DR</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E7%9A%84%E3%83%BB%E3%82%84%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8"><span class="toc-text">目的・やったこと</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%92%B0%E5%A2%83%E3%83%BB%E6%9D%A1%E4%BB%B6"><span class="toc-text">環境・条件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A9%B3%E7%B4%B0"><span class="toc-text">詳細</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%81%BE%E3%81%A8%E3%82%81"><span class="toc-text">まとめ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%83%BB%E3%83%A1%E3%83%A2"><span class="toc-text">その他・メモ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-text">参考文献</span></a></li></ol>
+<p>世の中便利になればなるほど忙しくなるので、毎日の生活の中から少しでも時短になることばかり考えているNariです。<br>いよいよ！満を持してOCRに手を出してみます！どうなることやら・・・</p>
+<!-- # 見出し1 -->
+<h2 id="ちょっと調べてみる"><a href="#ちょっと調べてみる" class="headerlink" title="ちょっと調べてみる"></a>ちょっと調べてみる</h2><p>調べたところ、</p>
+<ul>
+<li>完璧なOCRは今のところない。</li>
+<li>英数字のみのテキストのPDF：PyPDF2</li>
+<li>日本語を含むテキストのPDF：pdfminer.six、Apache Tika</li>
+<li>画像データのPDF、帳票PDF：Tesseract</li>
+</ul>
+<p>みたいですね！</p>
+<p>iPhoneを使ってOCRでアプリが作れないかと考えてますので、Tesseractに挑戦してみたいと思います。</p>
+<h2 id="Tesseract-の導入方法"><a href="#Tesseract-の導入方法" class="headerlink" title="Tesseract の導入方法"></a>Tesseract の導入方法</h2><p>Tesseract は、Python のモジュールではありません。</p>
+<div class="alert warning"><ul>
+<li>LinuxやMacの場合：レポジトリからインストール</li>
+<li>Windowsの場合：インストーラ</li>
+</ul>
+</div>
+<br>
 
-<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo%E3%83%86%E3%83%BC%E3%83%9E%E3%81%AE%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%9E%E3%82%A4%E3%82%BA"><span class="toc-text">Hexoテーマのカスタマイズ</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E3%81%AEcss%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%84js%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E8%BF%BD%E5%8A%A0"><span class="toc-text">オリジナルのcssファイルやjsファイルを追加</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ejs%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E7%B7%A8%E9%9B%86%E3%81%97%E3%81%9F%E5%BE%8C%E3%81%AB%E3%81%99%E3%82%8B%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89"><span class="toc-text">ejsファイルを編集した後にするコマンド</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%BB%E5%83%8F%E3%82%92%E4%BD%BF%E3%81%84%E5%9B%9E%E3%81%99%E6%96%B9%E6%B3%95"><span class="toc-text">画像を使い回す方法</span></a></li></ol></li></ol>
+<p>そのため、通常の「pip コマンド」ではなく、以下の手段を使ってインストールしなければなりません。</p>
+<p>マンハイム大学図書館（UBマンハイム）がwindows版を構築していますのでそのインストーラを利用します。</p>
+<p>今回は64ビット版を利用してみます。</p>
+<p><img src="/images/IMG_0028.jpg" alt="Tesseract at UB Mannheim" title="Tesseract at UB Mannheim"></p>
+<blockquote><p><a target="_blank" rel="noopener" href="https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w64-setup-v5.0.0-alpha.20201127.exe">tesseract-ocr-w64-setup-v5.0.0-alpha.20201127.exe (64 bit) resp.</a></p>
+</blockquote>
 
+<h2 id="Tesseractのインストール"><a href="#Tesseractのインストール" class="headerlink" title="Tesseractのインストール"></a>Tesseractのインストール</h2><p>ダウンロードしたインストーラー（ここでは、tesseract-ocr-w64-setup-v5.0.0-alpha.20191010.exe）を実行し、インストーラーが起動するので、デフォルトのままクリックして進めます。</p>
+<p><img src="/images/IMG-0029.JPG" alt="Tesseract at UB Mannheim" title="Tesseract at UB Mannheim"><br><img src="/images/IMG-0030.JPG" alt="Tesseract at UB Mannheim" title="Tesseract at UB Mannheim"><br><img src="/images/IMG-0033.JPG" alt="Tesseract at UB Mannheim" title="Tesseract at UB Mannheim"><br></p>
+<h4 id="追加スクリプトデータの選択"><a href="#追加スクリプトデータの選択" class="headerlink" title="追加スクリプトデータの選択"></a>追加スクリプトデータの選択</h4><p>「Choose Components」画面が表示されたところで、<font color=#FF3860><code>Additional script data(download)</code></font>を展開します。<br><br></p>
+<p><img src="/images/IMG-0034.JPG" alt="Tesseract at UB Mannheim" title="Tesseract at UB Mannheim"><br></p>
+<p>展開した項目から以下、<font color=#FF3860><code>Japanese script</code></font>と<font color=#FF3860><code>apanese vertical script</code></font>「Japanese vertical script」にチェックを入れます。<br><br></p>
+<p><img src="/images/IMG-0035.JPG" alt="Tesseract at UB Mannheim" title="Tesseract at UB Mannheim"><br></p>
+<h4 id="追加言語データの選択"><a href="#追加言語データの選択" class="headerlink" title="追加言語データの選択"></a>追加言語データの選択</h4><p>次に、<font color=#FF3860><code>Additional language data(download)</code></font>を展開します。<br><br></p>
+<p><img src="/images/IMG-0036.JPG" alt="Tesseract at UB Mannheim" title="Tesseract at UB Mannheim"><br><br>そして、<font color=#FF3860><code>Japanese</code></font>と<font color=#FF3860><code>Japanese(Vertical)</code></font>にチェックを入れます。<br><br></p>
+<p><img src="/images/IMG-0037.JPG" alt="Tesseract at UB Mannheim" title="Tesseract at UB Mannheim"><br></p>
+<h4 id="インストール完了"><a href="#インストール完了" class="headerlink" title="インストール完了"></a>インストール完了</h4><p>この４箇所を追加で選択することで、日本語の読み込みが可能になります。</p>
+<p>選択が終わったら、インストーラを最後まで完了させましょう。</p>
+<p>これで、Tesseract のインストールは完了です。</p>
+<h2 id="PyOCR-のインストール"><a href="#PyOCR-のインストール" class="headerlink" title="PyOCR のインストール"></a>PyOCR のインストール</h2><p>「PyOCR」は、Python から OCR エンジンを利用可能にするためのモジュールです。</p>
+<p>※PyOCR をインストールすると、画像処理ライブラリの「Pillow」もインストールされます。</p>
+<h2 id="Tesseract-を利用する際の注意点"><a href="#Tesseract-を利用する際の注意点" class="headerlink" title="Tesseract を利用する際の注意点"></a>Tesseract を利用する際の注意点</h2><p>Tesseractを Python から利用するためには、環境変数の PATH へ登録しておかなければなりません。<br>以下の方法を用いて、Tesseract の登録を行いましょう。</p>
+<h2 id="Tesseract-のオプションを設定する"><a href="#Tesseract-のオプションを設定する" class="headerlink" title="Tesseract のオプションを設定する"></a>Tesseract のオプションを設定する</h2><h3 id="認識結果"><a href="#認識結果" class="headerlink" title="認識結果"></a>認識結果</h3><p><a target="_blank" rel="noopener" href="https://www.google.co.jp/">Google先生</a></p>
+<p class="postToggle">▶  詳細</p>
+<div class="postToggled postToggledClose">
+
+<p>背景強調は<code>こんな感じ</code>です。</p>
+<p><font color=#FF3860><code>&#123;userid&#125;.github.io</code></font></p>
+</div>
+
+
+<ul>
+<li>リスト1<ul>
+<li>ネスト リスト1_1<ul>
+<li>ネスト リスト1_1_1</li>
+<li>ネスト リスト1_1_2</li>
+</ul>
+</li>
+<li>ネスト リスト1_2</li>
+</ul>
+</li>
+<li>リスト2</li>
+<li>リスト3</li>
+</ul>
+<ol>
+<li>番号付きリスト1</li>
+<li>番号付きリスト1_1</li>
+<li>番号付きリスト1_2</li>
+<li>番号付きリスト2</li>
+<li>番号付きリスト3</li>
+</ol>
+<blockquote>
+<p>お世話になります。xxxです。</p>
+<blockquote>
+<p>あの新機能バグってるっすね</p>
+</blockquote>
+</blockquote>
+<h1 id="Tab"><a href="#Tab" class="headerlink" title="Tab"></a>Tab</h1><p>｀｀｀python<br>class Hoge<br>  def hoge<br>    print ‘hoge’<br>  end<br>end<br>｀｀｀</p>
+<p>normal <em>italic</em> normal<br>normal <em>italic</em> normal</p>
+<p>normal <strong>bold</strong> normal<br>normal <strong>bold</strong> normal</p>
+<p>normal <strong><em>bold</em></strong> normal<br>normal <strong><em>bold</em></strong> normal</p>
 <hr>
-<h2 id="Hexoテーマのカスタマイズ"><a href="#Hexoテーマのカスタマイズ" class="headerlink" title="Hexoテーマのカスタマイズ"></a>Hexoテーマのカスタマイズ</h2><p>Hexoのテーマをカスタマイズしようとして得た知識を記録に残しておきます。</p>
-<h3 id="オリジナルのcssファイルやjsファイルを追加"><a href="#オリジナルのcssファイルやjsファイルを追加" class="headerlink" title="オリジナルのcssファイルやjsファイルを追加"></a>オリジナルのcssファイルやjsファイルを追加</h3><p class="postToggle">▶  詳細</p>
-<div class="postToggled postToggledClose">
-
-<p>オリジナルのカスタムcssやjsファイルを追加するには、まず<code>source</code>ディレクトリにカスタムcssやjsを入れておく。<br>themes/tranquilpeakの<strong>layout</strong>ディレクトリ直下に<strong>layout.ejs</strong>があるので、コードに</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;%- css(&#39;○○○○.css&#39;) %&gt;  #&lt;&#x2F;head&gt;の直前に</span><br><span class="line"></span><br><span class="line">&lt;%- js(&#39;○○○○.js&#39;) %&gt;    #&lt;&#x2F;body&gt;の直前に</span><br></pre></td></tr></table></figure>
-
-<p>を追加する。<br><code>layout.ejs</code> は、サイト全体で共通化させたい要素を入れる template ファイル。</p>
-<p>こうすることで…</p>
-<p>各ページが読み込まれる時に、<code>layout.ejs</code> が読み込まれる。<br>&lt;%- body %&gt;が各テンプレートに置き換わる。 トップページなら index.ejs の中身が&lt;%- body %&gt;に入る。<br>といった処理が hexo 内で行われ、サイト全体で要素の共通化できます。</p>
-</div>
-
-<h3 id="ejsファイルを編集した後にするコマンド"><a href="#ejsファイルを編集した後にするコマンド" class="headerlink" title="ejsファイルを編集した後にするコマンド"></a>ejsファイルを編集した後にするコマンド</h3><p class="postToggle">▶  詳細</p>
-<div class="postToggled postToggledClose">
-
-<p>ejsファイル等を変更後は <code>themes/tranquilpeak</code> で <code>npm run prod</code></p>
-<p>面倒くさいので…</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> themes/tranquilpeak &amp;&amp; npm run prod &amp;&amp; <span class="built_in">cd</span> ../ &amp;&amp; <span class="built_in">cd</span> ../</span><br></pre></td></tr></table></figure>
-
-<p>ワンライナーで戻れるようにしています。</p>
-</div>
-
-<h3 id="画像を使い回す方法"><a href="#画像を使い回す方法" class="headerlink" title="画像を使い回す方法"></a>画像を使い回す方法</h3><p class="postToggle">▶  詳細</p>
-<div class="postToggled postToggledClose">
-
-<p>まず、sourceフォルダの直下にimagesフォルダを作成します。そして、その中に画像を入れます。</p>
-<p>記事には<font color=#FF3860><code>![](/images/hoge.jpeg)</code></font>とするだけです。</p>
-<p>これで、画像を一つのフォルダにまとめられ、他の記事からも参照できます。</p>
-</div>
+<hr>
+<hr>
+<hr>
+<p><del>取り消し線</del></p>
+<h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><h2 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL;DR"></a>TL;DR</h2><ul>
+<li>a</li>
+<li>b</li>
+<li>c<h2 id="目的・やったこと"><a href="#目的・やったこと" class="headerlink" title="目的・やったこと"></a>目的・やったこと</h2><!-- more -->
+<!-- toc -->
+<h2 id="環境・条件"><a href="#環境・条件" class="headerlink" title="環境・条件"></a>環境・条件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="詳細"><a href="#詳細" class="headerlink" title="詳細"></a>詳細</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="まとめ"><a href="#まとめ" class="headerlink" title="まとめ"></a>まとめ</h2><h2 id="その他・メモ"><a href="#その他・メモ" class="headerlink" title="その他・メモ"></a>その他・メモ</h2><h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2></li>
+<li>a</li>
+</ul>
 
             
 
@@ -426,7 +494,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">タグ</span><br/>
                 
-    <a class="tag tag--primary tag--small t-none-link" href="/tags/Hexo/" rel="tag">Hexo</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/OCR/" rel="tag">OCR</a>
 
             </div>
         
@@ -439,9 +507,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/11/24/how-to-use-github/"
-                    data-tooltip="githubの使い方"
-                    aria-label="前: githubの使い方"
+                    href="/2020/12/29/challenge-ocr2/"
+                    data-tooltip="OCRに挑戦してみる2"
+                    aria-label="前: OCRに挑戦してみる2"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -453,9 +521,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/11/23/markdown-basic/"
-                    data-tooltip="Markdown記法"
-                    aria-label="次: Markdown記法"
+                    href="/2020/12/20/get-started-puppeteer/"
+                    data-tooltip="get-started-pupeteer"
+                    aria-label="次: get-started-pupeteer"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">次</span>
@@ -480,7 +548,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/11/23/hexo-customize/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/12/28/challenge-ocr/"
                     title="Facebookで共有"
                     aria-label="Facebookで共有"
                 >
@@ -493,7 +561,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/11/23/hexo-customize/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/12/28/challenge-ocr/"
                     title="Twitterで共有"
                     aria-label="Twitterで共有"
                 >
@@ -506,7 +574,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/11/23/hexo-customize/"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/12/28/challenge-ocr/"
                     title="Google+で共有"
                     aria-label="Google+で共有"
                 >
@@ -554,9 +622,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/11/24/how-to-use-github/"
-                    data-tooltip="githubの使い方"
-                    aria-label="前: githubの使い方"
+                    href="/2020/12/29/challenge-ocr2/"
+                    data-tooltip="OCRに挑戦してみる2"
+                    aria-label="前: OCRに挑戦してみる2"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -568,9 +636,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/11/23/markdown-basic/"
-                    data-tooltip="Markdown記法"
-                    aria-label="次: Markdown記法"
+                    href="/2020/12/20/get-started-puppeteer/"
+                    data-tooltip="get-started-pupeteer"
+                    aria-label="次: get-started-pupeteer"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">次</span>
@@ -595,7 +663,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/11/23/hexo-customize/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/12/28/challenge-ocr/"
                     title="Facebookで共有"
                     aria-label="Facebookで共有"
                 >
@@ -608,7 +676,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/11/23/hexo-customize/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/12/28/challenge-ocr/"
                     title="Twitterで共有"
                     aria-label="Twitterで共有"
                 >
@@ -621,7 +689,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/11/23/hexo-customize/"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/12/28/challenge-ocr/"
                     title="Google+で共有"
                     aria-label="Google+で共有"
                 >
@@ -655,7 +723,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/11/23/hexo-customize/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/12/28/challenge-ocr/"
                         aria-label="Facebookで共有"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Facebookで共有</span>
@@ -668,7 +736,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/11/23/hexo-customize/"
+                        href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/12/28/challenge-ocr/"
                         aria-label="Twitterで共有"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Twitterで共有</span>
@@ -681,7 +749,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/11/23/hexo-customize/"
+                        href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/12/28/challenge-ocr/"
                         aria-label="Google+で共有"
                     >
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>Google+で共有</span>
