@@ -6,37 +6,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Nariのブログ">
-    <title>githubの使い方 - Nariのブログ - 明日の自分に残すメモ - </title>
+    <title>docker-i-win - Nariのブログ - 明日の自分に残すメモ - </title>
     <meta name="author" content="Narichika Morinaga">
     
         <meta name="keywords" content="hexo,javascript,">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\n\n\n見出し1見出し2見出し3見出し4見出し5見出し6Google先生\n▶  詳細\n\n\n背景強調はこんな感じです。\n&#123;userid&#125;.github.io\n\n\n\n\nリスト1\nネスト リスト1_1\nネスト リスト1_1_1\nネスト リスト1_1_2\n\n\nネスト リスト1_2\n\n\nリスト2\nリスト3\n\n\n番号付きリスト1\n番号付きリスト1_1\n番号付きリスト1_2\n番号付きリスト2\n番号付きリスト3\n\n\nお世話になります。xxxです。\n\nあの新機能バグってるっすね\n\n\nTab｀｀｀pythonclass Hoge  def hoge    print ‘hoge’  endend｀｀｀\nnormal italic normalnormal italic normal\nnormal bold normalnormal bold normal\nnormal bold normalnormal bold normal\n\n\n\n\n取り消し線\nはじめにTL;DR\na\nb\nc目的・やったこと\n\n環境・条件1\n詳細1\nまとめその他・メモ参考文献\na\n\n","dateCreated":"2020-11-24T22:41:39+09:00","dateModified":"2020-12-28T21:56:32+09:00","datePublished":"2020-11-24T22:41:39+09:00","description":"welcome to my blog","headline":"githubの使い方","image":["00_m.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2020/11/24/how-to-use-github/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2020/11/24/how-to-use-github/","keywords":"github","thumbnailUrl":"00_m.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\n\nHomeエディションへのインストールを開始する前にWindows 10 HomeエディションにDocker Desktop for Windowsをインストールする場合は、インストーラー（Docker Desktop Installer.exe）を開始する前に必要なハードウェアとWindowsの機能を準備しておきましょう。Hyper-Vのシステム要件と同じ、以下の要件を満たしている必要があります。これらの要件に対応しているかどうかは、Windowsの「システム情報」（Msinfo32.exe）で確認できます。\n\n第2レベルアドレス変換拡張（SLAT）とVMモニターモード拡張（Intel CPUのVT-c）に対応したx64プロセッサ\n4GB以上のメモリ\nBIOS／ファームウェアのレベルでハードウェア仮想化（Virtualization）の設定が有効\n\n\n\n\n上記のシステム要件を満たしている場合は、WSLの機能を有効化し、WSL 2を既定で利用できるようにしておく必要があります。それには、次の手順で操作します。\n手順（1）コントロールパネルの「プログラムと機能」から「Windowsの機能の有効化または無効化」を開き、「Linux用Windowsサブシステム」と「仮想マシンプラットフォーム」を有効化します。\n完了するにはWindows 10の再起動が必要です。\n画面上　「Linux用Windowsサブシステム」と「仮想マシンプラットフォーム」を有効化し、Windows 10を再起動する\n手順（2）以下のURLから正式版WSL 2に対応したLinuxカーネルの更新版をダウンロードして実行し、インストールしますhttps://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi\n\n画面上　正式版WSL 2に対応したLinuxカーネルの更新版をダウンロードしてインストールする\nWindows 10にはWSL 2用のLinuxカーネルが標準で組み込まれていますが、これは開発中のWSL 2に対応したものであり、そのままでは正式版のWSL 2を利用することはできません。発表時にはWindows Updateで更新が提供されると説明されていましたが、筆者が試した時点（2020年5月中旬）では手動でダウンロードする必要がありました。\n手順（3）「Windows PowerShell（管理者）」を開き、次のコマンドラインを実行して、WSLの既定をWSL 1からWSL 2に変更します（画面5）。このとき、Linuxカーネルの更新版が未インストールだと「WSL 2を実行するには、カーネルコンポーネントの更新が必要です。詳細についてはhttps://aka.ms/wsl2kernelを参照してください」と表示され、WSL 2への変更は行われません。WSL 2に変更されると、「WSL 2と主な違いについては、https://aka.ms/wsl2を参照してください」と表示されます。\n\n\n    \n      \n          bash\n      \n      \n          \n      \n    \n  1wsl --set-default-version 2\n\n\n\n\n手順（4）「Microsoft Store」からお好みのLinuxディストリビューションを入手してインストールします。この手順はオプションですが、Docker Desktop for Windows以外の目的でLinuxシェル環境を利用したい場合はインストールしておきます。\nUbuntuを起動して数分待ち、username と password を入力して完了です。\n\n　また、Linuxディストリビューションをインストールしておくと、Docker Desktop for Windowsの「WSL Integration」機能でLinux用Docker CLI（dockerコマンドなど）の利用環境にもなります。「手順（3）」で既定をWSL 2にしている場合、インストールしたLinuxディストリビューションはWSL 2で動作します。\n　インストール済みのLinuxディストリビューションがWSL 1とWSL 2のどちらで動作するかは、「wsl -l -v」を実行すると確認できます。\n\n    \n      \n          bash\n      \n      \n          \n      \n    \n  1wsl -l -v\n\n\n\nまた、インストール後にバージョンを変換することも可能です。「WSL Integration」機能は、WSL 1とWSL 2のどちらでも利用可能です。\n\n    \n      \n          bash\n      \n      \n          \n      \n    \n  1wsl --set-version &lt;ディストリビューション&gt; 2または1\n\n\n\n\n見出し1見出し2見出し3見出し4見出し5見出し6Google先生\n▶  詳細\n\n\n背景強調はこんな感じです。\n&#123;userid&#125;.github.io\n\n\n\n\nリスト1\nネスト リスト1_1\nネスト リスト1_1_1\nネスト リスト1_1_2\n\n\nネスト リスト1_2\n\n\nリスト2\nリスト3\n\n\n番号付きリスト1\n番号付きリスト1_1\n番号付きリスト1_2\n番号付きリスト2\n番号付きリスト3\n\n\nお世話になります。xxxです。\n\nあの新機能バグってるっすね\n\n\nTab｀｀｀pythonclass Hoge  def hoge    print ‘hoge’  endend｀｀｀\nnormal italic normalnormal italic normal\nnormal bold normalnormal bold normal\nnormal bold normalnormal bold normal\n\n\n\n\n取り消し線\nはじめにTL;DR\na\nb\nc目的・やったこと\n\n環境・条件1\n詳細1\nまとめその他・メモ参考文献\na\n\n","dateCreated":"2020-12-31T11:39:12+09:00","dateModified":"2020-12-31T17:14:43+09:00","datePublished":"2020-12-31T11:39:12+09:00","description":"welcome to my blog","headline":"docker-i-win","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2020/12/31/docker-i-win/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2020/12/31/docker-i-win/","keywords":"docker"}</script>
     <meta name="description" content="welcome to my blog">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="githubの使い方">
-<meta property="og:url" content="https://morichnarich.github.io/2020/11/24/how-to-use-github/index.html">
+<meta property="og:title" content="docker-i-win">
+<meta property="og:url" content="https://morichnarich.github.io/2020/12/31/docker-i-win/index.html">
 <meta property="og:site_name" content="Nariのブログ">
 <meta property="og:description" content="welcome to my blog">
 <meta property="og:locale" content="ja_JP">
-<meta property="og:image" content="https://morichnarich.github.io/images/00_m.png">
+<meta property="og:image" content="https://morichnarich.github.io/images/IMG-0055.JPG">
+<meta property="og:image" content="https://morichnarich.github.io/images/IMG-0056.JPG">
+<meta property="og:image" content="https://morichnarich.github.io/images/IMG-0058.JPG">
+<meta property="og:image" content="https://morichnarich.github.io/images/IMG-0059.JPG">
+<meta property="og:image" content="https://morichnarich.github.io/images/IMG-0057.JPG">
+<meta property="og:image" content="https://morichnarich.github.io/images/1F8C7D1C-D3DA-4791-A547-333D71470E21.jpeg">
+<meta property="og:image" content="https://morichnarich.github.io/images/IMG-0062.JPG">
+<meta property="og:image" content="https://morichnarich.github.io/images/IMG-0067.JPG">
+<meta property="og:image" content="https://morichnarich.github.io/images/IMG-0056.JPG">
 <meta property="og:image" content="https://morichnarich.github.io/yyyy/mm/dd/%E8%A8%98%E4%BA%8B%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB/%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E5%90%8D">
-<meta property="article:published_time" content="2020-11-24T13:41:39.000Z">
-<meta property="article:modified_time" content="2020-12-28T12:56:32.395Z">
+<meta property="article:published_time" content="2020-12-31T02:39:12.000Z">
+<meta property="article:modified_time" content="2020-12-31T08:14:43.811Z">
 <meta property="article:author" content="Narichika Morinaga">
-<meta property="article:tag" content="github">
+<meta property="article:tag" content="docker">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://morichnarich.github.io/images/00_m.png">
+<meta name="twitter:image" content="https://morichnarich.github.io/images/IMG-0055.JPG">
     
     
         
     
     
-    
-        <meta property="og:image" content="https://morichnarich.github.io/2020/11/24/how-to-use-github/00_m.png"/>
-        <meta class="swiftype" name="image" data-type="enum" content="https://morichnarich.github.io/2020/11/24/how-to-use-github/00_m.png"/>
     
     
     
@@ -343,23 +348,23 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            githubの使い方
+            docker-i-win
         </h1>
     
     
         <div class="post-meta">
     <i class="fas fa-file-alt"></i>
-    <time datetime="2020-11-24T22:41:39+09:00">
+    <time datetime="2020-12-31T11:39:12+09:00">
 	
-		    2020/11/24
+		    2020/12/31
     	
     </time>
 
     
     <i class="fas fa-redo-alt"></i>
-        <time datetime="2020-12-28T21:56:32+09:00">
+        <time datetime="2020-12-31T17:14:43+09:00">
         
-        2020/12/28
+        2020/12/31
         
         </time>
         <br>
@@ -382,10 +387,75 @@
     <div class="post-content markdown">
         <div class="main-content-wrap">
             <!-- > これは引用です。 -->
-<p><img src="/images/00_m.png" alt="githubの画像"></p>
-<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%971"><span class="toc-text">見出し1</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%972"><span class="toc-text">見出し2</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%973"><span class="toc-text">見出し3</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%974"><span class="toc-text">見出し4</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%975"><span class="toc-text">見出し5</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%976"><span class="toc-text">見出し6</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Tab"><span class="toc-text">Tab</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB"><span class="toc-text">はじめに</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TL-DR"><span class="toc-text">TL;DR</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E7%9A%84%E3%83%BB%E3%82%84%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8"><span class="toc-text">目的・やったこと</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%92%B0%E5%A2%83%E3%83%BB%E6%9D%A1%E4%BB%B6"><span class="toc-text">環境・条件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A9%B3%E7%B4%B0"><span class="toc-text">詳細</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%81%BE%E3%81%A8%E3%82%81"><span class="toc-text">まとめ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%83%BB%E3%83%A1%E3%83%A2"><span class="toc-text">その他・メモ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-text">参考文献</span></a></li></ol></li></ol>
+
+<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Home%E3%82%A8%E3%83%87%E3%82%A3%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%B8%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%82%92%E9%96%8B%E5%A7%8B%E3%81%99%E3%82%8B%E5%89%8D%E3%81%AB"><span class="toc-text">Homeエディションへのインストールを開始する前に</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%8B%E9%A0%86%EF%BC%881%EF%BC%89"><span class="toc-text">手順（1）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%8B%E9%A0%86%EF%BC%882%EF%BC%89"><span class="toc-text">手順（2）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%8B%E9%A0%86%EF%BC%883%EF%BC%89"><span class="toc-text">手順（3）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%8B%E9%A0%86%EF%BC%884%EF%BC%89"><span class="toc-text">手順（4）</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%971"><span class="toc-text">見出し1</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%972"><span class="toc-text">見出し2</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%973"><span class="toc-text">見出し3</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%974"><span class="toc-text">見出し4</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%975"><span class="toc-text">見出し5</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%976"><span class="toc-text">見出し6</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Tab"><span class="toc-text">Tab</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB"><span class="toc-text">はじめに</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TL-DR"><span class="toc-text">TL;DR</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E7%9A%84%E3%83%BB%E3%82%84%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8"><span class="toc-text">目的・やったこと</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%92%B0%E5%A2%83%E3%83%BB%E6%9D%A1%E4%BB%B6"><span class="toc-text">環境・条件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A9%B3%E7%B4%B0"><span class="toc-text">詳細</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%81%BE%E3%81%A8%E3%82%81"><span class="toc-text">まとめ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%83%BB%E3%83%A1%E3%83%A2"><span class="toc-text">その他・メモ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-text">参考文献</span></a>
+
+<h3 id="Homeエディションへのインストールを開始する前に"><a href="#Homeエディションへのインストールを開始する前に" class="headerlink" title="Homeエディションへのインストールを開始する前に"></a>Homeエディションへのインストールを開始する前に</h3><p>Windows 10 HomeエディションにDocker Desktop for Windowsをインストールする場合は、インストーラー（Docker Desktop Installer.exe）を開始する前に必要なハードウェアとWindowsの機能を準備しておきましょう。Hyper-Vのシステム要件と同じ、以下の要件を満たしている必要があります。これらの要件に対応しているかどうかは、Windowsの「システム情報」（Msinfo32.exe）で確認できます。</p>
+<div class="alert warning"><ul>
+<li>第2レベルアドレス変換拡張（SLAT）とVMモニターモード拡張（Intel CPUのVT-c）に対応したx64プロセッサ</li>
+<li>4GB以上のメモリ</li>
+<li>BIOS／ファームウェアのレベルでハードウェア仮想化（Virtualization）の設定が有効</li>
+</ul>
+</div>
+<br>
+
+<p>上記のシステム要件を満たしている場合は、WSLの機能を有効化し、WSL 2を既定で利用できるようにしておく必要があります。それには、次の手順で操作します。</p>
+<h4 id="手順（1）"><a href="#手順（1）" class="headerlink" title="手順（1）"></a>手順（1）</h4><p>コントロールパネルの「プログラムと機能」から「Windowsの機能の有効化または無効化」を開き、「Linux用Windowsサブシステム」と「仮想マシンプラットフォーム」を有効化します。</p>
+<p>完了するにはWindows 10の再起動が必要です。<br><br></p>
+<p><img src="/images/IMG-0055.JPG" alt="コントロールパネルの「プログラムと機能」" title="コントロールパネルの「プログラムと機能」"><br><img src="/images/IMG-0056.JPG" alt="Linux用Windowsサブシステム" title="Linux用Windowsサブシステム"><br><img src="/images/IMG-0058.JPG" alt="仮想マシンプラットフォーム" title="仮想マシンプラットフォーム"><br><img src="/images/IMG-0059.JPG" alt="PC再起動" title="PC再起動"><br>画面上　「Linux用Windowsサブシステム」と「仮想マシンプラットフォーム」を有効化し、Windows 10を再起動する</p>
+<h4 id="手順（2）"><a href="#手順（2）" class="headerlink" title="手順（2）"></a>手順（2）</h4><p>以下のURLから正式版WSL 2に対応したLinuxカーネルの更新版をダウンロードして実行し、インストールします<br><a target="_blank" rel="noopener" href="https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi">https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi</a><br><br></p>
+<p><img src="/images/IMG-0057.JPG" alt="WSLのインストール" title="[WSLのインストール"><br><br></p>
+<p>画面上　正式版WSL 2に対応したLinuxカーネルの更新版をダウンロードしてインストールする</p>
+<p>Windows 10にはWSL 2用のLinuxカーネルが標準で組み込まれていますが、これは開発中のWSL 2に対応したものであり、そのままでは正式版のWSL 2を利用することはできません。発表時にはWindows Updateで更新が提供されると説明されていましたが、筆者が試した時点（2020年5月中旬）では手動でダウンロードする必要がありました。</p>
+<h4 id="手順（3）"><a href="#手順（3）" class="headerlink" title="手順（3）"></a>手順（3）</h4><p>「Windows PowerShell（管理者）」を開き、次のコマンドラインを実行して、WSLの既定をWSL 1からWSL 2に変更します（画面5）。このとき、Linuxカーネルの更新版が未インストールだと「WSL 2を実行するには、カーネルコンポーネントの更新が必要です。詳細については<a target="_blank" rel="noopener" href="https://aka.ms/wsl2kernel%E3%82%92%E5%8F%82%E7%85%A7%E3%81%97%E3%81%A6%E3%81%8F%E3%81%A0%E3%81%95%E3%81%84%E3%80%8D%E3%81%A8%E8%A1%A8%E7%A4%BA%E3%81%95%E3%82%8C%E3%80%81WSL">https://aka.ms/wsl2kernelを参照してください」と表示され、WSL</a> 2への変更は行われません。WSL 2に変更されると、「WSL 2と主な違いについては、<a target="_blank" rel="noopener" href="https://aka.ms/wsl2%E3%82%92%E5%8F%82%E7%85%A7%E3%81%97%E3%81%A6%E3%81%8F%E3%81%A0%E3%81%95%E3%81%84%E3%80%8D%E3%81%A8%E8%A1%A8%E7%A4%BA%E3%81%95%E3%82%8C%E3%81%BE%E3%81%99%E3%80%82">https://aka.ms/wsl2を参照してください」と表示されます。</a><br><br></p>
+<p><img src="/images/1F8C7D1C-D3DA-4791-A547-333D71470E21.jpeg" alt="start_up_powershell_as_author" title="start_up_powershell_as_author"><br><br></p>
+<div class="docs">
+    <div class="control">
+      <div>
+          <span class='codeTitles'>bash</span>
+      </div>
+      <div class="code-parent">
+          <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+      </div>
+    </div>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --set-default-version 2</span><br></pre></td></tr></table></figure>
+</div>
+<br>
+
+<p><img src="/images/IMG-0062.JPG" alt="finish_to_set_wsl" title="finish_to_set_wsl"></p>
+<h4 id="手順（4）"><a href="#手順（4）" class="headerlink" title="手順（4）"></a>手順（4）</h4><p>「Microsoft Store」からお好みのLinuxディストリビューションを入手してインストールします。この手順はオプションですが、Docker Desktop for Windows以外の目的でLinuxシェル環境を利用したい場合はインストールしておきます。</p>
+<p>Ubuntuを起動して数分待ち、username と password を入力して完了です。<br><br></p>
+<p><img src="/images/IMG-0067.JPG" alt="start_up_Ubuntu" title="start_up_Ubuntu"><br><br></p>
+<p>　また、Linuxディストリビューションをインストールしておくと、Docker Desktop for Windowsの「WSL Integration」機能でLinux用Docker CLI（dockerコマンドなど）の利用環境にもなります。「手順（3）」で既定をWSL 2にしている場合、インストールしたLinuxディストリビューションはWSL 2で動作します。</p>
+<p>　インストール済みのLinuxディストリビューションがWSL 1とWSL 2のどちらで動作するかは、「wsl -l -v」を実行すると確認できます。<br><br></p>
+<div class="docs">
+    <div class="control">
+      <div>
+          <span class='codeTitles'>bash</span>
+      </div>
+      <div class="code-parent">
+          <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+      </div>
+    </div>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl -l -v</span><br></pre></td></tr></table></figure>
+</div>
+<br>
+
+<p>また、インストール後にバージョンを変換することも可能です。「WSL Integration」機能は、WSL 1とWSL 2のどちらでも利用可能です。<br><br></p>
+<div class="docs">
+    <div class="control">
+      <div>
+          <span class='codeTitles'>bash</span>
+      </div>
+      <div class="code-parent">
+          <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+      </div>
+    </div>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --set-version &lt;ディストリビューション&gt; 2または1</span><br></pre></td></tr></table></figure>
+</div>
 
 
+<p><img src="/images/IMG-0056.JPG" alt="OCRに挑戦してみる" title="OCRに挑戦してみる"></p>
 <h1 id="見出し1"><a href="#見出し1" class="headerlink" title="見出し1"></a>見出し1</h1><h2 id="見出し2"><a href="#見出し2" class="headerlink" title="見出し2"></a>見出し2</h2><h3 id="見出し3"><a href="#見出し3" class="headerlink" title="見出し3"></a>見出し3</h3><h4 id="見出し4"><a href="#見出し4" class="headerlink" title="見出し4"></a>見出し4</h4><h5 id="見出し5"><a href="#見出し5" class="headerlink" title="見出し5"></a>見出し5</h5><h6 id="見出し6"><a href="#見出し6" class="headerlink" title="見出し6"></a>見出し6</h6><p><a target="_blank" rel="noopener" href="https://www.google.co.jp/">Google先生</a><br><img src="/yyyy/mm/dd/%E8%A8%98%E4%BA%8B%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB/%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E5%90%8D" alt="キャプチャです" title="キャプチャです"></p>
 <p class="postToggle">▶  詳細</p>
 <div class="postToggled postToggledClose">
@@ -451,7 +521,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">タグ</span><br/>
                 
-    <a class="tag tag--primary tag--small t-none-link" href="/tags/github/" rel="tag">github</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/docker/" rel="tag">docker</a>
 
             </div>
         
@@ -461,14 +531,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/11/25/hexo-commands/"
-                    data-tooltip="色々なコマンド"
-                    aria-label="前: 色々なコマンド"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">前</span>
                     </a>
@@ -478,9 +545,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/11/23/hexo-customize/"
-                    data-tooltip="hexoテーマのカスタマイズ"
-                    aria-label="次: hexoテーマのカスタマイズ"
+                    href="/2020/12/29/challenge-ocr2/"
+                    data-tooltip="OCRに挑戦してみる2"
+                    aria-label="次: OCRに挑戦してみる2"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">次</span>
@@ -505,7 +572,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/11/24/how-to-use-github/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/12/31/docker-i-win/"
                     title="Facebookで共有"
                     aria-label="Facebookで共有"
                 >
@@ -518,7 +585,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/11/24/how-to-use-github/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/12/31/docker-i-win/"
                     title="Twitterで共有"
                     aria-label="Twitterで共有"
                 >
@@ -531,7 +598,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/11/24/how-to-use-github/"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/12/31/docker-i-win/"
                     title="Google+で共有"
                     aria-label="Google+で共有"
                 >
@@ -576,14 +643,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/11/25/hexo-commands/"
-                    data-tooltip="色々なコマンド"
-                    aria-label="前: 色々なコマンド"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">前</span>
                     </a>
@@ -593,9 +657,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/11/23/hexo-customize/"
-                    data-tooltip="hexoテーマのカスタマイズ"
-                    aria-label="次: hexoテーマのカスタマイズ"
+                    href="/2020/12/29/challenge-ocr2/"
+                    data-tooltip="OCRに挑戦してみる2"
+                    aria-label="次: OCRに挑戦してみる2"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">次</span>
@@ -620,7 +684,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/11/24/how-to-use-github/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/12/31/docker-i-win/"
                     title="Facebookで共有"
                     aria-label="Facebookで共有"
                 >
@@ -633,7 +697,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/11/24/how-to-use-github/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/12/31/docker-i-win/"
                     title="Twitterで共有"
                     aria-label="Twitterで共有"
                 >
@@ -646,7 +710,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/11/24/how-to-use-github/"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/12/31/docker-i-win/"
                     title="Google+で共有"
                     aria-label="Google+で共有"
                 >
@@ -680,7 +744,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/11/24/how-to-use-github/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2020/12/31/docker-i-win/"
                         aria-label="Facebookで共有"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Facebookで共有</span>
@@ -693,7 +757,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/11/24/how-to-use-github/"
+                        href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2020/12/31/docker-i-win/"
                         aria-label="Twitterで共有"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Twitterで共有</span>
@@ -706,7 +770,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/11/24/how-to-use-github/"
+                        href="https://plus.google.com/share?url=https://morichnarich.github.io/2020/12/31/docker-i-win/"
                         aria-label="Google+で共有"
                     >
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>Google+で共有</span>

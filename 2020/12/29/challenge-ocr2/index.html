@@ -13,7 +13,7 @@
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\n\n世の中便利になればなるほど忙しくなるので、毎日の生活の中から少しでも時短になることばかり考えているNariです。いよいよ！満を持してOCRに手を出してみます！どうなることやら・・・\n\nちょっと調べてみる調べたところ、\n\n完璧なOCRは今のところない。\n英数字のみのテキストのPDF：PyPDF2\n日本語を含むテキストのPDF：pdfminer.six、Apache Tika\n画像データのPDF、帳票PDF：Tesseract\n\nみたいですね！\niPhoneを使ってOCRでアプリが作れないかと考えてますので、Tesseractに挑戦してみたいと思います。\nTesseract の導入方法Tesseract は、Python のモジュールではありません。そのため、通常の「pip コマンド」ではなく、以下の手段を使ってインストールしなければなりません。\nPyOCR のインストール「PyOCR」は、Python から OCR エンジンを利用可能にするためのモジュールです。\n※PyOCR をインストールすると、画像処理ライブラリの「Pillow」もインストールされます。\nTesseract を利用する際の注意点Tesseractを Python から利用するためには、環境変数の PATH へ登録しておかなければなりません。以下の方法を用いて、Tesseract の登録を行いましょう。\nTesseract のオプションを設定する元の画像のままOCRを実行\n\n\n    \n      \n          python\n      \n      \n          \n      \n    \n  1234567891011121314151617181920212223# ocr_card.pyimport osfrom PIL import Imageimport pyocrimport pyocr.builders// 1.インストール済みのTesseractのパスを通すpath_tesseract = &quot;C:\\\\Program Files (x86)\\\\Tesseract-OCR&quot;if path_tesseract not in os.environ[&quot;PATH&quot;].split(os.pathsep):    os.environ[&quot;PATH&quot;] += os.pathsep + path_tesseract// 2.OCRエンジンの取得tools = pyocr.get_available_tools()tool = tools[0]// 3.原稿画像の読み込みimg_org = Image.open(&quot;./card_image/zairyucard_omote.jpg&quot;)// 4.ＯＣＲ実行builder = pyocr.builders.TextBuilder()result = tool.image_to_string(img_org, lang=&quot;jpn&quot;, builder=builder)print(result)\n\n\nTesseract + PyOCR プログラミングの基本的な手順（処理の流れ）上記のコードは以下の４つの手順で処理しています。これが Tesseract + PyOCR でプログラミングする時の基本的な流れです。以降のコードもこの手順で処理します。\n\nTesseract を OS 環境変数の PATH へ登録（Tesseractのパスを通す（または、通しておく））\nPyOCR で OCR の準備（OCRエンジン（Tesseract）をPyOCRで取得）\nPillow を使って画像を読み込む（原稿の画像をPIL.Imageで読み込む）\n読み取った結果を print する（Builderを指定してＯＣＲ実行）\n\n\n\n\n\nOCRを実行するには、Tesseractのインストール先のパスが通っている必要があります。Windowsの「環境変数」でPATHに登録しても構いませんが、ここではos.environを用いてコードで一時的にパスを通します。\npyocr.get_available_tools()で使用可能なOCRエンジンを取得できます。今回はTesseractしかインストールしていない状態なので、tools[0]で取得できます。\n画像の読み込みには、PyOCRと一緒にインストールされたPillowを用います。from PIL import ImageでインポートしたImageからopen()関数を呼び出します。\nOCRで文字認識を行うにはimage_to_string()関数を呼び出します。この関数には、画像、言語の他に、builderとして文字認識用のTextBuilder()を指定します。\n\n認識結果元の画像を加工してOCRを実行\n    \n      \n          python\n      \n      \n          \n      \n    \n  123456789101112131415161718192021222324252627282930313233// ocr_card_filter.pyimport osfrom PIL import Imageimport pyocrimport pyocr.builders// インストール済みのTesseractのパスを通すpath_tesseract = &quot;C:\\\\Program Files (x86)\\\\Tesseract-OCR&quot;if path_tesseract not in os.environ[&quot;PATH&quot;].split(os.pathsep):    os.environ[&quot;PATH&quot;] += path_tesseract// OCRエンジンの取得tools = pyocr.get_available_tools()tool = tools[0]// 原稿画像の読み込みimg_org = Image.open(&quot;./card_image/zairyucard_omote.jpg&quot;)img_rgb = img_org.convert(&quot;RGB&quot;)pixels = img_rgb.load()// 原稿画像加工（黒っぽい色以外は白=255,255,255にする）c_max = 169for j in range(img_rgb.size[1]):    for i in range(img_rgb.size[0]):        if (pixels[i, j][0] &gt; c_max or pixels[i, j][1] &gt; c_max or                pixels[i, j][0] &gt; c_max):            pixels[i, j] = (255, 255, 255)// ＯＣＲ実行builder = pyocr.builders.TextBuilder()result = tool.image_to_string(img_rgb, lang=&quot;jpn&quot;, builder=builder)print(result)\n\n\n認識結果Google先生\n▶  詳細\n\n\n背景強調はこんな感じです。\n&#123;userid&#125;.github.io\n\n\n\n見出し1見出し2見出し3見出し4見出し5見出し6Google先生\n▶  詳細\n\n\n背景強調はこんな感じです。\n&#123;userid&#125;.github.io\n\n\n\n\nリスト1\nネスト リスト1_1\nネスト リスト1_1_1\nネスト リスト1_1_2\n\n\nネスト リスト1_2\n\n\nリスト2\nリスト3\n\n\n番号付きリスト1\n番号付きリスト1_1\n番号付きリスト1_2\n番号付きリスト2\n番号付きリスト3\n\n\nお世話になります。xxxです。\n\nあの新機能バグってるっすね\n\n\nTab｀｀｀pythonclass Hoge  def hoge    print ‘hoge’  endend｀｀｀\nnormal italic normalnormal italic normal\nnormal bold normalnormal bold normal\nnormal bold normalnormal bold normal\n\n\n\n\n取り消し線\nはじめにTL;DR\na\nb\nc目的・やったこと\n\n環境・条件1\n詳細1\nまとめその他・メモ参考文献\na\n\n","dateCreated":"2020-12-29T21:06:56+09:00","dateModified":"2020-12-29T21:20:12+09:00","datePublished":"2020-12-29T21:06:56+09:00","description":"welcome to my blog","headline":"OCRに挑戦してみる2","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2020/12/29/challenge-ocr2/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2020/12/29/challenge-ocr2/","keywords":"OCR"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\n前回はTesseractをインストールして初OCRしてみましたが、今回はPythonを使って精度強化と気軽に使える\n\nちょっと調べてみる調べたところ、\n\n完璧なOCRは今のところない。\n英数字のみのテキストのPDF：PyPDF2\n日本語を含むテキストのPDF：pdfminer.six、Apache Tika\n画像データのPDF、帳票PDF：Tesseract\n\nみたいですね！\niPhoneを使ってOCRでアプリが作れないかと考えてますので、Tesseractに挑戦してみたいと思います。\nTesseract の導入方法Tesseract は、Python のモジュールではありません。そのため、通常の「pip コマンド」ではなく、以下の手段を使ってインストールしなければなりません。\nPyOCR のインストール「PyOCR」は、Python から OCR エンジンを利用可能にするためのモジュールです。\n※PyOCR をインストールすると、画像処理ライブラリの「Pillow」もインストールされます。\nTesseract を利用する際の注意点Tesseractを Python から利用するためには、環境変数の PATH へ登録しておかなければなりません。以下の方法を用いて、Tesseract の登録を行いましょう。\nTesseract のオプションを設定する元の画像のままOCRを実行\n\n\n    \n      \n          python\n      \n      \n          \n      \n    \n  1234567891011121314151617181920212223# ocr_card.pyimport osfrom PIL import Imageimport pyocrimport pyocr.builders// 1.インストール済みのTesseractのパスを通すpath_tesseract = &quot;C:\\\\Program Files (x86)\\\\Tesseract-OCR&quot;if path_tesseract not in os.environ[&quot;PATH&quot;].split(os.pathsep):    os.environ[&quot;PATH&quot;] += os.pathsep + path_tesseract// 2.OCRエンジンの取得tools = pyocr.get_available_tools()tool = tools[0]// 3.原稿画像の読み込みimg_org = Image.open(&quot;./card_image/zairyucard_omote.jpg&quot;)// 4.ＯＣＲ実行builder = pyocr.builders.TextBuilder()result = tool.image_to_string(img_org, lang=&quot;jpn&quot;, builder=builder)print(result)\n\n\nTesseract + PyOCR プログラミングの基本的な手順（処理の流れ）上記のコードは以下の４つの手順で処理しています。これが Tesseract + PyOCR でプログラミングする時の基本的な流れです。以降のコードもこの手順で処理します。\n\nTesseract を OS 環境変数の PATH へ登録（Tesseractのパスを通す（または、通しておく））\nPyOCR で OCR の準備（OCRエンジン（Tesseract）をPyOCRで取得）\nPillow を使って画像を読み込む（原稿の画像をPIL.Imageで読み込む）\n読み取った結果を print する（Builderを指定してＯＣＲ実行）\n\n\n\n\n\nOCRを実行するには、Tesseractのインストール先のパスが通っている必要があります。Windowsの「環境変数」でPATHに登録しても構いませんが、ここではos.environを用いてコードで一時的にパスを通します。\npyocr.get_available_tools()で使用可能なOCRエンジンを取得できます。今回はTesseractしかインストールしていない状態なので、tools[0]で取得できます。\n画像の読み込みには、PyOCRと一緒にインストールされたPillowを用います。from PIL import ImageでインポートしたImageからopen()関数を呼び出します。\nOCRで文字認識を行うにはimage_to_string()関数を呼び出します。この関数には、画像、言語の他に、builderとして文字認識用のTextBuilder()を指定します。\n\n認識結果元の画像を加工してOCRを実行\n    \n      \n          python\n      \n      \n          \n      \n    \n  123456789101112131415161718192021222324252627282930313233// ocr_card_filter.pyimport osfrom PIL import Imageimport pyocrimport pyocr.builders// インストール済みのTesseractのパスを通すpath_tesseract = &quot;C:\\\\Program Files (x86)\\\\Tesseract-OCR&quot;if path_tesseract not in os.environ[&quot;PATH&quot;].split(os.pathsep):    os.environ[&quot;PATH&quot;] += path_tesseract// OCRエンジンの取得tools = pyocr.get_available_tools()tool = tools[0]// 原稿画像の読み込みimg_org = Image.open(&quot;./card_image/zairyucard_omote.jpg&quot;)img_rgb = img_org.convert(&quot;RGB&quot;)pixels = img_rgb.load()// 原稿画像加工（黒っぽい色以外は白=255,255,255にする）c_max = 169for j in range(img_rgb.size[1]):    for i in range(img_rgb.size[0]):        if (pixels[i, j][0] &gt; c_max or pixels[i, j][1] &gt; c_max or                pixels[i, j][0] &gt; c_max):            pixels[i, j] = (255, 255, 255)// ＯＣＲ実行builder = pyocr.builders.TextBuilder()result = tool.image_to_string(img_rgb, lang=&quot;jpn&quot;, builder=builder)print(result)\n\n\n認識結果Google先生\n▶  詳細\n\n\n背景強調はこんな感じです。\n&#123;userid&#125;.github.io\n\n\n\n見出し1見出し2見出し3見出し4見出し5見出し6Google先生\n▶  詳細\n\n\n背景強調はこんな感じです。\n&#123;userid&#125;.github.io\n\n\n\n\nリスト1\nネスト リスト1_1\nネスト リスト1_1_1\nネスト リスト1_1_2\n\n\nネスト リスト1_2\n\n\nリスト2\nリスト3\n\n\n番号付きリスト1\n番号付きリスト1_1\n番号付きリスト1_2\n番号付きリスト2\n番号付きリスト3\n\n\nお世話になります。xxxです。\n\nあの新機能バグってるっすね\n\n\nTab｀｀｀pythonclass Hoge  def hoge    print ‘hoge’  endend｀｀｀\nnormal italic normalnormal italic normal\nnormal bold normalnormal bold normal\nnormal bold normalnormal bold normal\n\n\n\n\n取り消し線\nはじめにTL;DR\na\nb\nc目的・やったこと\n\n環境・条件1\n詳細1\nまとめその他・メモ参考文献\na\n\n","dateCreated":"2020-12-29T21:06:56+09:00","dateModified":"2020-12-30T18:55:48+09:00","datePublished":"2020-12-29T21:06:56+09:00","description":"welcome to my blog","headline":"OCRに挑戦してみる2","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2020/12/29/challenge-ocr2/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2020/12/29/challenge-ocr2/","keywords":"OCR"}</script>
     <meta name="description" content="welcome to my blog">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="OCRに挑戦してみる2">
@@ -21,14 +21,14 @@
 <meta property="og:site_name" content="Nariのブログ">
 <meta property="og:description" content="welcome to my blog">
 <meta property="og:locale" content="ja_JP">
-<meta property="og:image" content="https://morichnarich.github.io/images/1F538412-7BF4-4A48-90C5-8D4CA1667FC7.jpeg">
+<meta property="og:image" content="https://morichnarich.github.io/images/thmbnail_ocr2.JPG">
 <meta property="og:image" content="https://morichnarich.github.io/yyyy/mm/dd/%E8%A8%98%E4%BA%8B%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB/%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E5%90%8D">
 <meta property="article:published_time" content="2020-12-29T12:06:56.000Z">
-<meta property="article:modified_time" content="2020-12-29T12:20:12.431Z">
+<meta property="article:modified_time" content="2020-12-30T09:55:48.531Z">
 <meta property="article:author" content="Narichika Morinaga">
 <meta property="article:tag" content="OCR">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://morichnarich.github.io/images/1F538412-7BF4-4A48-90C5-8D4CA1667FC7.jpeg">
+<meta name="twitter:image" content="https://morichnarich.github.io/images/thmbnail_ocr2.JPG">
     
     
         
@@ -354,9 +354,9 @@
 
     
     <i class="fas fa-redo-alt"></i>
-        <time datetime="2020-12-29T21:20:12+09:00">
+        <time datetime="2020-12-30T18:55:48+09:00">
         
-        2020/12/29
+        2020/12/30
         
         </time>
         <br>
@@ -379,10 +379,9 @@
     <div class="post-content markdown">
         <div class="main-content-wrap">
             <!-- > これは引用です。 -->
-<!-- > これは引用です。 -->
-<p><img src="/images/1F538412-7BF4-4A48-90C5-8D4CA1667FC7.jpeg" alt="OCRに挑戦してみる" title="OCRに挑戦してみる"></p>
+<p><img src="/images/thmbnail_ocr2.JPG" alt="OCRに挑戦してみる" title="OCRに挑戦してみる"></p>
 <h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%81%A1%E3%82%87%E3%81%A3%E3%81%A8%E8%AA%BF%E3%81%B9%E3%81%A6%E3%81%BF%E3%82%8B"><span class="toc-text">ちょっと調べてみる</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tesseract-%E3%81%AE%E5%B0%8E%E5%85%A5%E6%96%B9%E6%B3%95"><span class="toc-text">Tesseract の導入方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PyOCR-%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="toc-text">PyOCR のインストール</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tesseract-%E3%82%92%E5%88%A9%E7%94%A8%E3%81%99%E3%82%8B%E9%9A%9B%E3%81%AE%E6%B3%A8%E6%84%8F%E7%82%B9"><span class="toc-text">Tesseract を利用する際の注意点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tesseract-%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B"><span class="toc-text">Tesseract のオプションを設定する</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%83%E3%81%AE%E7%94%BB%E5%83%8F%E3%81%AE%E3%81%BE%E3%81%BEOCR%E3%82%92%E5%AE%9F%E8%A1%8C"><span class="toc-text">元の画像のままOCRを実行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Tesseract-PyOCR-%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E3%81%AE%E5%9F%BA%E6%9C%AC%E7%9A%84%E3%81%AA%E6%89%8B%E9%A0%86%EF%BC%88%E5%87%A6%E7%90%86%E3%81%AE%E6%B5%81%E3%82%8C%EF%BC%89"><span class="toc-text">Tesseract + PyOCR プログラミングの基本的な手順（処理の流れ）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AA%8D%E8%AD%98%E7%B5%90%E6%9E%9C"><span class="toc-text">認識結果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%83%E3%81%AE%E7%94%BB%E5%83%8F%E3%82%92%E5%8A%A0%E5%B7%A5%E3%81%97%E3%81%A6OCR%E3%82%92%E5%AE%9F%E8%A1%8C"><span class="toc-text">元の画像を加工してOCRを実行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AA%8D%E8%AD%98%E7%B5%90%E6%9E%9C-1"><span class="toc-text">認識結果</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%971"><span class="toc-text">見出し1</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%972"><span class="toc-text">見出し2</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%973"><span class="toc-text">見出し3</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%974"><span class="toc-text">見出し4</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%975"><span class="toc-text">見出し5</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E8%A6%8B%E5%87%BA%E3%81%976"><span class="toc-text">見出し6</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Tab"><span class="toc-text">Tab</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB"><span class="toc-text">はじめに</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TL-DR"><span class="toc-text">TL;DR</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E7%9A%84%E3%83%BB%E3%82%84%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8"><span class="toc-text">目的・やったこと</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%92%B0%E5%A2%83%E3%83%BB%E6%9D%A1%E4%BB%B6"><span class="toc-text">環境・条件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A9%B3%E7%B4%B0"><span class="toc-text">詳細</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%81%BE%E3%81%A8%E3%82%81"><span class="toc-text">まとめ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%83%BB%E3%83%A1%E3%83%A2"><span class="toc-text">その他・メモ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-text">参考文献</span></a></li></ol>
-<p>世の中便利になればなるほど忙しくなるので、毎日の生活の中から少しでも時短になることばかり考えているNariです。<br>いよいよ！満を持してOCRに手を出してみます！どうなることやら・・・</p>
+<p>前回はTesseractをインストールして初OCRしてみましたが、今回はPythonを使って精度強化と気軽に使える</p>
 <!-- # 見出し1 -->
 <h2 id="ちょっと調べてみる"><a href="#ちょっと調べてみる" class="headerlink" title="ちょっと調べてみる"></a>ちょっと調べてみる</h2><p>調べたところ、</p>
 <ul>
@@ -523,11 +522,14 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a
-                        class="post-action-btn btn btn--disabled"
-                        aria-hidden="true"
-                    >
-                        
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/12/31/docker-i-win/"
+                    data-tooltip="docker-i-win"
+                    aria-label="前: docker-i-win"
+                >
+                    
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">前</span>
                     </a>
@@ -553,7 +555,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -635,11 +637,14 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a
-                        class="post-action-btn btn btn--disabled"
-                        aria-hidden="true"
-                    >
-                        
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/12/31/docker-i-win/"
+                    data-tooltip="docker-i-win"
+                    aria-label="前: docker-i-win"
+                >
+                    
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">前</span>
                     </a>
@@ -665,7 +670,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
