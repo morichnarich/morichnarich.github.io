@@ -1,0 +1,1080 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Nariのブログ">
+    <title>how-to-use-docker - Nariのブログ - 明日の自分に残すメモ - </title>
+    <meta name="author" content="Narichika Morinaga">
+    
+        <meta name="keywords" content="hexo,javascript,">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\n\n利用の流れ必ずしも毎回この通りじゃないけど、大雑把に利用の流れを掴むために以下の順に解説します。\n\nDocker Hub のイメージを検索 (search)\nDocker Hub から使いたいイメージを取得する (pull)\nイメージからコンテナを生成して起動 (run)\nコンテナ内でコマンド実行 (exec)\nコンテナを停止 (stop)\nコンテナをイメージ化 (commit)\nいらなくなったらコンテナを削除 (rm)\nいらなくなったらイメージを削除 (rmi)\n\n\n\n\nその他に以下のコマンドもよく利用します。\n\n取得済みイメージ一覧 (images)\n実行中コンテナ一覧 (ps)\n停止中も含めた全てのコンテナ一覧 (ps -a)\n停止中のコンテナを起動 (start)\nホストとコンテナ間でのファイルコピー (cp)\n\n\n\n\nrun は コンテナを生成して起動 だということに注意。\n色々作業して改変した後の状態で起動したいなら、\n\nstart を使う\ncommit してコンテナをイメージ化したものから run\n\n\n\n\nちなみに docker はPowerShellを使うみたいです。\nDocker イメージの取得以下のコマンドは、Docker Hub から nginx の Docker イメージを取得します。\n\n \n  \n   docker\n  \n  \n   \n  \n \n 123456789$ docker search nginxNAME                                                   DESCRIPTION                                     STARS               OFFICIAL            AUTOMATEDnginx                                                  Official build of Nginx.                        7722                [OK]jwilder/nginx-proxy                                    Automated Nginx reverse proxy for docker con…   1233                                    [OK]richarvey/nginx-php-fpm                                Container running Nginx + PHP-FPM capable of…   500                                     [OK]jrcs/letsencrypt-nginx-proxy-companion                 LetsEncrypt container to use with nginx as p…   288                                     [OK]kong                                                   Open-source Microservice &amp; API Management la…   150                 [OK]webdevops/php-nginx                                    Nginx with PHP-FPM                              94                                      [OK]（以下省略）\n\n\nDockerイメージ名（NAME）の部分、若しくは説明（DESCRIPTION）の部分に、指定したキーワード「nginx」が含まれているイメージの一覧が出力されました。\n大小文字は無視されます。\ndocker searchコマンドの検索結果の情報量は、この程度の内容です。Dockerイメージのサマリー情報を参照する目的としては良いと思いますが、対象のDockerイメージについて詳しく調べるという目的には向かない。\nより詳しい内容の検索は、Docker HubのWebサービスをご利用いただければと思います。\n次のコマンドは、Docker Hub から最新の Docker イメージを取得します。\n\n \n  \n   docker\n  \n  \n   \n  \n \n 1$ docker pull nginx:latest\n\n\nフィルター条件を指定してDockerイメージを検索するdocker searchコマンドには、３種類のフィルターが用意されてます。\nis-automated = &lt;true or false&gt;オプションは、Docker Hubのautomated build機能（自動構築機能）を利用して構築したイメージであるか否かを示しています。\nis-official = &lt;true or false&gt;オプションは、CentOSやUbuntu、Apacheなどの各ベンダが公式イメージとして提供しているイメージであるか否かを示しています。\nstars = &lt;数値&gt;オプションは、各Dockerイメージに付けられた星（star）の数を指定して検索します。指定した数以上の星の数のDockerイメージが対象となります。星は、Docker Hubのユーザがお気に入りとして指定したことを示す印です。この数が多いということは人気があるDockerイメージの可能性が高いということを示しています。\n実際にフィルターを指定してdocker searchコマンドを実行してみます。\n星の数が10以上でキーワード「backup」を含むDockerイメージを検索します。\n\n \n  \n   docker\n  \n  \n   \n  \n \n 1$ docker search --filter stars=10 backup\n\n\n結果は以下のとおりです。星の数が10以上のイメージのみ表示されました。\n\n \n  \n   docker\n  \n  \n   \n  \n \n 12345NAME                           DESCRIPTION                                   STARS  OFFICIAL AUTOMATEDistepanov/backup-to-s3         Container that backups files to Amazon S3 us… 23      [OK]schickling/mysql-backup-s3     Backup MySQL to S3 (supports periodic backup… 16      [OK]adferrand/backuppc             Docker container with BackupPC version 4.x/3… 12      [OK]schickling/postgres-backup-s3  Backup PostgresSQL to S3 (supports periodic … 11      [OK]\n\n\n次は、星の数が3以上のキーワード「http」を含む公式イメージを検索してみます。\n\n \n  \n   docker\n  \n  \n   \n  \n \n 1$ docker search --filter stars=3 --filter is-official=true http\n\n\n結果は以下のとおりです。\n\n \n  \n   docker\n  \n  \n   \n  \n \n 1234NAME         DESCRIPTION                                    STARS   OFFICIAL AUTOMATEDhttpd        The Apache HTTP Server Project                 1583     [OK]haproxy      HAProxy - The Reliable, High Performance TCP…  918      [OK]jruby        JRuby (http://www.jruby.org) is an implement…  62       [OK]\n\n\n　2つ目の「haproxy」の行には「http」のキーワードが見当たりませんが、これは説明部分がカットされて表示されているからです。\n　後述する「–no-trunc」オプションを付けることによって、説明部分が省略なして表示されます。\nDockerイメージの説明部分を省略しないで結果を表示するデフォルトでは、docker searchコマンドの出力のDockerイメージの説明部分（DESCRIPTION）は、最大45文字です。\nそれ以上の文字数の場合はカットされます。\nカット無しで全量表示させたい場合は、「–no-trunc」オプションを付けて実行します。\n前項の例を再度使用します。\n星の数が3以上のキーワード「http」を含む公式イメージを検索してみます。\n\n \n  \n   docker\n  \n  \n   \n  \n \n 1$ docker search --filter stars=3 --filter is-official=true http\n\n\n結果が出力されましたが、2つ目のDockerイメージhaproxyの行にはhttpの文字が見当たりません。\n\n \n  \n   docker\n  \n  \n   \n  \n \n 123456NAME            DESCRIPTION                                    STARS OFFICIAL AUTOMATEDhttpd           The Apache HTTP Server Project                 3045  [OK]haproxy         HAProxy - The Reliable, High Performance T...  624 [OK]\n\n\n次に「–no-trunc」オプションを追加で付けて実行してみます。\n\n \n  \n   docker\n  \n  \n   \n  \n \n 1$ docker search --no-trunc --filter stars=3 --filter is-official=true http\n\n\n結果は以下のとおりです。\n\n \n  \n   docker\n  \n  \n   \n  \n \n 123NAME          DESCRIPTION                                                                                       STARS   OFFICIAL   AUTOMATEDhttpd         The Apache HTTP Server Project                                                                    3045     [OK]haproxy       HAProxy - The Reliable, High Performance TCP/HTTP Load Balancer                                   1432      [OK]\n\n\n説明（DESCRIPTION）部分が全部出力されて、Dockerイメージ「haproxy」の説明部分にhttpの文字が存在することが確認できました。\n検索結果の行数を指定するデフォルトでは、docker searchコマンドの最大出力行数は25行です。\n「–limit」で出力する最大行数を指定することが可能です。\n指定可能な数値は1～100までとなってます。\n例えば、最大出力行数を80行にして、キーワード「http」を含むDockerイメージを検索する場合は、以下のように指定します。\n\n \n  \n   docker\n  \n  \n   \n  \n \n 1$ docker search --limit=80 http\n\n\ndocker pullコマンドの主な使い方Docker公式レジストリからDockerイメージを入手する以下のコマンドを実行しますと、Docker公式レジストリ内のCentOSのDockerイメージの最新版を入手することが出来ます。\n\n \n  \n   docker\n  \n  \n   \n  \n \n 1$ docker image pull centos\n\n\nコマンドを実行しますと、以下のような内容が出力されます。\n\n \n  \n   docker\n  \n  \n   \n  \n \n 123456Using default tag: latestlatest: Pulling from library/centos08d48e6f1cff: Pull completeDigest: sha256:b2f9d1c0ff5f87a4743104d099a3d561002ac500db1b9bfa02a783a46e0d366cStatus: Downloaded newer image for centos:latest\n\n\n「Digest:」部分の長い文字列は、入手したDockerイメージを示すダイジェストで、そのDockerイメージに付けられた普遍的な識別子です。\ndocker pullコマンドは、Dockerイメージ名のみを指定した場合は、デフォルトでDocker公式のレジストリサービスに接続します。後述しますが、他のレジストリに接続することも可能です。\nDockerイメージ名を指定する際にタグ名を省略すると、「latest」タグが使われます。\nCentOSの最新版はイメージレイヤが１つでしたが、複数レイヤが存在する場合は「Pull complete」の行が複数出力されます。\ndocker imagesコマンドにて、入手したCentOSイメージを確認します。\n\n \n  \n   docker\n  \n  \n   \n  \n \n 123$ docker imagesREPOSITORY  TAG     IMAGE ID      CREATED      SIZEcentos      latest  0584b3d2cf6d  4 weeks ago  196.5 MB\n\n\nローカルのDockerイメージ格納先にCentOSイメージが格納されていることが確認できました。\nDockerイメージのダイジェストを使用してイメージを取得する通常、最新版のDockerイメージにはlatestタグが付けられます。\nよって、docker pullコマンドでDockerイメージを入手する際は、latestタグを付けることによって、特にバージョンを意識せず常に最新版を入手することが可能です。\nしかし場合によっては、ある特定のDockerイメージを指定して入手したい場合があると思います。\n例えば、動作が確認出来ているDockerイメージを確実に使用したい場合などです。\nDockerイメージがバージョンアップした場合、最新のDockerイメージにlatestタグを付与し、古いものには別のタグを付与することがよくあります。\nこのような場合でも、確実に特定のDockerイメージを入手するには、前項で説明したダイジェスト（Digest）を使用します。\n特定のDockerイメージに付与されているダイジェストを調べる方法として一番簡単なのは、そのDockerイメージを入手することです。\n前項でCentOSイメージを入手した際に、以下のダイジェストが表示されてました。\n\n \n  \n   docker\n  \n  \n   \n  \n \n 1Digest:sha256:b2f9d1c0ff5f87a4743104d099a3d561002ac500db1b9bfa02a783a46e0d366c\n\n\nこのダイジェストを使用して、再度CentOSを入手してみます。\n入手する前に現在のcentos:latestを削除します。\n\n \n  \n   docker\n  \n  \n   \n  \n \n 1$ docker rmi centos:latest\n\n\nではダイジェストを使用してCentOSイメージを入手してみます。\nダイジェストの前に、「取得するイメージ名のリポジトリ名+@」を指定して実行します。\n\n \n  \n   docker\n  \n  \n   \n  \n \n 1$ docker pull centos@sha256:b2f9d1c0ff5f87a4743104d099a3d561002ac500db1b9bfa02a783a46e0d366c\n\n\nダイジェストを使用してDockerイメージを入手した場合はタグ名が付きませんので、docker tagコマンドでタグを設定します。\n\n \n  \n   docker\n  \n  \n   \n  \n \n 1$ docker tag 0584b3d2cf6d centos:latest\n\n\n対象のDockerイメージを指定する部分にはイメージIDを指定してください。\ndocker imagesコマンドで確認します。\n\n \n  \n   docker\n  \n  \n   \n  \n \n 123$ docker imagesREPOSITORY  TAG     IMAGE ID      CREATED      SIZEcentos      latest  0584b3d2cf6d  4 weeks ago  196.5 MB\n\n\nレジストリサーバを指定してDockerイメージを取得するdocker pullコマンドは、Dockerイメージのみを指定した場合は、Docker HubからDockerイメージを取得します。\n冒頭でも書きましたが、Docker Hubのようなレジストリは、自前のサーバ上にも構築することが可能です。\nDocker社がレジストリ用のDockerイメージを提供してまして、比較的容易に構築できます。\n自前でレジストリを用意する件につきましては、別記事でご紹介する予定でして、本記事では省かせていただきます。申し訳ございません。\nここでは、レジストリサーバの名前をtestvm、公開ポート番号を5000番とします。このレジストリ内にmyimage01:v1.0というDockerイメージが格納されているとします。\nこのDockerイメージを取得するには、以下のコマンドを実行します。\n\n \n  \n   docker\n  \n  \n   \n  \n \n 1$ docker pull testvm:5000/myimage01:v1.0\n\n\n正常に取得が完了した場合は、以下のような内容が出力されます。\n\n \n  \n   docker\n  \n  \n   \n  \n \n 1234v1.0: Pulling from myimage0108d48e6f1cff: Pull completeDigest: sha256:b2f9d1c0ff5f87a4743104d099a3d561002ac500db1b9bfa02a783a46e0d366cStatus: Downloaded newer image for testvm:5000/myimage01:v1.0\n\n\nイメージIDやダイジェストは取得するDockerイメージによって異なりますのでご注意ください。\n特定のリポジトリの全Dockerイメージを取得するDocker Hub内のDockerイメージを指定する場合は、「リポジトリ名:タグ名」という形式で指定するとお話ししました。\n通常リポジトリ名部分には、Linuxのディストリビューション名（CentOS、Ubuntu等）や、製品名（mysql、nginx等）などが使われます。\ndocker pullコマンドは、デフォルトでは、Dockerイメージ名で指定した単一のDockerイメージを取得します。\nしかし、場合によっては、特定の製品の全Dockerイメージを入手したい場合があるかもしれません。\nその場合は、オプションとして「-a」（若しくは–all-tags）を付け、リポジトリ名を指定してdocker pullコマンドを実行することで実現できます。\n例えば、LinuxのディストリビューションのCentosの全Dockerイメージを入手する場合は、以下のコマンドを実行します。\n\n \n  \n   docker\n  \n  \n   \n  \n \n 1$ docker pull -a centos\n\n\nCentosの全Dockerイメージは、19個ありまして（2020.6現在）、私のネットワーク環境では、全部取得するのに20分ほど掛かりました。docker pullコマンドの実行過程の出力内容は、大量なので割愛させてください。\n取得したdockerイメージをdocker imagesコマンドで確認します。\n\n \n  \n   docker\n  \n  \n   \n  \n \n 12345678$ docker imagesREPOSITORY  TAG     IMAGE ID      CREATED       SIZEcentos      latest  2d194b392dd1  2 weeks ago   195MBcentos      6.6     3d7ac13b921a  4 months ago  203MBcentos      6.7     000c5746fa52  4 months ago  191MBcentos      5.11    b424fba01172  18 months ago 284MBcentos      5       1ae98b2c895d  18 months ago 285MB（略）\n\n\n","dateCreated":"2021-01-01T10:37:22+09:00","dateModified":"2021-01-02T23:05:58+09:00","datePublished":"2021-01-01T10:37:22+09:00","description":"welcome to my blog","headline":"how-to-use-docker","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2021/01/01/how-to-use-docker/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2021/01/01/how-to-use-docker/","keywords":"docker"}</script>
+    <meta name="description" content="welcome to my blog">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="how-to-use-docker">
+<meta property="og:url" content="https://morichnarich.github.io/2021/01/01/how-to-use-docker/index.html">
+<meta property="og:site_name" content="Nariのブログ">
+<meta property="og:description" content="welcome to my blog">
+<meta property="og:locale" content="ja_JP">
+<meta property="article:published_time" content="2021-01-01T01:37:22.000Z">
+<meta property="article:modified_time" content="2021-01-02T14:05:58.534Z">
+<meta property="article:author" content="Narichika Morinaga">
+<meta property="article:tag" content="docker">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-nwhmakibv65xhsdkq7pht98suw06ytb1by3pl3uicngjtr8jerdnj02uz5dw.min.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+    <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.3.2/styles/androidstudio.min.css">
+    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/highlight.min.js"></script> -->
+</head>
+
+    
+<link rel="stylesheet" href="/my_css.css">
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Nariのブログ
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="リンクを開く: /#about"
+            >
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-header">
+        <a href=https://morichnarich.github.io>
+            <h1 class="sidebar-title">
+                Nariのブログ
+            </h1>
+            <h2 class="sidebar-subtitle">
+                - 明日の自分に残すメモ -
+            </h2>
+        </a>
+    </div>
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="ホーム"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">ホーム</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="カテゴリー"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">カテゴリー</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="タグ"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">タグ</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="アーカイブ"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">アーカイブ</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="検索"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">検索</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="プロフィール"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">プロフィール</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="http://stackoverflow.com/users"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Stack Overflow"
+                        >
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://twitter.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://facebook.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://plus.google.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Google Plus"
+                        >
+                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Google Plus</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/profile/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/mailto"
+                            
+                            rel="noopener"
+                            title="メール"
+                        >
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">メール</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            how-to-use-docker
+        </h1>
+    
+    
+        <div class="post-meta">
+    <i class="fas fa-file-alt"></i>
+    <time datetime="2021-01-01T10:37:22+09:00">
+	
+		    2021/01/01
+    	
+    </time>
+
+    
+    <i class="fas fa-redo-alt"></i>
+        <time datetime="2021-01-02T23:05:58+09:00">
+        
+        2021/01/02
+        
+        </time>
+        <br>
+    
+    
+    
+        <i class="far fa-folder-open"></i>
+        <span>カテゴリー </span>
+        
+    <a class="category-link" href="/categories/programming/">programming</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <!-- > これは引用です。 -->
+
+<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E3%81%AE%E6%B5%81%E3%82%8C"><span class="toc-text">利用の流れ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker-%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8%E3%81%AE%E5%8F%96%E5%BE%97"><span class="toc-text">Docker イメージの取得</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%83%BC%E6%9D%A1%E4%BB%B6%E3%82%92%E6%8C%87%E5%AE%9A%E3%81%97%E3%81%A6Docker%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8%E3%82%92%E6%A4%9C%E7%B4%A2%E3%81%99%E3%82%8B"><span class="toc-text">フィルター条件を指定してDockerイメージを検索する</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8%E3%81%AE%E8%AA%AC%E6%98%8E%E9%83%A8%E5%88%86%E3%82%92%E7%9C%81%E7%95%A5%E3%81%97%E3%81%AA%E3%81%84%E3%81%A7%E7%B5%90%E6%9E%9C%E3%82%92%E8%A1%A8%E7%A4%BA%E3%81%99%E3%82%8B"><span class="toc-text">Dockerイメージの説明部分を省略しないで結果を表示する</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A4%9C%E7%B4%A2%E7%B5%90%E6%9E%9C%E3%81%AE%E8%A1%8C%E6%95%B0%E3%82%92%E6%8C%87%E5%AE%9A%E3%81%99%E3%82%8B"><span class="toc-text">検索結果の行数を指定する</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker-pull%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%81%AE%E4%B8%BB%E3%81%AA%E4%BD%BF%E3%81%84%E6%96%B9"><span class="toc-text">docker pullコマンドの主な使い方</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker%E5%85%AC%E5%BC%8F%E3%83%AC%E3%82%B8%E3%82%B9%E3%83%88%E3%83%AA%E3%81%8B%E3%82%89Docker%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8%E3%82%92%E5%85%A5%E6%89%8B%E3%81%99%E3%82%8B"><span class="toc-text">Docker公式レジストリからDockerイメージを入手する</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8%E3%81%AE%E3%83%80%E3%82%A4%E3%82%B8%E3%82%A7%E3%82%B9%E3%83%88%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%A6%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8%E3%82%92%E5%8F%96%E5%BE%97%E3%81%99%E3%82%8B"><span class="toc-text">Dockerイメージのダイジェストを使用してイメージを取得する</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%83%AC%E3%82%B8%E3%82%B9%E3%83%88%E3%83%AA%E3%82%B5%E3%83%BC%E3%83%90%E3%82%92%E6%8C%87%E5%AE%9A%E3%81%97%E3%81%A6Docker%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8%E3%82%92%E5%8F%96%E5%BE%97%E3%81%99%E3%82%8B"><span class="toc-text">レジストリサーバを指定してDockerイメージを取得する</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E5%AE%9A%E3%81%AE%E3%83%AA%E3%83%9D%E3%82%B8%E3%83%88%E3%83%AA%E3%81%AE%E5%85%A8Docker%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8%E3%82%92%E5%8F%96%E5%BE%97%E3%81%99%E3%82%8B"><span class="toc-text">特定のリポジトリの全Dockerイメージを取得する</span></a></li></ol></li></ol>
+
+<h2 id="利用の流れ"><a href="#利用の流れ" class="headerlink" title="利用の流れ"></a>利用の流れ</h2><p>必ずしも毎回この通りじゃないけど、大雑把に利用の流れを掴むために以下の順に解説します。<br><br></p>
+<ol>
+<li>Docker Hub のイメージを検索 (search)</li>
+<li>Docker Hub から使いたいイメージを取得する (pull)</li>
+<li>イメージからコンテナを生成して起動 (run)</li>
+<li>コンテナ内でコマンド実行 (exec)</li>
+<li>コンテナを停止 (stop)</li>
+<li>コンテナをイメージ化 (commit)</li>
+<li>いらなくなったらコンテナを削除 (rm)</li>
+<li>いらなくなったらイメージを削除 (rmi)<br>
+<br>
+
+</li>
+</ol>
+<p>その他に以下のコマンドもよく利用します。<br><br></p>
+<ol>
+<li>取得済みイメージ一覧 (images)</li>
+<li>実行中コンテナ一覧 (ps)</li>
+<li>停止中も含めた全てのコンテナ一覧 (ps -a)</li>
+<li>停止中のコンテナを起動 (start)</li>
+<li>ホストとコンテナ間でのファイルコピー (cp)<br>
+<br>
+
+</li>
+</ol>
+<p>run は <font color="#FF3860"><code>コンテナを生成して起動</code></font> だということに注意。</p>
+<p>色々作業して改変した後の状態で起動したいなら、<br><br></p>
+<ol>
+<li>start を使う</li>
+<li>commit してコンテナをイメージ化したものから run<br>
+<br>
+
+</li>
+</ol>
+<p>ちなみに docker は<strong>PowerShell</strong>を使うみたいです。</p>
+<h2 id="Docker-イメージの取得"><a href="#Docker-イメージの取得" class="headerlink" title="Docker イメージの取得"></a>Docker イメージの取得</h2><p>以下のコマンドは、Docker Hub から nginx の Docker イメージを取得します。<br><br></p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ docker search nginx</span><br><span class="line">NAME                                                   DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED</span><br><span class="line">nginx                                                  Official build of Nginx.                        <span class="number">7722</span>                [OK]</span><br><span class="line">jwilder/nginx-proxy                                    Automated Nginx reverse proxy for docker con…   <span class="number">1233</span>                                    [OK]</span><br><span class="line">richarvey/nginx-php-fpm                                Container running Nginx + PHP-FPM capable of…   <span class="number">500</span>                                     [OK]</span><br><span class="line">jrcs/letsencrypt-nginx-proxy-companion                 LetsEncrypt container to use with nginx as p…   <span class="number">288</span>                                     [OK]</span><br><span class="line">kong                                                   Open-source Microservice &amp; API Management la…   <span class="number">150</span>                 [OK]</span><br><span class="line">webdevops/php-nginx                                    Nginx with PHP-FPM                              <span class="number">94</span>                                      [OK]</span><br><span class="line">（以下省略）</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>Dockerイメージ名（NAME）の部分、若しくは説明（DESCRIPTION）の部分に、指定したキーワード「nginx」が含まれているイメージの一覧が出力されました。</p>
+<p>大小文字は無視されます。</p>
+<p>docker searchコマンドの検索結果の情報量は、この程度の内容です。<br>Dockerイメージのサマリー情報を参照する目的としては良いと思いますが、対象のDockerイメージについて詳しく調べるという目的には向かない。</p>
+<p>より詳しい内容の検索は、Docker HubのWebサービスをご利用いただければと思います。</p>
+<p>次のコマンドは、Docker Hub から最新の Docker イメージを取得します。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker pull nginx:latest</span><br></pre></td></tr></table></figure>
+</div>
+
+<h3 id="フィルター条件を指定してDockerイメージを検索する"><a href="#フィルター条件を指定してDockerイメージを検索する" class="headerlink" title="フィルター条件を指定してDockerイメージを検索する"></a>フィルター条件を指定してDockerイメージを検索する</h3><p>docker searchコマンドには、３種類のフィルターが用意されてます。</p>
+<p><font color="#FF3860"><code>is-automated = &lt;true or false&gt;</code></font>オプションは、Docker Hubのautomated build機能（自動構築機能）を利用して構築したイメージであるか否かを示しています。</p>
+<p><font color="#FF3860"><code>is-official = &lt;true or false&gt;</code></font>オプションは、CentOSやUbuntu、Apacheなどの各ベンダが公式イメージとして提供しているイメージであるか否かを示しています。</p>
+<p><font color="#FF3860"><code>stars = &lt;数値&gt;</code></font>オプションは、各Dockerイメージに付けられた星（star）の数を指定して検索します。指定した数以上の星の数のDockerイメージが対象となります。星は、Docker Hubのユーザがお気に入りとして指定したことを示す印です。この数が多いということは人気があるDockerイメージの可能性が高いということを示しています。</p>
+<p>実際にフィルターを指定してdocker searchコマンドを実行してみます。</p>
+<p>星の数が10以上でキーワード「backup」を含むDockerイメージを検索します。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker search --filter stars=<span class="number">10</span> backup</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>結果は以下のとおりです。星の数が10以上のイメージのみ表示されました。<br><br></p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">NAME                           DESCRIPTION                                   STARS  OFFICIAL AUTOMATED</span><br><span class="line">istepanov/backup-to-s3         Container that backups files to Amazon S3 us… <span class="number">23</span>      [OK]</span><br><span class="line">schickling/mysql-backup-s3     Backup MySQL to S3 (supports periodic backup… <span class="number">16</span>      [OK]</span><br><span class="line">adferrand/backuppc             Docker container with BackupPC version <span class="number">4</span>.x/<span class="number">3</span>… <span class="number">12</span>      [OK]</span><br><span class="line">schickling/postgres-backup-s3  Backup PostgresSQL to S3 (supports periodic … <span class="number">11</span>      [OK]</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>次は、星の数が3以上のキーワード「http」を含む公式イメージを検索してみます。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker search --filter stars=<span class="number">3</span> --filter is-official=true http</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>結果は以下のとおりです。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">NAME         DESCRIPTION                                    STARS   OFFICIAL AUTOMATED</span><br><span class="line">httpd        The Apache HTTP Server Project                 <span class="number">1583</span>     [OK]</span><br><span class="line">haproxy      HAProxy - The Reliable, High Performance TCP…  <span class="number">918</span>      [OK]</span><br><span class="line">jruby        JRuby (http://www.jruby.org) is an implement…  <span class="number">62</span>       [OK]</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>　2つ目の「haproxy」の行には「http」のキーワードが見当たりませんが、これは説明部分がカットされて表示されているからです。</p>
+<p>　後述する「–no-trunc」オプションを付けることによって、説明部分が省略なして表示されます。</p>
+<h3 id="Dockerイメージの説明部分を省略しないで結果を表示する"><a href="#Dockerイメージの説明部分を省略しないで結果を表示する" class="headerlink" title="Dockerイメージの説明部分を省略しないで結果を表示する"></a>Dockerイメージの説明部分を省略しないで結果を表示する</h3><p>デフォルトでは、docker searchコマンドの出力のDockerイメージの説明部分（DESCRIPTION）は、最大45文字です。</p>
+<p>それ以上の文字数の場合はカットされます。</p>
+<p>カット無しで全量表示させたい場合は、「–no-trunc」オプションを付けて実行します。<br><br></p>
+<p>前項の例を再度使用します。</p>
+<p>星の数が3以上のキーワード「http」を含む公式イメージを検索してみます。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker search --filter stars=<span class="number">3</span> --filter is-official=true http</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>結果が出力されましたが、2つ目のDockerイメージhaproxyの行にはhttpの文字が見当たりません。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">NAME            DESCRIPTION                                    STARS</span><br><span class="line"> OFFICIAL AUTOMATED</span><br><span class="line">httpd           The Apache HTTP Server Project                 <span class="number">3045</span> </span><br><span class="line"> [OK]</span><br><span class="line">haproxy         HAProxy - The Reliable, High Performance T...  <span class="number">624</span></span><br><span class="line"> [OK]</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>次に「–no-trunc」オプションを追加で付けて実行してみます。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker search --no-trunc --filter stars=<span class="number">3</span> --filter is-official=true http</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>結果は以下のとおりです。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">NAME          DESCRIPTION                                                                                       STARS   OFFICIAL   AUTOMATED</span><br><span class="line">httpd         The Apache HTTP Server Project                                                                    <span class="number">3045</span>     [OK]</span><br><span class="line">haproxy       HAProxy - The Reliable, High Performance TCP/HTTP Load Balancer                                   <span class="number">1432</span>      [OK]</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>説明（DESCRIPTION）部分が全部出力されて、Dockerイメージ「haproxy」の説明部分にhttpの文字が存在することが確認できました。</p>
+<h3 id="検索結果の行数を指定する"><a href="#検索結果の行数を指定する" class="headerlink" title="検索結果の行数を指定する"></a>検索結果の行数を指定する</h3><p>デフォルトでは、docker searchコマンドの最大出力行数は25行です。</p>
+<p>「–limit」で出力する最大行数を指定することが可能です。</p>
+<p>指定可能な数値は1～100までとなってます。</p>
+<p>例えば、最大出力行数を80行にして、キーワード「http」を含むDockerイメージを検索する場合は、以下のように指定します。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker search --limit=<span class="number">80</span> http</span><br></pre></td></tr></table></figure>
+</div>
+
+<h2 id="docker-pullコマンドの主な使い方"><a href="#docker-pullコマンドの主な使い方" class="headerlink" title="docker pullコマンドの主な使い方"></a>docker pullコマンドの主な使い方</h2><h3 id="Docker公式レジストリからDockerイメージを入手する"><a href="#Docker公式レジストリからDockerイメージを入手する" class="headerlink" title="Docker公式レジストリからDockerイメージを入手する"></a>Docker公式レジストリからDockerイメージを入手する</h3><p>以下のコマンドを実行しますと、Docker公式レジストリ内のCentOSのDockerイメージの最新版を入手することが出来ます。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker image pull centos</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>コマンドを実行しますと、以下のような内容が出力されます。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Using default tag: latest</span><br><span class="line">latest: Pulling <span class="keyword">from</span> library/centos</span><br><span class="line"></span><br><span class="line"><span class="number">08</span>d48e6f1cff: Pull complete</span><br><span class="line">Digest: sha256:b2f9d1c0ff5f87a4743104d099a3d561002ac500db1b9bfa02a783a46e0d366c</span><br><span class="line">Status: Downloaded newer image for centos:latest</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>「Digest:」部分の長い文字列は、入手したDockerイメージを示すダイジェストで、そのDockerイメージに付けられた普遍的な識別子です。</p>
+<p>docker pullコマンドは、Dockerイメージ名のみを指定した場合は、デフォルトでDocker公式のレジストリサービスに接続します。<br>後述しますが、他のレジストリに接続することも可能です。</p>
+<p>Dockerイメージ名を指定する際にタグ名を省略すると、「latest」タグが使われます。</p>
+<p>CentOSの最新版はイメージレイヤが１つでしたが、複数レイヤが存在する場合は「Pull complete」の行が複数出力されます。</p>
+<p>docker imagesコマンドにて、入手したCentOSイメージを確認します。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker images</span><br><span class="line">REPOSITORY  TAG     IMAGE ID      CREATED      SIZE</span><br><span class="line">centos      latest  <span class="number">0584</span>b3d2cf6d  <span class="number">4</span> weeks ago  <span class="number">196.5</span> MB</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>ローカルのDockerイメージ格納先にCentOSイメージが格納されていることが確認できました。</p>
+<h3 id="Dockerイメージのダイジェストを使用してイメージを取得する"><a href="#Dockerイメージのダイジェストを使用してイメージを取得する" class="headerlink" title="Dockerイメージのダイジェストを使用してイメージを取得する"></a>Dockerイメージのダイジェストを使用してイメージを取得する</h3><p>通常、最新版のDockerイメージにはlatestタグが付けられます。</p>
+<p>よって、docker pullコマンドでDockerイメージを入手する際は、latestタグを付けることによって、特にバージョンを意識せず常に最新版を入手することが可能です。</p>
+<p>しかし場合によっては、ある特定のDockerイメージを指定して入手したい場合があると思います。</p>
+<p>例えば、動作が確認出来ているDockerイメージを確実に使用したい場合などです。</p>
+<p>Dockerイメージがバージョンアップした場合、最新のDockerイメージにlatestタグを付与し、古いものには別のタグを付与することがよくあります。</p>
+<p>このような場合でも、確実に特定のDockerイメージを入手するには、前項で説明したダイジェスト（Digest）を使用します。</p>
+<p>特定のDockerイメージに付与されているダイジェストを調べる方法として一番簡単なのは、そのDockerイメージを入手することです。</p>
+<p>前項でCentOSイメージを入手した際に、以下のダイジェストが表示されてました。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Digest:sha256:b2f9d1c0ff5f87a4743104d099a3d561002ac500db1b9bfa02a783a46e0d366c</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>このダイジェストを使用して、再度CentOSを入手してみます。</p>
+<p>入手する前に現在のcentos:latestを削除します。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker rmi centos:latest</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>ではダイジェストを使用してCentOSイメージを入手してみます。</p>
+<p>ダイジェストの前に、「取得するイメージ名のリポジトリ名+@」を指定して実行します。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker pull centos@sha256:b2f9d1c0ff5f87a4743104d099a3d561002ac500db1b9bfa02a783a46e0d366c</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>ダイジェストを使用してDockerイメージを入手した場合はタグ名が付きませんので、docker tagコマンドでタグを設定します。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker tag <span class="number">0584</span>b3d2cf6d centos:latest</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>対象のDockerイメージを指定する部分にはイメージIDを指定してください。</p>
+<p>docker imagesコマンドで確認します。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker images</span><br><span class="line">REPOSITORY  TAG     IMAGE ID      CREATED      SIZE</span><br><span class="line">centos      latest  <span class="number">0584</span>b3d2cf6d  <span class="number">4</span> weeks ago  <span class="number">196.5</span> MB</span><br></pre></td></tr></table></figure>
+</div>
+
+<h3 id="レジストリサーバを指定してDockerイメージを取得する"><a href="#レジストリサーバを指定してDockerイメージを取得する" class="headerlink" title="レジストリサーバを指定してDockerイメージを取得する"></a>レジストリサーバを指定してDockerイメージを取得する</h3><p>docker pullコマンドは、Dockerイメージのみを指定した場合は、Docker HubからDockerイメージを取得します。</p>
+<p>冒頭でも書きましたが、Docker Hubのようなレジストリは、自前のサーバ上にも構築することが可能です。</p>
+<p>Docker社がレジストリ用のDockerイメージを提供してまして、比較的容易に構築できます。</p>
+<p>自前でレジストリを用意する件につきましては、別記事でご紹介する予定でして、本記事では省かせていただきます。申し訳ございません。</p>
+<p>ここでは、レジストリサーバの名前をtestvm、公開ポート番号を5000番とします。このレジストリ内にmyimage01:v1.0というDockerイメージが格納されているとします。</p>
+<p>このDockerイメージを取得するには、以下のコマンドを実行します。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker pull testvm:<span class="number">5000</span>/myimage01:v1.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+</div>
+
+<p>正常に取得が完了した場合は、以下のような内容が出力されます。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">v1.<span class="number">0</span>: Pulling <span class="keyword">from</span> myimage01</span><br><span class="line"><span class="number">08</span>d48e6f1cff: Pull complete</span><br><span class="line">Digest: sha256:b2f9d1c0ff5f87a4743104d099a3d561002ac500db1b9bfa02a783a46e0d366c</span><br><span class="line">Status: Downloaded newer image for testvm:<span class="number">5000</span>/myimage01:v1.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+</div>
+
+<p>イメージIDやダイジェストは取得するDockerイメージによって異なりますのでご注意ください。</p>
+<h3 id="特定のリポジトリの全Dockerイメージを取得する"><a href="#特定のリポジトリの全Dockerイメージを取得する" class="headerlink" title="特定のリポジトリの全Dockerイメージを取得する"></a>特定のリポジトリの全Dockerイメージを取得する</h3><p>Docker Hub内のDockerイメージを指定する場合は、「リポジトリ名:タグ名」という形式で指定するとお話ししました。</p>
+<p>通常リポジトリ名部分には、Linuxのディストリビューション名（CentOS、Ubuntu等）や、製品名（mysql、nginx等）などが使われます。</p>
+<p>docker pullコマンドは、デフォルトでは、Dockerイメージ名で指定した単一のDockerイメージを取得します。</p>
+<p>しかし、場合によっては、特定の製品の全Dockerイメージを入手したい場合があるかもしれません。</p>
+<p>その場合は、オプションとして「-a」（若しくは–all-tags）を付け、リポジトリ名を指定してdocker pullコマンドを実行することで実現できます。</p>
+<p>例えば、LinuxのディストリビューションのCentosの全Dockerイメージを入手する場合は、以下のコマンドを実行します。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker pull -a centos</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>Centosの全Dockerイメージは、19個ありまして（2020.6現在）、私のネットワーク環境では、全部取得するのに20分ほど掛かりました。docker pullコマンドの実行過程の出力内容は、大量なので割愛させてください。</p>
+<p>取得したdockerイメージをdocker imagesコマンドで確認します。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ docker images</span><br><span class="line">REPOSITORY  TAG     IMAGE ID      CREATED       SIZE</span><br><span class="line">centos      latest  <span class="number">2</span>d194b392dd1  <span class="number">2</span> weeks ago   <span class="number">195</span>MB</span><br><span class="line">centos      <span class="number">6.6</span>     <span class="number">3</span>d7ac13b921a  <span class="number">4</span> months ago  <span class="number">203</span>MB</span><br><span class="line">centos      <span class="number">6.7</span>     <span class="number">000</span>c5746fa52  <span class="number">4</span> months ago  <span class="number">191</span>MB</span><br><span class="line">centos      <span class="number">5.11</span>    b424fba01172  <span class="number">18</span> months ago <span class="number">284</span>MB</span><br><span class="line">centos      <span class="number">5</span>       <span class="number">1</span>ae98b2c895d  <span class="number">18</span> months ago <span class="number">285</span>MB</span><br><span class="line">（略）</span><br></pre></td></tr></table></figure>
+</div>
+
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">タグ</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/docker/" rel="tag">docker</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">前</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/12/31/docker-i-win/"
+                    data-tooltip="docker-i-win"
+                    aria-label="次: docker-i-win"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">次</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2021/01/01/how-to-use-docker/"
+                    title="Facebookで共有"
+                    aria-label="Facebookで共有"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2021/01/01/how-to-use-docker/"
+                    title="Twitterで共有"
+                    aria-label="Twitterで共有"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2021/01/01/how-to-use-docker/"
+                    title="Google+で共有"
+                    aria-label="Google+で共有"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目次">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2021 Narichika Morinaga. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">前</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/12/31/docker-i-win/"
+                    data-tooltip="docker-i-win"
+                    aria-label="次: docker-i-win"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">次</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2021/01/01/how-to-use-docker/"
+                    title="Facebookで共有"
+                    aria-label="Facebookで共有"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2021/01/01/how-to-use-docker/"
+                    title="Twitterで共有"
+                    aria-label="Twitterで共有"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2021/01/01/how-to-use-docker/"
+                    title="Google+で共有"
+                    aria-label="Google+で共有"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目次">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2021/01/01/how-to-use-docker/"
+                        aria-label="Facebookで共有"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Facebookで共有</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2021/01/01/how-to-use-docker/"
+                        aria-label="Twitterで共有"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Twitterで共有</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://morichnarich.github.io/2021/01/01/how-to-use-docker/"
+                        aria-label="Google+で共有"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Google+で共有</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <h4 id="about-card-name">Narichika Morinaga</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-ixqwvefj8vfsqrsg5wx4vngxhhw8v1hzxnf8nzvk4ihpwzdrs4jr5wdtf9oq.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+        
+<script src="/my_script.js"></script>
+
+    </body>
+</html>
