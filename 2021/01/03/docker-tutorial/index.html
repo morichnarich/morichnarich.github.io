@@ -1,0 +1,923 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Nariのブログ">
+    <title>Docker Tutorial - Nariのブログ - 明日の自分に残すメモ - </title>
+    <meta name="author" content="Narichika Morinaga">
+    
+        <meta name="keywords" content="hexo,javascript,">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\nDockerのインストールDownload Docker Community Editionからダウンロードしましょう。Mac の場合は Docker for Mac をインストールするだけです。\nDocker 利用の流れ必ずしも毎回この通りじゃないけど、大雑把に利用の流れを掴むために以下の順に解説します。\n\nDocker Hub のイメージを検索 (search)\nDocker Hub から使いたいイメージを取得する (pull)\nイメージからコンテナを生成して実行 (run)\nコンテナ内でコマンド実行 (exec)\nコンテナを停止 (stop)\nコンテナをイメージ化 (commit)\nいらなくなったらコンテナを削除 (rm)\nいらなくなったらイメージを削除 (rmi)\n\n\n\n\nその他に以下のコマンドもよく利用します。\n\n取得済みイメージ一覧 (docker image ls (旧 docker images )\n実行中コンテナ一覧 (docker container ls (旧 docker ps )\n停止中も含めた全てのコンテナ一覧 (docker container ls -a (旧 docker ps -a )\n停止中のコンテナを起動 (start)\nホストとコンテナ間でのファイルコピー (cp)\n\n\n\n\nrun は コンテナを生成して 実行 だということに注意。\n色々作業して改変した後の状態で起動したいなら、\n\nstart を使う\ncommit してコンテナをイメージ化したものから run\n\n\n\n\n\nDocker の起動Docker を使うためには、まず最初に docker desktop を起動させましょう！docker コマンドは Docker が起動していないと動作しません。ちなみに docker はWindowsではPowerShellを使うみたいです。\nnginx の動作確認DockerコンテナのIPアドレスを確認後、ブラウザで nginx へアクセスします。ポート番号は docker run で指定した8080番です。\n\n \n  \n   \n  \n  \n   \n  \n \n 1http://localhost:8080/\n\n\n\n【余談】ホストからDockerコンテナのIPアドレスを取得する方法docker inspect コマンド を使えば確認できますが、レスポンス内容が長ったらしいので、下記のように docker inspect –format オプションでIPアドレスのみ表示させます。\n\n \n  \n   Docker\n  \n  \n   \n  \n \n 1docker inspect -f &#x27;&#123;&#123;range .NetworkSettings.Networks&#125;&#125;&#123;&#123;.IPAddress&#125;&#125;&#123;&#123;end&#125;&#125;&#x27; container_name_or_id\n\n\nもしくは、\n\n \n  \n   Docker\n  \n  \n   \n  \n \n 1docker inspect --format &#x27;&#123;&#123; .NetworkSettings.IPAddress &#125;&#125;&#x27; container_name_or_id\n\n\n\n\n\nコンテナの停止\n \n  \n   Docker\n  \n  \n   \n  \n \n 1docker stop my-nginx\n\n\n \n  \n   Docker\n  \n  \n   \n  \n \n 12$ docker psCONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES\n\n\n\n-a オプションを付けると終了したコンテナを確認できます。\n\n \n  \n   Docker\n  \n  \n   \n  \n \n 12CONTAINER ID   IMAGE               COMMAND                  CREATED       STATUS                     PORTS                NAMESe897a8154568   nginx:latest        &quot;/docker-entrypoint.…&quot;   2 hours ago   Exited (0) 8 minutes ago                      \n\n\nコンテナの再実行終了したコンテナを再度実行します。\n\n \n  \n   Docker\n  \n  \n   \n  \n \n 1docker start my-nginx\n\n\n \n  \n   Docker\n  \n  \n   \n  \n \n 123$ docker psCONTAINER ID        IMAGE               COMMAND                CREATED             STATUS              PORTS                           NAMES6337c95a1542        nginx:latest        &quot;nginx -g &#x27;daemon of   5 minutes ago       Up 18 seconds       443/tcp, 0.0.0.0:8080-&gt;80/tcp   my-nginx\n\n\n\nコンテナの削除コンテナ終了し、コンテナを削除します。\n\n \n  \n   Docker\n  \n  \n   \n  \n \n 1docker rm my-nginx\n\n\n\n \n  \n   Docker\n  \n  \n   \n  \n \n 12$ docker ps -aCONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES\n\n\nDocker イメージの削除不要な Docker イメージを削除します。また、IMAGE ID を指定してイメージを削除することもできます。\n\n \n  \n   Docker\n  \n  \n   \n  \n \n 123$ docker imagesREPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZEnginx               latest              319d2015d149        2 weeks ago         132.8 MB\n\n\n\n \n  \n   Docker\n  \n  \n   \n  \n \n 1docker rmi nginx:latest\n\n\n\n \n  \n   Docker\n  \n  \n   \n  \n \n 12$ docker imagesREPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE\n\n\nまとめDocker イメージの取得からコンテナの実行と停止、イメージ削除までの一連の作業を確認できました。\nご訪問ありがとうございました！\n","dateCreated":"2021-01-03T17:19:54+09:00","dateModified":"2021-01-04T12:38:29+09:00","datePublished":"2021-01-03T17:19:54+09:00","description":"welcome to my blog","headline":"Docker Tutorial","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2021/01/03/docker-tutorial/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2021/01/03/docker-tutorial/","keywords":"Docker"}</script>
+    <meta name="description" content="welcome to my blog">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Docker Tutorial">
+<meta property="og:url" content="https://morichnarich.github.io/2021/01/03/docker-tutorial/index.html">
+<meta property="og:site_name" content="Nariのブログ">
+<meta property="og:description" content="welcome to my blog">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://morichnarich.github.io/images/docker_IPaddressOfContainer.JPG">
+<meta property="og:image" content="https://morichnarich.github.io/images/welcome_to_nginx.JPG">
+<meta property="article:published_time" content="2021-01-03T08:19:54.000Z">
+<meta property="article:modified_time" content="2021-01-04T03:38:29.036Z">
+<meta property="article:author" content="Narichika Morinaga">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://morichnarich.github.io/images/docker_IPaddressOfContainer.JPG">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-nwhmakibv65xhsdkq7pht98suw06ytb1by3pl3uicngjtr8jerdnj02uz5dw.min.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+    <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.3.2/styles/androidstudio.min.css">
+    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/highlight.min.js"></script> -->
+</head>
+
+    
+<link rel="stylesheet" href="/my_css.css">
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Nariのブログ
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="リンクを開く: /#about"
+            >
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-header">
+        <a href=https://morichnarich.github.io>
+            <h1 class="sidebar-title">
+                Nariのブログ
+            </h1>
+            <h2 class="sidebar-subtitle">
+                - 明日の自分に残すメモ -
+            </h2>
+        </a>
+    </div>
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="ホーム"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">ホーム</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="カテゴリー"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">カテゴリー</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="タグ"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">タグ</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="アーカイブ"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">アーカイブ</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="検索"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">検索</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="プロフィール"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">プロフィール</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="http://stackoverflow.com/users"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Stack Overflow"
+                        >
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://twitter.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://facebook.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://plus.google.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Google Plus"
+                        >
+                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Google Plus</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/profile/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/mailto"
+                            
+                            rel="noopener"
+                            title="メール"
+                        >
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">メール</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Docker Tutorial
+        </h1>
+    
+    
+        <div class="post-meta">
+    <i class="fas fa-file-alt"></i>
+    <time datetime="2021-01-03T17:19:54+09:00">
+	
+		    2021/01/03
+    	
+    </time>
+
+    
+    <i class="fas fa-redo-alt"></i>
+        <time datetime="2021-01-04T12:38:29+09:00">
+        
+        2021/01/04
+        
+        </time>
+        <br>
+    
+    
+    
+        <i class="far fa-folder-open"></i>
+        <span>カテゴリー </span>
+        
+    <a class="category-link" href="/categories/programming/">programming</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <!-- > これは引用です。 -->
+
+<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="toc-text">Dockerのインストール</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker-%E5%88%A9%E7%94%A8%E3%81%AE%E6%B5%81%E3%82%8C"><span class="toc-text">Docker 利用の流れ</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Docker-%E3%81%AE%E8%B5%B7%E5%8B%95"><span class="toc-text">Docker の起動</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#nginx-%E3%81%AE%E5%8B%95%E4%BD%9C%E7%A2%BA%E8%AA%8D"><span class="toc-text">nginx の動作確認</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%80%90%E4%BD%99%E8%AB%87%E3%80%91%E3%83%9B%E3%82%B9%E3%83%88%E3%81%8B%E3%82%89Docker%E3%82%B3%E3%83%B3%E3%83%86%E3%83%8A%E3%81%AEIP%E3%82%A2%E3%83%89%E3%83%AC%E3%82%B9%E3%82%92%E5%8F%96%E5%BE%97%E3%81%99%E3%82%8B%E6%96%B9%E6%B3%95"><span class="toc-text">【余談】ホストからDockerコンテナのIPアドレスを取得する方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E3%82%B3%E3%83%B3%E3%83%86%E3%83%8A%E3%81%AE%E5%81%9C%E6%AD%A2"><span class="toc-text">コンテナの停止</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E3%82%B3%E3%83%B3%E3%83%86%E3%83%8A%E3%81%AE%E5%86%8D%E5%AE%9F%E8%A1%8C"><span class="toc-text">コンテナの再実行</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E3%82%B3%E3%83%B3%E3%83%86%E3%83%8A%E3%81%AE%E5%89%8A%E9%99%A4"><span class="toc-text">コンテナの削除</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Docker-%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8%E3%81%AE%E5%89%8A%E9%99%A4"><span class="toc-text">Docker イメージの削除</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E3%81%BE%E3%81%A8%E3%82%81"><span class="toc-text">まとめ</span></a>
+<h2 id="Dockerのインストール"><a href="#Dockerのインストール" class="headerlink" title="Dockerのインストール"></a>Dockerのインストール</h2><p><a target="_blank" rel="noopener" href="https://www.docker.com/community-edition">Download Docker Community Edition</a>からダウンロードしましょう。<br>Mac の場合は <a target="_blank" rel="noopener" href="https://www.docker.com/docker-mac">Docker for Mac</a> をインストールするだけです。</p>
+<h2 id="Docker-利用の流れ"><a href="#Docker-利用の流れ" class="headerlink" title="Docker 利用の流れ"></a>Docker 利用の流れ</h2><p>必ずしも毎回この通りじゃないけど、大雑把に利用の流れを掴むために以下の順に解説します。<br><br></p>
+<ol>
+<li>Docker Hub のイメージを検索 (search)</li>
+<li>Docker Hub から使いたいイメージを取得する (pull)</li>
+<li>イメージからコンテナを生成して実行 (run)</li>
+<li>コンテナ内でコマンド実行 (exec)</li>
+<li>コンテナを停止 (stop)</li>
+<li>コンテナをイメージ化 (commit)</li>
+<li>いらなくなったらコンテナを削除 (rm)</li>
+<li>いらなくなったらイメージを削除 (rmi)<br>
+<br>
+
+</li>
+</ol>
+<p>その他に以下のコマンドもよく利用します。<br><br></p>
+<ol>
+<li>取得済みイメージ一覧 (docker image ls (旧 docker images )</li>
+<li>実行中コンテナ一覧 (docker container ls (旧 docker ps )</li>
+<li>停止中も含めた全てのコンテナ一覧 (docker container ls -a (旧 docker ps -a )</li>
+<li>停止中のコンテナを起動 (start)</li>
+<li>ホストとコンテナ間でのファイルコピー (cp)<br>
+<br>
+
+</li>
+</ol>
+<p>run は <span style="color: #FF7067; display: inline-block; background-color: #EEE; padding-left: 4px; padding-right: 4px; border-raduis: 4px; font-weight:bold;">コンテナを生成して 実行</span> だということに注意。</p>
+<p>色々作業して改変した後の状態で起動したいなら、<br><br></p>
+<ol>
+<li>start を使う</li>
+<li>commit してコンテナをイメージ化したものから run<br>
+<br>
+
+
+</li>
+</ol>
+<h1 id="Docker-の起動"><a href="#Docker-の起動" class="headerlink" title="Docker の起動"></a>Docker の起動</h1><p>Docker を使うためには、まず最初に docker desktop を起動させましょう！<br>docker コマンドは Docker が起動していないと動作しません。<br>ちなみに docker はWindowsでは<strong>PowerShell</strong>を使うみたいです。</p>
+<h1 id="nginx-の動作確認"><a href="#nginx-の動作確認" class="headerlink" title="nginx の動作確認"></a>nginx の動作確認</h1><p>DockerコンテナのIPアドレスを確認後、ブラウザで nginx へアクセスします。<br>ポート番号は docker run で指定した8080番です。<br><br></p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <!-- <span class="codeTitles">Docker</span> -->
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:<span class="number">8080</span>/</span><br></pre></td></tr></table></figure>
+</div>
+<br>
+
+<h3 id="【余談】ホストからDockerコンテナのIPアドレスを取得する方法"><a href="#【余談】ホストからDockerコンテナのIPアドレスを取得する方法" class="headerlink" title="【余談】ホストからDockerコンテナのIPアドレスを取得する方法"></a>【余談】ホストからDockerコンテナのIPアドレスを取得する方法</h3><p><span style="display: inline-block; background-color: #EEE; padding-left: 4px; padding-right: 4px; border-raduis: 4px; font-weight:bold;">docker inspect コマンド</span> を使えば確認できますが、レスポンス内容が長ったらしいので、下記のように docker inspect –format オプションでIPアドレスのみ表示させます。<br><br></p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">Docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect -f <span class="string">&#x27;&#123;&#123;range .NetworkSettings.Networks&#125;&#125;&#123;&#123;.IPAddress&#125;&#125;&#123;&#123;end&#125;&#125;&#x27;</span> container_name_or_id</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>もしくは、</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">Docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect --format <span class="string">&#x27;&#123;&#123; .NetworkSettings.IPAddress &#125;&#125;&#x27;</span> container_name_or_id</span><br></pre></td></tr></table></figure>
+</div>
+
+<p><img src="/images/docker_IPaddressOfContainer.JPG" alt="search IPaddress of container" title="search IPaddress of container"></p>
+<!-- <div class="docs">
+ <div class="control">
+  <div>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://<span class="number">172.17</span>.<span class="number">0.2</span>:<span class="number">8080</span>/</span><br></pre></td></tr></table></figure>
+</div> -->
+
+<h1 id="コンテナの停止"><a href="#コンテナの停止" class="headerlink" title="コンテナの停止"></a>コンテナの停止</h1><div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">Docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop my-nginx</span><br></pre></td></tr></table></figure>
+</div>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">Docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ docker ps</span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES</span><br></pre></td></tr></table></figure>
+</div>
+<br>
+
+<p><span style="color: #FF7067; display: inline-block; background-color: #EEE; padding-left: 4px; padding-right: 4px; border-raduis: 4px; font-weight:bold;">-a</span> オプションを付けると終了したコンテナを確認できます。<br><br></p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">Docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CONTAINER ID   IMAGE               COMMAND                  CREATED       STATUS                     PORTS                NAMES</span><br><span class="line">e897a8154568   nginx:latest        <span class="string">&quot;/docker-entrypoint.…&quot;</span>   <span class="number">2</span> hours ago   Exited (<span class="number">0</span>) <span class="number">8</span> minutes ago                      </span><br></pre></td></tr></table></figure>
+</div>
+
+<h1 id="コンテナの再実行"><a href="#コンテナの再実行" class="headerlink" title="コンテナの再実行"></a>コンテナの再実行</h1><p>終了したコンテナを再度実行します。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">Docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker start my-nginx</span><br></pre></td></tr></table></figure>
+</div>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">Docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker ps</span><br><span class="line">CONTAINER ID        IMAGE               COMMAND                CREATED             STATUS              PORTS                           NAMES</span><br><span class="line"><span class="number">6337</span>c95a1542        nginx:latest        <span class="string">&quot;nginx -g &#x27;daemon of   5 minutes ago       Up 18 seconds       443/tcp, 0.0.0.0:8080-&gt;80/tcp   my-nginx</span></span><br></pre></td></tr></table></figure>
+</div>
+
+<p><img src="/images/welcome_to_nginx.JPG" alt="welcome to nginx" title="welcome to nginx"></p>
+<h1 id="コンテナの削除"><a href="#コンテナの削除" class="headerlink" title="コンテナの削除"></a>コンテナの削除</h1><p>コンテナ終了し、コンテナを削除します。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">Docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rm my-nginx</span><br></pre></td></tr></table></figure>
+</div>
+
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">Docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ docker ps -a</span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES</span><br></pre></td></tr></table></figure>
+</div>
+
+<h1 id="Docker-イメージの削除"><a href="#Docker-イメージの削除" class="headerlink" title="Docker イメージの削除"></a>Docker イメージの削除</h1><p>不要な Docker イメージを削除します。<br>また、IMAGE ID を指定してイメージを削除することもできます。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">Docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker images</span><br><span class="line">REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE</span><br><span class="line">nginx               latest              <span class="number">319</span>d2015d149        <span class="number">2</span> weeks ago         <span class="number">132.8</span> MB</span><br></pre></td></tr></table></figure>
+</div>
+
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">Docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rmi nginx:latest</span><br></pre></td></tr></table></figure>
+</div>
+
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">Docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ docker images</span><br><span class="line">REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE</span><br></pre></td></tr></table></figure>
+</div>
+
+<h1 id="まとめ"><a href="#まとめ" class="headerlink" title="まとめ"></a>まとめ</h1><p>Docker イメージの取得からコンテナの実行と停止、イメージ削除までの一連の作業を確認できました。</p>
+<p>ご訪問ありがとうございました！</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">タグ</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Docker/" rel="tag">Docker</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/01/04/docker-compose-memorandum/"
+                    data-tooltip="Docker-Compose備忘録"
+                    aria-label="前: Docker-Compose備忘録"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">前</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/01/03/how-to-pull-docker/"
+                    data-tooltip="Docker pull の使い方"
+                    aria-label="次: Docker pull の使い方"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">次</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2021/01/03/docker-tutorial/"
+                    title="Facebookで共有"
+                    aria-label="Facebookで共有"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2021/01/03/docker-tutorial/"
+                    title="Twitterで共有"
+                    aria-label="Twitterで共有"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2021/01/03/docker-tutorial/"
+                    title="Google+で共有"
+                    aria-label="Google+で共有"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目次">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2021 Narichika Morinaga. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/01/04/docker-compose-memorandum/"
+                    data-tooltip="Docker-Compose備忘録"
+                    aria-label="前: Docker-Compose備忘録"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">前</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/01/03/how-to-pull-docker/"
+                    data-tooltip="Docker pull の使い方"
+                    aria-label="次: Docker pull の使い方"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">次</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2021/01/03/docker-tutorial/"
+                    title="Facebookで共有"
+                    aria-label="Facebookで共有"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2021/01/03/docker-tutorial/"
+                    title="Twitterで共有"
+                    aria-label="Twitterで共有"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2021/01/03/docker-tutorial/"
+                    title="Google+で共有"
+                    aria-label="Google+で共有"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目次">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2021/01/03/docker-tutorial/"
+                        aria-label="Facebookで共有"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Facebookで共有</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2021/01/03/docker-tutorial/"
+                        aria-label="Twitterで共有"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Twitterで共有</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://morichnarich.github.io/2021/01/03/docker-tutorial/"
+                        aria-label="Google+で共有"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Google+で共有</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <h4 id="about-card-name">Narichika Morinaga</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-ixqwvefj8vfsqrsg5wx4vngxhhw8v1hzxnf8nzvk4ihpwzdrs4jr5wdtf9oq.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+        
+<script src="/my_script.js"></script>
+
+    </body>
+</html>

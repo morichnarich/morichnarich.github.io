@@ -1,0 +1,783 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Nariのブログ">
+    <title>Docker-Compose備忘録 - Nariのブログ - 明日の自分に残すメモ - </title>
+    <meta name="author" content="Narichika Morinaga">
+    
+        <meta name="keywords" content="hexo,javascript,">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\nDocker compose のインストール基本的にはdocker compose のリリースページにアクセスして最新情報を確認し、Docker compose をインストールしていくことになります。Docker compose release page\nDocker Desktop がインストールされていれば、 Docker-Compose を入れる必要はないと思われます。\n\n\n起動してみる docker-compose up\n \n  \n   Docker\n  \n  \n   \n  \n \n 12345678$ cd documents$ mkdir docker-compose-sample$ cd docker-compose-sample$ type nul &gt; docker-compose.yml (PowerShellの場合)# docker-compose.yml を、エディタで編集$ docker-compose up -d\n\n\n\ndocker-compose.ymlを使って複数のコンテナの生成／起動が簡単に行える。\n\nまだイメージが作成されていなければ、docker-compose.yml を使ってイメージを作成して、さらに複数のコンテナを作成・起動する。\nすでにコンテナが存在すれば、イメージ・コンテナの再作成は行わず、（停止中の）コンテナを起動するだけ。\n\n\n\nしたがって、イメージを再構築するには docker-compose build --no-cache か docker-compose up --build を使う必要があります。\nDocker-Compose はディレクトリ名がプロジェクト名になる。全く同じディレクトリ名で、別の Docker-Compose.yml を作るとややこしいことになるので避けた方がよい。\n-f でdocker-compose.ymlのファイル指定が可能-f がなければカレントにあるdocker-compose.ymlを使う-d でバックグラウンド起動する\n-d オプションは、コンテナの実行をバックグラウンドで行うオプションです。 このオプションを指定しなかった場合は、ターミナルのコマンド操作が Ctrl+C を実行するまでコンテナに奪われてしまいます。\n反対に、downコマンドでコンテナの停止、削除を実行します。\nexec でコンテナ内部のコマンド実行docker-compose exec [サービス名]　[コマンド]  \nこれで指定サービス（コンテナ）内部のコマンドをホスト側から実行できる。  \n\n \n  \n   ターミナル\n  \n  \n   \n  \n \n 1docker-compose exec app npm init -y\n  \n例文では、npm init をして Node.js プロジェクトを初期化する。つまり、内部にある app の Node.js を初期化する命令をしたということ。\n\n\n\n\n \n  \n   ターミナル\n  \n  \n   \n  \n \n 1docker-compose exec app bash\n  \nコンテナ内部に入りたい場合は bash を実行する。  \n\ndocker-compose stop複数のコンテナを一括で停止する場合に使用する.\n\n \n  \n   Docker\n  \n  \n   \n  \n \n 123$ docker-compose stopStopping docker-compose-sample_app_1 ... doneStopping docker-compose-sample_db_1  ... done\n\n\n\n【余談】docker-composeと打つのがめんどくさい場合\n \n  \n   ~/.bashrc\n  \n  \n   \n  \n \n 1alias fig = docker-compose\n","dateCreated":"2021-01-04T12:38:09+09:00","dateModified":"2021-01-04T23:03:38+09:00","datePublished":"2021-01-04T12:38:09+09:00","description":"welcome to my blog","headline":"Docker-Compose備忘録","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2021/01/04/docker-compose-memorandum/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2021/01/04/docker-compose-memorandum/","keywords":"Docker, Docker-Compose"}</script>
+    <meta name="description" content="welcome to my blog">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Docker-Compose備忘録">
+<meta property="og:url" content="https://morichnarich.github.io/2021/01/04/docker-compose-memorandum/index.html">
+<meta property="og:site_name" content="Nariのブログ">
+<meta property="og:description" content="welcome to my blog">
+<meta property="og:locale" content="ja_JP">
+<meta property="article:published_time" content="2021-01-04T03:38:09.000Z">
+<meta property="article:modified_time" content="2021-01-04T14:03:38.801Z">
+<meta property="article:author" content="Narichika Morinaga">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="Docker-Compose">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-nwhmakibv65xhsdkq7pht98suw06ytb1by3pl3uicngjtr8jerdnj02uz5dw.min.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+    <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.3.2/styles/androidstudio.min.css">
+    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/highlight.min.js"></script> -->
+</head>
+
+    
+<link rel="stylesheet" href="/my_css.css">
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Nariのブログ
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="リンクを開く: /#about"
+            >
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-header">
+        <a href=https://morichnarich.github.io>
+            <h1 class="sidebar-title">
+                Nariのブログ
+            </h1>
+            <h2 class="sidebar-subtitle">
+                - 明日の自分に残すメモ -
+            </h2>
+        </a>
+    </div>
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="ホーム"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">ホーム</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="カテゴリー"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">カテゴリー</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="タグ"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">タグ</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="アーカイブ"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">アーカイブ</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="検索"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">検索</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="プロフィール"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">プロフィール</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="http://stackoverflow.com/users"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Stack Overflow"
+                        >
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://twitter.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://facebook.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://plus.google.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Google Plus"
+                        >
+                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Google Plus</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/profile/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/mailto"
+                            
+                            rel="noopener"
+                            title="メール"
+                        >
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">メール</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Docker-Compose備忘録
+        </h1>
+    
+    
+        <div class="post-meta">
+    <i class="fas fa-file-alt"></i>
+    <time datetime="2021-01-04T12:38:09+09:00">
+	
+		    2021/01/04
+    	
+    </time>
+
+    
+    <i class="fas fa-redo-alt"></i>
+        <time datetime="2021-01-04T23:03:38+09:00">
+        
+        2021/01/04
+        
+        </time>
+        <br>
+    
+    
+    
+        <i class="far fa-folder-open"></i>
+        <span>カテゴリー </span>
+        
+    <a class="category-link" href="/categories/programming/">programming</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <!-- > これは引用です。 -->
+
+<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Docker-compose-%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="toc-text">Docker compose のインストール</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B5%B7%E5%8B%95%E3%81%97%E3%81%A6%E3%81%BF%E3%82%8B-docker-compose-up"><span class="toc-text">起動してみる docker-compose up</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#exec-%E3%81%A7%E3%82%B3%E3%83%B3%E3%83%86%E3%83%8A%E5%86%85%E9%83%A8%E3%81%AE%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E5%AE%9F%E8%A1%8C"><span class="toc-text">exec でコンテナ内部のコマンド実行</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#docker-compose-stop"><span class="toc-text">docker-compose stop</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%80%90%E4%BD%99%E8%AB%87%E3%80%91docker-compose%E3%81%A8%E6%89%93%E3%81%A4%E3%81%AE%E3%81%8C%E3%82%81%E3%82%93%E3%81%A9%E3%81%8F%E3%81%95%E3%81%84%E5%A0%B4%E5%90%88"><span class="toc-text">【余談】docker-composeと打つのがめんどくさい場合</span></a></li></ol></li></ol></li></ol>
+<h1 id="Docker-compose-のインストール"><a href="#Docker-compose-のインストール" class="headerlink" title="Docker compose のインストール"></a>Docker compose のインストール</h1><p>基本的にはdocker compose のリリースページにアクセスして最新情報を確認し、Docker compose をインストールしていくことになります。<br><a target="_blank" rel="noopener" href="https://github.com/docker/compose/releases">Docker compose release page</a></p>
+<div class="alert info"><p>Docker Desktop がインストールされていれば、 Docker-Compose を入れる必要はないと思われます。</p>
+</div>
+
+<h1 id="起動してみる-docker-compose-up"><a href="#起動してみる-docker-compose-up" class="headerlink" title="起動してみる docker-compose up"></a>起動してみる docker-compose up</h1><div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">Docker</span>
+  </div>
+  <div class="code-parent">
+   <!-- <button class="copyButton"><i class="far fa-copy fa-lg"></i></button> -->
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ cd documents</span><br><span class="line">$ mkdir docker-compose-sample</span><br><span class="line">$ cd docker-compose-sample</span><br><span class="line">$ type nul &gt; docker-compose.yml (PowerShellの場合)</span><br><span class="line"></span><br><span class="line"><span class="comment"># docker-compose.yml を、エディタで編集</span></span><br><span class="line"></span><br><span class="line">$ docker-compose up -d</span><br></pre></td></tr></table></figure>
+</div>
+<br>
+
+<p>docker-compose.ymlを使って複数のコンテナの生成／起動が簡単に行える。</p>
+<div class="alert warning"><ul>
+<li>まだ<font style="background:linear-gradient(transparent 75%, #7fbfff 75%); font-weight:bold;">イメージが作成されていなければ</font>、docker-compose.yml を使ってイメージを作成して、さらに複数のコンテナを作成・起動する。</li>
+<li>すでに<font style="background:linear-gradient(transparent 75%, #7fbfff 75%); font-weight:bold;">コンテナが存在すれば</font>、イメージ・コンテナの<font style="background:linear-gradient(transparent 75%, #ff7f7f 75%); font-weight:bold;">再作成は行わず、（停止中の）コンテナを起動するだけ</font>。</li>
+</ul>
+</div>
+
+<p>したがって、イメージを再構築するには <span style="color: #FF7067; display: inline-block; background-color: #EEE; padding-left: 4px; padding-right: 4px; border-raduis: 4px; font-weight:bold;">docker-compose build --no-cache</span> か <span style="color: #FF7067; display: inline-block; background-color: #EEE; padding-left: 4px; padding-right: 4px; border-raduis: 4px; font-weight:bold;">docker-compose up --build</span> を使う必要があります。</p>
+<p>Docker-Compose はディレクトリ名がプロジェクト名になる。全く同じディレクトリ名で、別の Docker-Compose.yml を作るとややこしいことになるので避けた方がよい。</p>
+<p><span style="color: #FF7067; display: inline-block; background-color: #EEE; padding-left: 4px; padding-right: 4px; border-raduis: 4px; font-weight:bold;">-f</span> でdocker-compose.ymlのファイル指定が可能<br><span style="color: #FF7067; display: inline-block; background-color: #EEE; padding-left: 4px; padding-right: 4px; border-raduis: 4px; font-weight:bold;">-f</span> がなければカレントにあるdocker-compose.ymlを使う<br><span style="color: #FF7067; display: inline-block; background-color: #EEE; padding-left: 4px; padding-right: 4px; border-raduis: 4px; font-weight:bold;">-d</span> でバックグラウンド起動する</p>
+<p>-d オプションは、コンテナの実行をバックグラウンドで行うオプションです。 このオプションを指定しなかった場合は、ターミナルのコマンド操作が Ctrl+C を実行するまでコンテナに奪われてしまいます。</p>
+<p>反対に、downコマンドでコンテナの停止、削除を実行します。</p>
+<h1 id="exec-でコンテナ内部のコマンド実行"><a href="#exec-でコンテナ内部のコマンド実行" class="headerlink" title="exec でコンテナ内部のコマンド実行"></a>exec でコンテナ内部のコマンド実行</h1><p>docker-compose exec [サービス名]　[コマンド]  </p>
+<p>これで指定サービス（コンテナ）内部のコマンドをホスト側から実行できる。  </p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">ターミナル</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose exec app npm init -y</span><br></pre></td></tr></table></figure>
+</div>  
+例文では、npm init をして Node.js プロジェクトを初期化する。つまり、内部にある app の Node.js を初期化する命令をしたということ。
+<br>
+<br>
+
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">ターミナル</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose exec app bash</span><br></pre></td></tr></table></figure>
+</div>  
+コンテナ内部に入りたい場合は bash を実行する。  
+
+<h1 id="docker-compose-stop"><a href="#docker-compose-stop" class="headerlink" title="docker-compose stop"></a>docker-compose stop</h1><p>複数のコンテナを一括で停止する場合に使用する.<br><br></p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">Docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose stop</span><br><span class="line">Stopping docker-compose-sample_app_1 ... done</span><br><span class="line">Stopping docker-compose-sample_db_1  ... done</span><br></pre></td></tr></table></figure>
+</div>
+<br>
+
+<h3 id="【余談】docker-composeと打つのがめんどくさい場合"><a href="#【余談】docker-composeと打つのがめんどくさい場合" class="headerlink" title="【余談】docker-composeと打つのがめんどくさい場合"></a>【余談】docker-composeと打つのがめんどくさい場合</h3><div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">~/.bashrc</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias fig = docker-compose</span><br></pre></td></tr></table></figure>
+</div>
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">タグ</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Docker/" rel="tag">Docker</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Docker-Compose/" rel="tag">Docker-Compose</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">前</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/01/03/docker-tutorial/"
+                    data-tooltip="Docker Tutorial"
+                    aria-label="次: Docker Tutorial"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">次</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2021/01/04/docker-compose-memorandum/"
+                    title="Facebookで共有"
+                    aria-label="Facebookで共有"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2021/01/04/docker-compose-memorandum/"
+                    title="Twitterで共有"
+                    aria-label="Twitterで共有"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2021/01/04/docker-compose-memorandum/"
+                    title="Google+で共有"
+                    aria-label="Google+で共有"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目次">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2021 Narichika Morinaga. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">前</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/01/03/docker-tutorial/"
+                    data-tooltip="Docker Tutorial"
+                    aria-label="次: Docker Tutorial"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">次</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2021/01/04/docker-compose-memorandum/"
+                    title="Facebookで共有"
+                    aria-label="Facebookで共有"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2021/01/04/docker-compose-memorandum/"
+                    title="Twitterで共有"
+                    aria-label="Twitterで共有"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2021/01/04/docker-compose-memorandum/"
+                    title="Google+で共有"
+                    aria-label="Google+で共有"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目次">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2021/01/04/docker-compose-memorandum/"
+                        aria-label="Facebookで共有"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Facebookで共有</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2021/01/04/docker-compose-memorandum/"
+                        aria-label="Twitterで共有"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Twitterで共有</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://morichnarich.github.io/2021/01/04/docker-compose-memorandum/"
+                        aria-label="Google+で共有"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Google+で共有</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <h4 id="about-card-name">Narichika Morinaga</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-ixqwvefj8vfsqrsg5wx4vngxhhw8v1hzxnf8nzvk4ihpwzdrs4jr5wdtf9oq.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+        
+<script src="/my_script.js"></script>
+
+    </body>
+</html>
