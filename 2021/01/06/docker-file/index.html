@@ -1,0 +1,726 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Nariのブログ">
+    <title>Dockerfile 記述 - Nariのブログ - 明日の自分に残すメモ - </title>
+    <meta name="author" content="Narichika Morinaga">
+    
+        <meta name="keywords" content="hexo,javascript,">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\n\n \n  \n   Docker\n  \n  \n   \n  \n \n 1234FROM ubuntu:18.04COPY . /appRUN make /appCMD python /app/app.py\n\n\n\n\nFROM Docker イメージ ubuntu:18.04 からレイヤーを 1 つ生成します。\nCOPY Docker クライアントのカレントディレクトリからファイルをコピーします。\nRUN make を使ってアプリケーションをビルドします。\nCMD コンテナー内にて実行するコマンドを指定します。\n\nビルドコンテキストの理解docker build コマンドを実行したときの、カレントなワーキングディレクトリのことを ビルドコンテキスト（build context）と呼びます。 デフォルトで Dockerfile は、カレントなワーキングディレクトリにあるものとみなされます。 ただしファイルフラグ（-f）を使って別のディレクトリとすることもできます。 Dockerfile が実際にどこにあったとしても、カレントディレクトリ配下にあるファイルやディレクトリの内容がすべて、ビルドコンテキストとして Docker デーモンに送られることになります。\nカレントなワーキングディレクトリ　＝＝　ビルドコンテキスト\n","dateCreated":"2021-01-06T16:57:38+09:00","dateModified":"2021-01-06T17:15:43+09:00","datePublished":"2021-01-06T16:57:38+09:00","description":"welcome to my blog","headline":"Dockerfile 記述","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2021/01/06/docker-file/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2021/01/06/docker-file/","keywords":"Docker"}</script>
+    <meta name="description" content="welcome to my blog">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Dockerfile 記述">
+<meta property="og:url" content="https://morichnarich.github.io/2021/01/06/docker-file/index.html">
+<meta property="og:site_name" content="Nariのブログ">
+<meta property="og:description" content="welcome to my blog">
+<meta property="og:locale" content="ja_JP">
+<meta property="article:published_time" content="2021-01-06T07:57:38.000Z">
+<meta property="article:modified_time" content="2021-01-06T08:15:43.026Z">
+<meta property="article:author" content="Narichika Morinaga">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-nwhmakibv65xhsdkq7pht98suw06ytb1by3pl3uicngjtr8jerdnj02uz5dw.min.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+    <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.3.2/styles/androidstudio.min.css">
+    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/highlight.min.js"></script> -->
+</head>
+
+    
+<link rel="stylesheet" href="/my_css.css">
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Nariのブログ
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="リンクを開く: /#about"
+            >
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-header">
+        <a href=https://morichnarich.github.io>
+            <h1 class="sidebar-title">
+                Nariのブログ
+            </h1>
+            <h2 class="sidebar-subtitle">
+                - 明日の自分に残すメモ -
+            </h2>
+        </a>
+    </div>
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="ホーム"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">ホーム</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="カテゴリー"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">カテゴリー</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="タグ"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">タグ</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="アーカイブ"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">アーカイブ</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="検索"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">検索</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="プロフィール"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">プロフィール</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="http://stackoverflow.com/users"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Stack Overflow"
+                        >
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://twitter.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://facebook.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://plus.google.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Google Plus"
+                        >
+                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Google Plus</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/profile/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/mailto"
+                            
+                            rel="noopener"
+                            title="メール"
+                        >
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">メール</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Dockerfile 記述
+        </h1>
+    
+    
+        <div class="post-meta">
+    <i class="fas fa-file-alt"></i>
+    <time datetime="2021-01-06T16:57:38+09:00">
+	
+		    2021/01/06
+    	
+    </time>
+
+    
+    <i class="fas fa-redo-alt"></i>
+        <time datetime="2021-01-06T17:15:43+09:00">
+        
+        2021/01/06
+        
+        </time>
+        <br>
+    
+    
+    
+        <i class="far fa-folder-open"></i>
+        <span>カテゴリー </span>
+        
+    <a class="category-link" href="/categories/programming/">programming</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <!-- > これは引用です。 -->
+
+<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%83%93%E3%83%AB%E3%83%89%E3%82%B3%E3%83%B3%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E3%81%AE%E7%90%86%E8%A7%A3"><span class="toc-text">ビルドコンテキストの理解</span></a></li></ol>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">Docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu:<span class="number">18.04</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> . /app</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> make /app</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> python /app/app.py</span></span><br></pre></td></tr></table></figure>
+</div>
+<br>
+
+<ul>
+<li><span style="color: #FF7067; display: inline-block; background-color: #EEE; padding-left: 4px; padding-right: 4px; border-raduis: 4px; font-weight:bold;">FROM</span> Docker イメージ ubuntu:18.04 からレイヤーを 1 つ生成します。</li>
+<li><span style="color: #FF7067; display: inline-block; background-color: #EEE; padding-left: 4px; padding-right: 4px; border-raduis: 4px; font-weight:bold;">COPY</span> Docker クライアントのカレントディレクトリからファイルをコピーします。</li>
+<li><span style="color: #FF7067; display: inline-block; background-color: #EEE; padding-left: 4px; padding-right: 4px; border-raduis: 4px; font-weight:bold;">RUN</span> make を使ってアプリケーションをビルドします。</li>
+<li><span style="color: #FF7067; display: inline-block; background-color: #EEE; padding-left: 4px; padding-right: 4px; border-raduis: 4px; font-weight:bold;">CMD</span> コンテナー内にて実行するコマンドを指定します。</li>
+</ul>
+<h2 id="ビルドコンテキストの理解"><a href="#ビルドコンテキストの理解" class="headerlink" title="ビルドコンテキストの理解"></a>ビルドコンテキストの理解</h2><p>docker build コマンドを実行したときの、<span style="color: #FF7067; display: inline-block; background-color: #EEE; padding-left: 4px; padding-right: 4px; border-raduis: 4px; font-weight:bold;">カレントなワーキングディレクトリ</span>のことを <span style="color: #FF7067; display: inline-block; background-color: #EEE; padding-left: 4px; padding-right: 4px; border-raduis: 4px; font-weight:bold;">ビルドコンテキスト（build context）</span>と呼びます。 <font style="background:linear-gradient(transparent 75%, #7fbfff 75%); font-weight:bold;">デフォルトで Dockerfile は、カレントなワーキングディレクトリにあるものとみなされます。</font> ただしファイルフラグ（-f）を使って別のディレクトリとすることもできます。 Dockerfile が実際にどこにあったとしても、カレントディレクトリ配下にあるファイルやディレクトリの内容がすべて、ビルドコンテキストとして Docker デーモンに送られることになります。</p>
+<p>カレントなワーキングディレクトリ　＝＝　ビルドコンテキスト</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">タグ</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Docker/" rel="tag">Docker</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/01/06/docker-build/"
+                    data-tooltip="docker-build"
+                    aria-label="前: docker-build"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">前</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/01/06/docker-run/"
+                    data-tooltip="docker-run"
+                    aria-label="次: docker-run"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">次</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2021/01/06/docker-file/"
+                    title="Facebookで共有"
+                    aria-label="Facebookで共有"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2021/01/06/docker-file/"
+                    title="Twitterで共有"
+                    aria-label="Twitterで共有"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2021/01/06/docker-file/"
+                    title="Google+で共有"
+                    aria-label="Google+で共有"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目次">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2021 Narichika Morinaga. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/01/06/docker-build/"
+                    data-tooltip="docker-build"
+                    aria-label="前: docker-build"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">前</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/01/06/docker-run/"
+                    data-tooltip="docker-run"
+                    aria-label="次: docker-run"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">次</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2021/01/06/docker-file/"
+                    title="Facebookで共有"
+                    aria-label="Facebookで共有"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2021/01/06/docker-file/"
+                    title="Twitterで共有"
+                    aria-label="Twitterで共有"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2021/01/06/docker-file/"
+                    title="Google+で共有"
+                    aria-label="Google+で共有"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目次">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2021/01/06/docker-file/"
+                        aria-label="Facebookで共有"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Facebookで共有</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2021/01/06/docker-file/"
+                        aria-label="Twitterで共有"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Twitterで共有</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://morichnarich.github.io/2021/01/06/docker-file/"
+                        aria-label="Google+で共有"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Google+で共有</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <h4 id="about-card-name">Narichika Morinaga</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-ixqwvefj8vfsqrsg5wx4vngxhhw8v1hzxnf8nzvk4ihpwzdrs4jr5wdtf9oq.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+        
+<script src="/my_script.js"></script>
+
+    </body>
+</html>

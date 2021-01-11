@@ -6,26 +6,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Nariのブログ">
-    <title>Docker-Compose備忘録 - Nariのブログ - 明日の自分に残すメモ - </title>
+    <title>Dockerイメージとコンテナの削除方法 - Nariのブログ - 明日の自分に残すメモ - </title>
     <meta name="author" content="Narichika Morinaga">
     
         <meta name="keywords" content="hexo,javascript,">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\nこちらでは Docker compose の方法を色々なところからチョイスしてまとめたいと思います。\n\n\nDocker compose のインストール基本的にはdocker compose のリリースページにアクセスして最新情報を確認し、Docker compose をインストールしていくことになります。Docker compose release page\nDocker Desktop がインストールされていれば、 Docker-Compose を入れる必要はないと思われます。\n\n\n\n\n\n\n\nimage作成\nコンテナ作成\nコンテナ起動\n\n\n\nbuild\n○\n×\n×\n\n\nup\n○（未作成の場合）×（作成済の場合）\n○（未作成の場合）×（作成済の場合）\n○\n\n\nstart\n×\n×\n○\n\n\nrun\n○（単独）\n○（単独）\n○（単独）\n\n\n起動してみる docker-compose up下記の例では、ドキュメントフォルダに docker-compose-sample フォルダを作り、docker-compose.yml を作成・設定したあと、docker-compose up コマンドで image作成 ⇒ コンテナ作成 ⇒ コンテナ起動 まで一機にやってしまいます。\n\n \n  \n   Docker\n  \n  \n   \n  \n \n 12345678$ cd documents$ mkdir docker-compose-sample$ cd docker-compose-sample$ type nul &gt; docker-compose.yml (PowerShellの場合)# docker-compose.yml を、エディタで編集$ docker-compose up -d\n\n\n\ndocker-compose.ymlを使って複数のコンテナの作成／起動が簡単に行える。\n\nまだイメージが作成されていなければ、docker-compose.yml を使ってイメージを作成して、さらに複数のコンテナを作成・起動する。\nすでにコンテナが存在すれば、イメージ・コンテナの再作成は行わず、（停止中の）コンテナを起動するだけ。\n\n\n\nしたがって、イメージを再作成するには docker-compose build --no-cache か docker-compose up --build を使う必要があります。\nDocker-Compose はディレクトリ名がコンテナ/アプリ名になる。全く同じディレクトリ名で、別の Docker-Compose.yml を作るとややこしいことになるので避けた方がよい。\n-f でdocker-compose.ymlのファイル指定が可能-f がなければカレントにあるdocker-compose.ymlを使う-d でバックグラウンド起動する\n-d オプションは、コンテナの実行をバックグラウンドで行うオプションです。 このオプションを指定しなかった場合は、ターミナルのコマンド操作が Ctrl+C を実行するまでコンテナに奪われてしまいます。\n反対に、downコマンドでコンテナの停止、削除を実行します。\nexec でコンテナ内部のコマンド実行docker-compose exec [サービス名]　[コマンド]  \nこれで指定サービス（コンテナ）内部のコマンドをホスト側から実行できる。  \n\n \n  \n   ターミナル\n  \n  \n   \n  \n \n 1docker-compose exec app npm init -y\n  \n例文では、npm init をして Node.js プロジェクトを初期化する。つまり、内部にある app の Node.js を初期化する命令をしたということ。\n\n\n\n\n \n  \n   ターミナル\n  \n  \n   \n  \n \n 1docker-compose exec app bash\n  \nコンテナ内部に入りたい場合は bash を実行する。  \n\ndocker-compose stop複数のコンテナを一括で停止する場合に使用する.\n\n \n  \n   Docker\n  \n  \n   \n  \n \n 123$ docker-compose stopStopping docker-compose-sample_app_1 ... doneStopping docker-compose-sample_db_1  ... done\n\n\n\nrunrunコマンドではimageの構築から、コンテナの構築・起動までしてくれますが、引数でサービスを指定しないと失敗します。\nrm停止中のコンテナを削除します。デフォルトだと[y/N]の確認があるのですが、-fオプションをつけることで、確認なしでコンテナを削除します。\ndowndocker-compose.ymlに書かれているサービスを参考にコンテナを停止し、そのコンテナとネットワークを削除します。オプションで--rmi allをつけることでイメージも削除してくれます。\nDockerfileDocker Image はDockerfile というファイルを記述し、そのファイルを元にビルドすることでスナップショットの作成ができます。試しに Dockerfile を記述して Docker Image を作成してみましょう。\nDockerfile を記述してみるまずは echo hello! を実行する Docker Image を作ってみましょう。\n環境の用意ディレクトリを作成して vi で Dockerfile へテキスト入力の開始をします。\n\n \n  \n   Docker\n  \n  \n   \n  \n \n 123456$ cd ~$ mkdir -p docker/ubuntu$ cd docker/ubuntu$ touch hello.txt$ echo hello docker ! &gt; hello.txt$ vi Dockerfile\n\n\n【余談】docker-composeと打つのがめんどくさい場合\n \n  \n   ~/.bashrc\n  \n  \n   \n  \n \n 1alias fig = docker-compose\n","dateCreated":"2021-01-04T12:38:09+09:00","dateModified":"2021-01-09T12:25:30+09:00","datePublished":"2021-01-04T12:38:09+09:00","description":"welcome to my blog","headline":"Docker-Compose備忘録","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2021/01/04/docker-compose-memorandum/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2021/01/04/docker-compose-memorandum/","keywords":"Docker, Docker-Compose"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"結論からいうと、コンテナを削除してからイメージを削除するのがきれいです。\nコンテナの削除　⇒　イメージの削除\n\n\n\nコンテナの削除方法動いているコンテナの確認\n \n  \n   ターミナル\n  \n  \n   \n  \n \n 1docker ps\n\n\n停止しているコンテナの確認\n \n  \n   ターミナル\n  \n  \n   \n  \n \n 1docker ps -a\n\n\nコンテナの削除コマンド： docker rm [コンテナID]\n\n \n  \n   Docker\n  \n  \n   \n  \n \n 1docker rm 000000000000\n\n\n複数指定もできるコマンド： docker rm [コンテナID-a] [コンテナID-b]\n\n \n  \n   Docker\n  \n  \n   \n  \n \n 1docker rm 000000000000 111111111111\n\n\nそれでも消えない場合force(-f)を付与すれば削除することができる。\nコマンド： docker rm -f [コンテナID]\n\n \n  \n   Docker\n  \n  \n   \n  \n \n 1docker rm -f 000000000000\n\n\n消えていることを確認\n \n  \n   ターミナル\n  \n  \n   \n  \n \n 1docker ps -a\n\n\n裏技docker ps -a -q は、コンテナIDの一覧をだしてくれるので、それと合わせると一括削除もできる。\nコマンド： docker rm `docker ps -a -q`\n\n \n  \n   Docker\n  \n  \n   \n  \n \n 1docker rm `docker ps -a -q`\n\n\n\nイメージの削除方法現状のコンテナの確認\n \n  \n   ターミナル\n  \n  \n   \n  \n \n 1docker ps\n\n\n現状のイメージの確認\n \n  \n   ターミナル\n  \n  \n   \n  \n \n 1docker images\n\n\nイメージの削除コマンド： docker rmi [イメージID]\n\n \n  \n   Docker\n  \n  \n   \n  \n \n 1docker rmi 000000000000\n\n\nコンテナが存在しているというメッセージが表示された場合forceオプションをつけてみると消える。（ただし、コンテナは残るみたい。）\nコマンド： docker rmi -f [イメージID]\n\n \n  \n   Docker\n  \n  \n   \n  \n \n 1docker rmi -f 000000000000\n\n\n削除されたか確認\n \n  \n   ターミナル\n  \n  \n   \n  \n \n 1docker images\n","dateCreated":"2021-01-06T11:58:50+09:00","dateModified":"2021-01-06T13:30:49+09:00","datePublished":"2021-01-06T11:58:50+09:00","description":"welcome to my blog","headline":"Dockerイメージとコンテナの削除方法","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2021/01/06/docker-rm-rmi/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2021/01/06/docker-rm-rmi/","keywords":"Docker"}</script>
     <meta name="description" content="welcome to my blog">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="Docker-Compose備忘録">
-<meta property="og:url" content="https://morichnarich.github.io/2021/01/04/docker-compose-memorandum/index.html">
+<meta property="og:title" content="Dockerイメージとコンテナの削除方法">
+<meta property="og:url" content="https://morichnarich.github.io/2021/01/06/docker-rm-rmi/index.html">
 <meta property="og:site_name" content="Nariのブログ">
 <meta property="og:description" content="welcome to my blog">
 <meta property="og:locale" content="ja_JP">
-<meta property="article:published_time" content="2021-01-04T03:38:09.000Z">
-<meta property="article:modified_time" content="2021-01-09T03:25:30.280Z">
+<meta property="article:published_time" content="2021-01-06T02:58:50.000Z">
+<meta property="article:modified_time" content="2021-01-06T04:30:49.849Z">
 <meta property="article:author" content="Narichika Morinaga">
 <meta property="article:tag" content="Docker">
-<meta property="article:tag" content="Docker-Compose">
 <meta name="twitter:card" content="summary">
     
     
@@ -338,23 +337,23 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            Docker-Compose備忘録
+            Dockerイメージとコンテナの削除方法
         </h1>
     
     
         <div class="post-meta">
     <i class="fas fa-file-alt"></i>
-    <time datetime="2021-01-04T12:38:09+09:00">
+    <time datetime="2021-01-06T11:58:50+09:00">
 	
-		    2021/01/04
+		    2021/01/06
     	
     </time>
 
     
     <i class="fas fa-redo-alt"></i>
-        <time datetime="2021-01-09T12:25:30+09:00">
+        <time datetime="2021-01-06T13:30:49+09:00">
         
-        2021/01/09
+        2021/01/06
         
         </time>
         <br>
@@ -376,79 +375,12 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <!-- > これは引用です。 -->
+            <p>結論からいうと、コンテナを削除してからイメージを削除するのがきれいです。</p>
+<p>コンテナの削除　⇒　イメージの削除</p>
+<!-- # Dockerイメージとコンテナの削除方法 -->
+<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%82%B3%E3%83%B3%E3%83%86%E3%83%8A%E3%81%AE%E5%89%8A%E9%99%A4%E6%96%B9%E6%B3%95"><span class="toc-text">コンテナの削除方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8B%95%E3%81%84%E3%81%A6%E3%81%84%E3%82%8B%E3%82%B3%E3%83%B3%E3%83%86%E3%83%8A%E3%81%AE%E7%A2%BA%E8%AA%8D"><span class="toc-text">動いているコンテナの確認</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%81%9C%E6%AD%A2%E3%81%97%E3%81%A6%E3%81%84%E3%82%8B%E3%82%B3%E3%83%B3%E3%83%86%E3%83%8A%E3%81%AE%E7%A2%BA%E8%AA%8D"><span class="toc-text">停止しているコンテナの確認</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%82%B3%E3%83%B3%E3%83%86%E3%83%8A%E3%81%AE%E5%89%8A%E9%99%A4"><span class="toc-text">コンテナの削除</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A4%87%E6%95%B0%E6%8C%87%E5%AE%9A%E3%82%82%E3%81%A7%E3%81%8D%E3%82%8B"><span class="toc-text">複数指定もできる</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E3%81%9D%E3%82%8C%E3%81%A7%E3%82%82%E6%B6%88%E3%81%88%E3%81%AA%E3%81%84%E5%A0%B4%E5%90%88"><span class="toc-text">それでも消えない場合</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B6%88%E3%81%88%E3%81%A6%E3%81%84%E3%82%8B%E3%81%93%E3%81%A8%E3%82%92%E7%A2%BA%E8%AA%8D"><span class="toc-text">消えていることを確認</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A3%8F%E6%8A%80"><span class="toc-text">裏技</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8%E3%81%AE%E5%89%8A%E9%99%A4%E6%96%B9%E6%B3%95"><span class="toc-text">イメージの削除方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%8F%BE%E7%8A%B6%E3%81%AE%E3%82%B3%E3%83%B3%E3%83%86%E3%83%8A%E3%81%AE%E7%A2%BA%E8%AA%8D"><span class="toc-text">現状のコンテナの確認</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%8F%BE%E7%8A%B6%E3%81%AE%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8%E3%81%AE%E7%A2%BA%E8%AA%8D"><span class="toc-text">現状のイメージの確認</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8%E3%81%AE%E5%89%8A%E9%99%A4"><span class="toc-text">イメージの削除</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E3%82%B3%E3%83%B3%E3%83%86%E3%83%8A%E3%81%8C%E5%AD%98%E5%9C%A8%E3%81%97%E3%81%A6%E3%81%84%E3%82%8B%E3%81%A8%E3%81%84%E3%81%86%E3%83%A1%E3%83%83%E3%82%BB%E3%83%BC%E3%82%B8%E3%81%8C%E8%A1%A8%E7%A4%BA%E3%81%95%E3%82%8C%E3%81%9F%E5%A0%B4%E5%90%88"><span class="toc-text">コンテナが存在しているというメッセージが表示された場合</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%81%8B%E7%A2%BA%E8%AA%8D"><span class="toc-text">削除されたか確認</span></a></li></ol></li></ol></li></ol>
 
-<p>こちらでは Docker compose の方法を色々なところからチョイスしてまとめたいと思います。</p>
-<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Docker-compose-%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="toc-text">Docker compose のインストール</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B5%B7%E5%8B%95%E3%81%97%E3%81%A6%E3%81%BF%E3%82%8B-docker-compose-up"><span class="toc-text">起動してみる docker-compose up</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#exec-%E3%81%A7%E3%82%B3%E3%83%B3%E3%83%86%E3%83%8A%E5%86%85%E9%83%A8%E3%81%AE%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E5%AE%9F%E8%A1%8C"><span class="toc-text">exec でコンテナ内部のコマンド実行</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#docker-compose-stop"><span class="toc-text">docker-compose stop</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#run"><span class="toc-text">run</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#rm"><span class="toc-text">rm</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#down"><span class="toc-text">down</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Dockerfile"><span class="toc-text">Dockerfile</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Dockerfile-%E3%82%92%E8%A8%98%E8%BF%B0%E3%81%97%E3%81%A6%E3%81%BF%E3%82%8B"><span class="toc-text">Dockerfile を記述してみる</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%92%B0%E5%A2%83%E3%81%AE%E7%94%A8%E6%84%8F"><span class="toc-text">環境の用意</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%80%90%E4%BD%99%E8%AB%87%E3%80%91docker-compose%E3%81%A8%E6%89%93%E3%81%A4%E3%81%AE%E3%81%8C%E3%82%81%E3%82%93%E3%81%A9%E3%81%8F%E3%81%95%E3%81%84%E5%A0%B4%E5%90%88"><span class="toc-text">【余談】docker-composeと打つのがめんどくさい場合</span></a></li></ol></li></ol></li></ol>
-
-<h1 id="Docker-compose-のインストール"><a href="#Docker-compose-のインストール" class="headerlink" title="Docker compose のインストール"></a>Docker compose のインストール</h1><p>基本的にはdocker compose のリリースページにアクセスして最新情報を確認し、Docker compose をインストールしていくことになります。<br><a target="_blank" rel="noopener" href="https://github.com/docker/compose/releases">Docker compose release page</a></p>
-<div class="alert info"><p>Docker Desktop がインストールされていれば、 Docker-Compose を入れる必要はないと思われます。</p>
-</div>
-<br>
-
-<table>
-<thead>
-<tr>
-<th align="center"></th>
-<th align="center">image作成</th>
-<th align="center">コンテナ作成</th>
-<th align="center">コンテナ起動</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">build</td>
-<td align="center">○</td>
-<td align="center">×</td>
-<td align="center">×</td>
-</tr>
-<tr>
-<td align="center">up</td>
-<td align="center">○（未作成の場合）<br>×（作成済の場合）</td>
-<td align="center">○（未作成の場合）<br>×（作成済の場合）</td>
-<td align="center">○</td>
-</tr>
-<tr>
-<td align="center">start</td>
-<td align="center">×</td>
-<td align="center">×</td>
-<td align="center">○</td>
-</tr>
-<tr>
-<td align="center">run</td>
-<td align="center">○（単独）</td>
-<td align="center">○（単独）</td>
-<td align="center">○（単独）</td>
-</tr>
-</tbody></table>
-<h1 id="起動してみる-docker-compose-up"><a href="#起動してみる-docker-compose-up" class="headerlink" title="起動してみる docker-compose up"></a>起動してみる docker-compose up</h1><p>下記の例では、ドキュメントフォルダに docker-compose-sample フォルダを作り、docker-compose.yml を作成・設定したあと、docker-compose up コマンドで image作成 ⇒ コンテナ作成 ⇒ コンテナ起動 まで一機にやってしまいます。<br><br></p>
-<div class="docs">
- <div class="control">
-  <div>
-   <span class="codeTitles">Docker</span>
-  </div>
-  <div class="code-parent">
-   <!-- <button class="copyButton"><i class="far fa-copy fa-lg"></i></button> -->
-  </div>
- </div>
- <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ cd documents</span><br><span class="line">$ mkdir docker-compose-sample</span><br><span class="line">$ cd docker-compose-sample</span><br><span class="line">$ type nul &gt; docker-compose.yml (PowerShellの場合)</span><br><span class="line"></span><br><span class="line"><span class="comment"># docker-compose.yml を、エディタで編集</span></span><br><span class="line"></span><br><span class="line">$ docker-compose up -d</span><br></pre></td></tr></table></figure>
-</div>
-<br>
-
-<p>docker-compose.ymlを使って複数のコンテナの作成／起動が簡単に行える。</p>
-<div class="alert warning"><ul>
-<li>まだ<font style="background:linear-gradient(transparent 75%, #7fbfff 75%); font-weight:bold;">イメージが作成されていなければ</font>、docker-compose.yml を使ってイメージを作成して、さらに複数のコンテナを作成・起動する。</li>
-<li>すでに<font style="background:linear-gradient(transparent 75%, #7fbfff 75%); font-weight:bold;">コンテナが存在すれば</font>、イメージ・コンテナの<font style="background:linear-gradient(transparent 75%, #ff7f7f 75%); font-weight:bold;">再作成は行わず、（停止中の）コンテナを起動するだけ</font>。</li>
-</ul>
-</div>
-
-<p>したがって、イメージを再作成するには <span style="color: #FF7067; display: inline-block; background-color: #EEE; padding-left: 4px; padding-right: 4px; border-raduis: 4px; font-weight:bold;">docker-compose build --no-cache</span> か <span style="color: #FF7067; display: inline-block; background-color: #EEE; padding-left: 4px; padding-right: 4px; border-raduis: 4px; font-weight:bold;">docker-compose up --build</span> を使う必要があります。</p>
-<p>Docker-Compose はディレクトリ名がコンテナ/アプリ名になる。全く同じディレクトリ名で、別の Docker-Compose.yml を作るとややこしいことになるので避けた方がよい。</p>
-<p><span style="color: #FF7067; display: inline-block; background-color: #EEE; padding-left: 4px; padding-right: 4px; border-raduis: 4px; font-weight:bold;">-f</span> でdocker-compose.ymlのファイル指定が可能<br><span style="color: #FF7067; display: inline-block; background-color: #EEE; padding-left: 4px; padding-right: 4px; border-raduis: 4px; font-weight:bold;">-f</span> がなければカレントにあるdocker-compose.ymlを使う<br><span style="color: #FF7067; display: inline-block; background-color: #EEE; padding-left: 4px; padding-right: 4px; border-raduis: 4px; font-weight:bold;">-d</span> でバックグラウンド起動する</p>
-<p>-d オプションは、コンテナの実行をバックグラウンドで行うオプションです。 このオプションを指定しなかった場合は、ターミナルのコマンド操作が Ctrl+C を実行するまでコンテナに奪われてしまいます。</p>
-<p>反対に、downコマンドでコンテナの停止、削除を実行します。</p>
-<h1 id="exec-でコンテナ内部のコマンド実行"><a href="#exec-でコンテナ内部のコマンド実行" class="headerlink" title="exec でコンテナ内部のコマンド実行"></a>exec でコンテナ内部のコマンド実行</h1><p>docker-compose exec [サービス名]　[コマンド]  </p>
-<p>これで指定サービス（コンテナ）内部のコマンドをホスト側から実行できる。  </p>
-<div class="docs">
+<h2 id="コンテナの削除方法"><a href="#コンテナの削除方法" class="headerlink" title="コンテナの削除方法"></a>コンテナの削除方法</h2><h4 id="動いているコンテナの確認"><a href="#動いているコンテナの確認" class="headerlink" title="動いているコンテナの確認"></a>動いているコンテナの確認</h4><div class="docs">
  <div class="control">
   <div>
    <span class="codeTitles">ターミナル</span>
@@ -457,13 +389,10 @@
    <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
   </div>
  </div>
- <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose exec app npm init -y</span><br></pre></td></tr></table></figure>
-</div>  
-例文では、npm init をして Node.js プロジェクトを初期化する。つまり、内部にある app の Node.js を初期化する命令をしたということ。
-<br>
-<br>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps</span><br></pre></td></tr></table></figure>
+</div>
 
-<div class="docs">
+<h4 id="停止しているコンテナの確認"><a href="#停止しているコンテナの確認" class="headerlink" title="停止しているコンテナの確認"></a>停止しているコンテナの確認</h4><div class="docs">
  <div class="control">
   <div>
    <span class="codeTitles">ターミナル</span>
@@ -472,11 +401,10 @@
    <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
   </div>
  </div>
- <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose exec app bash</span><br></pre></td></tr></table></figure>
-</div>  
-コンテナ内部に入りたい場合は bash を実行する。  
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps -a</span><br></pre></td></tr></table></figure>
+</div>
 
-<h1 id="docker-compose-stop"><a href="#docker-compose-stop" class="headerlink" title="docker-compose stop"></a>docker-compose stop</h1><p>複数のコンテナを一括で停止する場合に使用する.<br><br></p>
+<h2 id="コンテナの削除"><a href="#コンテナの削除" class="headerlink" title="コンテナの削除"></a>コンテナの削除</h2><p>コマンド： docker rm [コンテナID]</p>
 <div class="docs">
  <div class="control">
   <div>
@@ -486,16 +414,88 @@
    <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
   </div>
  </div>
- <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose stop</span><br><span class="line">Stopping docker-compose-sample_app_1 ... done</span><br><span class="line">Stopping docker-compose-sample_db_1  ... done</span><br></pre></td></tr></table></figure>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rm 000000000000</span><br></pre></td></tr></table></figure>
+</div>
+
+<h4 id="複数指定もできる"><a href="#複数指定もできる" class="headerlink" title="複数指定もできる"></a>複数指定もできる</h4><p>コマンド： docker rm [コンテナID-a] [コンテナID-b]</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">Docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rm 000000000000 111111111111</span><br></pre></td></tr></table></figure>
+</div>
+
+<h4 id="それでも消えない場合"><a href="#それでも消えない場合" class="headerlink" title="それでも消えない場合"></a>それでも消えない場合</h4><p>force(-f)を付与すれば削除することができる。</p>
+<p>コマンド： docker rm -f [コンテナID]</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">Docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rm -f 000000000000</span><br></pre></td></tr></table></figure>
+</div>
+
+<h4 id="消えていることを確認"><a href="#消えていることを確認" class="headerlink" title="消えていることを確認"></a>消えていることを確認</h4><div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">ターミナル</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps -a</span><br></pre></td></tr></table></figure>
+</div>
+
+<h3 id="裏技"><a href="#裏技" class="headerlink" title="裏技"></a>裏技</h3><p><span style="color: #FF7067; display: inline-block; background-color: #EEE; padding-left: 4px; padding-right: 4px; border-raduis: 4px; font-weight:bold;">docker ps -a -q</span> は、コンテナIDの一覧をだしてくれるので、それと合わせると一括削除もできる。</p>
+<p>コマンド： docker rm `docker ps -a -q`</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">Docker</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rm `docker ps -a -q`</span><br></pre></td></tr></table></figure>
 </div>
 <br>
 
-<h1 id="run"><a href="#run" class="headerlink" title="run"></a>run</h1><p>runコマンドではimageの構築から、コンテナの構築・起動までしてくれますが、引数でサービスを指定しないと失敗します。</p>
-<h1 id="rm"><a href="#rm" class="headerlink" title="rm"></a>rm</h1><p>停止中のコンテナを削除します。デフォルトだと[y/N]の確認があるのですが、-fオプションをつけることで、確認なしでコンテナを削除します。</p>
-<h1 id="down"><a href="#down" class="headerlink" title="down"></a>down</h1><p>docker-compose.ymlに書かれているサービスを参考にコンテナを停止し、そのコンテナとネットワークを削除します。<br>オプションで<span style="color: #FF7067; display: inline-block; background-color: #EEE; padding-left: 4px; padding-right: 4px; border-raduis: 4px; font-weight:bold;">--rmi all</span>をつけることでイメージも削除してくれます。</p>
-<h1 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h1><p>Docker Image はDockerfile というファイルを記述し、そのファイルを元にビルドすることでスナップショットの作成ができます。<br>試しに Dockerfile を記述して Docker Image を作成してみましょう。</p>
-<h2 id="Dockerfile-を記述してみる"><a href="#Dockerfile-を記述してみる" class="headerlink" title="Dockerfile を記述してみる"></a>Dockerfile を記述してみる</h2><p>まずは echo hello! を実行する Docker Image を作ってみましょう。</p>
-<h1 id="環境の用意"><a href="#環境の用意" class="headerlink" title="環境の用意"></a>環境の用意</h1><p>ディレクトリを作成して vi で Dockerfile へテキスト入力の開始をします。</p>
+<h2 id="イメージの削除方法"><a href="#イメージの削除方法" class="headerlink" title="イメージの削除方法"></a>イメージの削除方法</h2><h4 id="現状のコンテナの確認"><a href="#現状のコンテナの確認" class="headerlink" title="現状のコンテナの確認"></a>現状のコンテナの確認</h4><div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">ターミナル</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps</span><br></pre></td></tr></table></figure>
+</div>
+
+<h4 id="現状のイメージの確認"><a href="#現状のイメージの確認" class="headerlink" title="現状のイメージの確認"></a>現状のイメージの確認</h4><div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">ターミナル</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure>
+</div>
+
+<h2 id="イメージの削除"><a href="#イメージの削除" class="headerlink" title="イメージの削除"></a>イメージの削除</h2><p>コマンド： docker rmi [イメージID]</p>
 <div class="docs">
  <div class="control">
   <div>
@@ -505,19 +505,33 @@
    <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
   </div>
  </div>
- <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ cd ~</span><br><span class="line">$ mkdir -p docker/ubuntu</span><br><span class="line">$ cd docker/ubuntu</span><br><span class="line">$ touch hello.txt</span><br><span class="line">$ echo hello docker ! &gt; hello.txt</span><br><span class="line">$ vi Dockerfile</span><br></pre></td></tr></table></figure>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rmi 000000000000</span><br></pre></td></tr></table></figure>
 </div>
 
-<h3 id="【余談】docker-composeと打つのがめんどくさい場合"><a href="#【余談】docker-composeと打つのがめんどくさい場合" class="headerlink" title="【余談】docker-composeと打つのがめんどくさい場合"></a>【余談】docker-composeと打つのがめんどくさい場合</h3><div class="docs">
+<h4 id="コンテナが存在しているというメッセージが表示された場合"><a href="#コンテナが存在しているというメッセージが表示された場合" class="headerlink" title="コンテナが存在しているというメッセージが表示された場合"></a>コンテナが存在しているというメッセージが表示された場合</h4><p>forceオプションをつけてみると消える。（ただし、コンテナは残るみたい。）</p>
+<p>コマンド： docker rmi -f [イメージID]</p>
+<div class="docs">
  <div class="control">
   <div>
-   <span class="codeTitles">~/.bashrc</span>
+   <span class="codeTitles">Docker</span>
   </div>
   <div class="code-parent">
    <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
   </div>
  </div>
- <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias fig = docker-compose</span><br></pre></td></tr></table></figure>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rmi -f 000000000000</span><br></pre></td></tr></table></figure>
+</div>
+
+<h4 id="削除されたか確認"><a href="#削除されたか確認" class="headerlink" title="削除されたか確認"></a>削除されたか確認</h4><div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">ターミナル</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure>
 </div>
             
 
@@ -529,7 +543,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">タグ</span><br/>
                 
-    <a class="tag tag--primary tag--small t-none-link" href="/tags/Docker/" rel="tag">Docker</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Docker-Compose/" rel="tag">Docker-Compose</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Docker/" rel="tag">Docker</a>
 
             </div>
         
@@ -542,9 +556,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/01/06/docker-rm-rmi/"
-                    data-tooltip="Dockerイメージとコンテナの削除方法"
-                    aria-label="前: Dockerイメージとコンテナの削除方法"
+                    href="/2021/01/06/docker-run/"
+                    data-tooltip="docker-run"
+                    aria-label="前: docker-run"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -556,9 +570,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/01/03/docker-tutorial/"
-                    data-tooltip="Docker Tutorial"
-                    aria-label="次: Docker Tutorial"
+                    href="/2021/01/04/docker-compose-memorandum/"
+                    data-tooltip="Docker-Compose備忘録"
+                    aria-label="次: Docker-Compose備忘録"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">次</span>
@@ -583,7 +597,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2021/01/04/docker-compose-memorandum/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2021/01/06/docker-rm-rmi/"
                     title="Facebookで共有"
                     aria-label="Facebookで共有"
                 >
@@ -596,7 +610,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2021/01/04/docker-compose-memorandum/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2021/01/06/docker-rm-rmi/"
                     title="Twitterで共有"
                     aria-label="Twitterで共有"
                 >
@@ -609,7 +623,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2021/01/04/docker-compose-memorandum/"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2021/01/06/docker-rm-rmi/"
                     title="Google+で共有"
                     aria-label="Google+で共有"
                 >
@@ -657,9 +671,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/01/06/docker-rm-rmi/"
-                    data-tooltip="Dockerイメージとコンテナの削除方法"
-                    aria-label="前: Dockerイメージとコンテナの削除方法"
+                    href="/2021/01/06/docker-run/"
+                    data-tooltip="docker-run"
+                    aria-label="前: docker-run"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -671,9 +685,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/01/03/docker-tutorial/"
-                    data-tooltip="Docker Tutorial"
-                    aria-label="次: Docker Tutorial"
+                    href="/2021/01/04/docker-compose-memorandum/"
+                    data-tooltip="Docker-Compose備忘録"
+                    aria-label="次: Docker-Compose備忘録"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">次</span>
@@ -698,7 +712,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2021/01/04/docker-compose-memorandum/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2021/01/06/docker-rm-rmi/"
                     title="Facebookで共有"
                     aria-label="Facebookで共有"
                 >
@@ -711,7 +725,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2021/01/04/docker-compose-memorandum/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2021/01/06/docker-rm-rmi/"
                     title="Twitterで共有"
                     aria-label="Twitterで共有"
                 >
@@ -724,7 +738,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2021/01/04/docker-compose-memorandum/"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2021/01/06/docker-rm-rmi/"
                     title="Google+で共有"
                     aria-label="Google+で共有"
                 >
@@ -758,7 +772,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2021/01/04/docker-compose-memorandum/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2021/01/06/docker-rm-rmi/"
                         aria-label="Facebookで共有"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Facebookで共有</span>
@@ -771,7 +785,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2021/01/04/docker-compose-memorandum/"
+                        href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2021/01/06/docker-rm-rmi/"
                         aria-label="Twitterで共有"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Twitterで共有</span>
@@ -784,7 +798,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://plus.google.com/share?url=https://morichnarich.github.io/2021/01/04/docker-compose-memorandum/"
+                        href="https://plus.google.com/share?url=https://morichnarich.github.io/2021/01/06/docker-rm-rmi/"
                         aria-label="Google+で共有"
                     >
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>Google+で共有</span>
