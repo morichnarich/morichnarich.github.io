@@ -6,23 +6,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Nariのブログ">
-    <title>flutter忘備録 - Nariのブログ - 明日の自分に残すメモ - </title>
+    <title>dart-memorandum - Nariのブログ - 明日の自分に残すメモ - </title>
     <meta name="author" content="Narichika Morinaga">
     
         <meta name="keywords" content="hexo,javascript,">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\n\nSingleChildScrollView通常、スクロールできるリストを表示する場合は、ListView を使いますが、リストでない場合、SingleChildScrollView を使います。\nProvider\nProvider を活用することでシンプルにUIとロジックとステートを分離することができ、リアクティブなアプリを作っていけそう。\nProvider.of() ではプロバイダの子孫にあたる Widget の BuildContext が必要ですが、Consumer() はそれが得られない場合にも使えて便利です。\n\n","dateCreated":"2021-01-10T15:35:17+09:00","dateModified":"2021-01-12T00:08:41+09:00","datePublished":"2021-01-10T15:35:17+09:00","description":"welcome to my blog","headline":"flutter忘備録","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2021/01/10/flutter-memorandum/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2021/01/10/flutter-memorandum/","keywords":"タグ名"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\nクラスの構成一度整理。\n\n \n  \n   dart\n  \n  \n   \n  \n \n 1234567class Apple &#123;  static final String nickname = &#x27;Ann&#x27;; // staticをつけるとクラス変数になる  String color;               // staticをつけないとインスタンス変数。クラス変数と同名は指定できない  Person() &#123;                  // class名()でコンストラクタを記述    this.color = &#x27;Red&#x27;;       // this.変数名(メソッド名も同様)でメンバにアクセス  &#125;&#125;\n","dateCreated":"2021-01-12T22:22:18+09:00","dateModified":"2021-01-12T23:41:50+09:00","datePublished":"2021-01-12T22:22:18+09:00","description":"welcome to my blog","headline":"dart-memorandum","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2021/01/12/dart-memorandum/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2021/01/12/dart-memorandum/","keywords":"タグ名"}</script>
     <meta name="description" content="welcome to my blog">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="flutter忘備録">
-<meta property="og:url" content="https://morichnarich.github.io/2021/01/10/flutter-memorandum/index.html">
+<meta property="og:title" content="dart-memorandum">
+<meta property="og:url" content="https://morichnarich.github.io/2021/01/12/dart-memorandum/index.html">
 <meta property="og:site_name" content="Nariのブログ">
 <meta property="og:description" content="welcome to my blog">
 <meta property="og:locale" content="ja_JP">
-<meta property="article:published_time" content="2021-01-10T06:35:17.000Z">
-<meta property="article:modified_time" content="2021-01-11T15:08:41.958Z">
+<meta property="article:published_time" content="2021-01-12T13:22:18.000Z">
+<meta property="article:modified_time" content="2021-01-12T14:41:50.336Z">
 <meta property="article:author" content="Narichika Morinaga">
 <meta property="article:tag" content="タグ名">
 <meta name="twitter:card" content="summary">
@@ -337,21 +337,21 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            flutter忘備録
+            dart-memorandum
         </h1>
     
     
         <div class="post-meta">
     <i class="fas fa-file-alt"></i>
-    <time datetime="2021-01-10T15:35:17+09:00">
+    <time datetime="2021-01-12T22:22:18+09:00">
 	
-		    2021/01/10
+		    2021/01/12
     	
     </time>
 
     
     <i class="fas fa-redo-alt"></i>
-        <time datetime="2021-01-12T00:08:41+09:00">
+        <time datetime="2021-01-12T23:41:50+09:00">
         
         2021/01/12
         
@@ -377,14 +377,19 @@
         <div class="main-content-wrap">
             <!-- > これは引用です。 -->
 
-<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SingleChildScrollView"><span class="toc-text">SingleChildScrollView</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Provider"><span class="toc-text">Provider</span></a></li></ol>
-
-<h2 id="SingleChildScrollView"><a href="#SingleChildScrollView" class="headerlink" title="SingleChildScrollView"></a>SingleChildScrollView</h2><p>通常、スクロールできるリストを表示する場合は、ListView を使いますが、リストでない場合、SingleChildScrollView を使います。</p>
-<h2 id="Provider"><a href="#Provider" class="headerlink" title="Provider"></a>Provider</h2><ul>
-<li>Provider を活用することでシンプルにUIとロジックとステートを分離することができ、リアクティブなアプリを作っていけそう。</li>
-<li>Provider.of() ではプロバイダの子孫にあたる Widget の BuildContext が必要ですが、Consumer() はそれが得られない場合にも使えて便利です。</li>
-</ul>
-
+<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%AE%E6%A7%8B%E6%88%90"><span class="toc-text">クラスの構成</span></a></li></ol>
+<h1 id="クラスの構成"><a href="#クラスの構成" class="headerlink" title="クラスの構成"></a>クラスの構成</h1><p>一度整理。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">dart</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Apple</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">final</span> <span class="built_in">String</span> nickname = <span class="string">&#x27;Ann&#x27;</span>; <span class="comment">// staticをつけるとクラス変数になる</span></span><br><span class="line">  <span class="built_in">String</span> color;               <span class="comment">// staticをつけないとインスタンス変数。クラス変数と同名は指定できない</span></span><br><span class="line">  Person() &#123;                  <span class="comment">// class名()でコンストラクタを記述</span></span><br><span class="line">    <span class="keyword">this</span>.color = <span class="string">&#x27;Red&#x27;</span>;       <span class="comment">// this.変数名(メソッド名も同様)でメンバにアクセス</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div>
             
 
 
@@ -405,14 +410,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/01/12/dart-memorandum/"
-                    data-tooltip="dart-memorandum"
-                    aria-label="前: dart-memorandum"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">前</span>
                     </a>
@@ -422,9 +424,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/01/09/docker-memo/"
-                    data-tooltip="docker-memo"
-                    aria-label="次: docker-memo"
+                    href="/2021/01/10/flutter-memorandum/"
+                    data-tooltip="flutter忘備録"
+                    aria-label="次: flutter忘備録"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">次</span>
@@ -449,7 +451,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2021/01/10/flutter-memorandum/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2021/01/12/dart-memorandum/"
                     title="Facebookで共有"
                     aria-label="Facebookで共有"
                 >
@@ -462,7 +464,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2021/01/10/flutter-memorandum/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2021/01/12/dart-memorandum/"
                     title="Twitterで共有"
                     aria-label="Twitterで共有"
                 >
@@ -475,7 +477,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2021/01/10/flutter-memorandum/"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2021/01/12/dart-memorandum/"
                     title="Google+で共有"
                     aria-label="Google+で共有"
                 >
@@ -520,14 +522,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/01/12/dart-memorandum/"
-                    data-tooltip="dart-memorandum"
-                    aria-label="前: dart-memorandum"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">前</span>
                     </a>
@@ -537,9 +536,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/01/09/docker-memo/"
-                    data-tooltip="docker-memo"
-                    aria-label="次: docker-memo"
+                    href="/2021/01/10/flutter-memorandum/"
+                    data-tooltip="flutter忘備録"
+                    aria-label="次: flutter忘備録"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">次</span>
@@ -564,7 +563,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2021/01/10/flutter-memorandum/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2021/01/12/dart-memorandum/"
                     title="Facebookで共有"
                     aria-label="Facebookで共有"
                 >
@@ -577,7 +576,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2021/01/10/flutter-memorandum/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2021/01/12/dart-memorandum/"
                     title="Twitterで共有"
                     aria-label="Twitterで共有"
                 >
@@ -590,7 +589,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2021/01/10/flutter-memorandum/"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2021/01/12/dart-memorandum/"
                     title="Google+で共有"
                     aria-label="Google+で共有"
                 >
@@ -624,7 +623,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2021/01/10/flutter-memorandum/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2021/01/12/dart-memorandum/"
                         aria-label="Facebookで共有"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Facebookで共有</span>
@@ -637,7 +636,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2021/01/10/flutter-memorandum/"
+                        href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2021/01/12/dart-memorandum/"
                         aria-label="Twitterで共有"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Twitterで共有</span>
@@ -650,7 +649,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://plus.google.com/share?url=https://morichnarich.github.io/2021/01/10/flutter-memorandum/"
+                        href="https://plus.google.com/share?url=https://morichnarich.github.io/2021/01/12/dart-memorandum/"
                         aria-label="Google+で共有"
                     >
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>Google+で共有</span>
