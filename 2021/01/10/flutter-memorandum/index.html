@@ -13,7 +13,7 @@
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\n\nSingleChildScrollView通常、スクロールできるリストを表示する場合は、ListView を使いますが、リストでない場合、SingleChildScrollView を使います。\nProvider\nProvider を活用することでシンプルにUIとロジックとステートを分離することができ、リアクティブなアプリを作っていけそう。\nProvider.of() ではプロバイダの子孫にあたる Widget の BuildContext が必要ですが、Consumer() はそれが得られない場合にも使えて便利です。\n\n","dateCreated":"2021-01-10T15:35:17+09:00","dateModified":"2021-01-12T00:08:41+09:00","datePublished":"2021-01-10T15:35:17+09:00","description":"welcome to my blog","headline":"flutter忘備録","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2021/01/10/flutter-memorandum/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2021/01/10/flutter-memorandum/","keywords":"タグ名"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\n\nSingleChildScrollView通常、スクロールできるリストを表示する場合は、ListView を使いますが、リストでない場合、SingleChildScrollView を使います。\nProvider\nProvider を活用することでシンプルにUIとロジックとステートを分離することができ、リアクティブなアプリを作っていけそう。\nProvider.of() ではプロバイダの子孫にあたる Widget の BuildContext が必要ですが、Consumer() はそれが得られない場合にも使えて便利です。\n\nTextField▶  詳細\n\n\nTextEditingControllerについて「TextField」や、「TextFormField」などのテキストフィールドの入力内容を管理するためにTextEditingControllerを使用します。別途パッケージをインストールする必要はなくデフォルトで使用可能です。\nTextEditingControllerの使い方TextEditingControllerのコントローラを作成し、後は入力した内容をmyController.textというような形で取り出すことができます。myControllerは適当に名前をつけたTextEditingControllerのコントローラです。\n1.TextEditingController を宣言し、変数に代入class 宣言のすぐ下に記入することが多いと思われる。\n\n \n  \n   Dart\n  \n  \n   \n  \n \n 1final myController = TextEditingController();\n\n\n2.TextEditingController の配置Textfield のcontroller 属性にセットします。\n\n \n  \n   Dart\n  \n  \n   \n  \n \n 123456Padding(  padding: const EdgeInsets.all(16.0),  child: TextField(    controller: myController,  ),),\n\n\n3.class 内で変数を使う\n \n  \n   Dart\n  \n  \n   \n  \n \n\n 12345678onPressed: () &#123;// myController.text で入力されたテキストフィールドの内容を取得// 以下の_addItemは自分で定義済の関数  _addItem(myController.text);// テキストフィールドの内容をクリアする  myController.clear();&#125;,\n\n\nTextField で折返し表示させる方法入力欄（TextField）で、こんな感じで１行に入り切らない場合に、折り返し表示させたい場合は、maxLines属性を「null」にしてやるとうまく行きます。また、maxLinesは入力できる行数の最大行数を設定できます。これによりHTMLで言う所のテキストエリア表示が可能です。\nその他\nenabledは活性、非活性の切り替えに利用します。\nmaxLenthは入力可能な文字数です。\nmaxLengthEnforcedは入力可能な文字数の制限を超える場合の挙動を制御します。falseにしておくと最大文字数を超えても入力することが可能ですが、見た目はエラー状態となります。\nobscureTextをtrueにするとこのように、パスワード入力のように入力している値をマスクしてくれます。\ndecorationを追加することで、表示を整形することも可能です。\n\n\n \n  \n   Dart\n  \n  \n   \n  \n \n 123456789TextField( enabled: true, maxLength: 10, maxLengthEnforced: false, obscureText: false, controller: _textEditingController, onChanged: _handleText, onSubmitted: _submission,),\n\n\n\n\nMap型▶  詳細\n\n\nMap型は、keyと呼ばれる値とvalueと呼ばれる値を紐付けて格納するオブジェクトです。\n変数宣言まずは、型を指定して宣言します。今回はフレームワーク名をkeyにして、対応言語名を格納します。\n\n \n  \n   Dart\n  \n  \n   \n  \n \n 1234Map&lt;String, String&gt; frameworks = &#123; &#x27;Flutter&#x27; : &#x27;Dart&#x27;, &#x27;Rails&#x27; : &#x27;Ruby&#x27;,&#125;;\n\n\n型推論を使っての宣言型推論を使って宣言することもできます。\n\n \n  \n   Dart\n  \n  \n   \n  \n \n 1234var frameworks = &#123; &#x27;Flutter&#x27; : &#x27;Dart&#x27;, &#x27;Rails&#x27; : &#x27;Ruby&#x27;,&#125;;\n\n\n値を取り出す\n \n  \n   Dart\n  \n  \n   \n  \n \n 1frameworks[&#x27;Flutter&#x27;] // &#x27;Dart&#x27;\n\n\n値を追加する\n \n  \n   dart\n  \n  \n   \n  \n \n 1frameworks[&#x27;React&#x27;] = &#x27;JavaScript&#x27;;\n\n\naddAll（void）MapとMapを結合するメソッド\n\n \n  \n   dart\n  \n  \n   \n  \n \n 123456frameworks.addAll( &#123;   &#x27;Laravel&#x27; : &#x27;PHP&#x27;,   &#x27;Bootstrap&#x27; : &#x27;CSS&#x27;, &#125;);\n\n\ncontainsKey（bool）keyが存在するかどうか確認するメソッド\n\n \n  \n   dart\n  \n  \n   \n  \n \n 12frameworks.containsKey(&#x27;Flutter&#x27;); // trueframeworks.containsKey(&#x27;CakePHP&#x27;); // false\n\n\nlength（int）Mapに含まれる値の数を取得するメソッド\n\n \n  \n   dart\n  \n  \n   \n  \n \n 1frameworks.length // 5\n\n\nremove（value）値を削除するメソッド\n\n \n  \n   dart\n  \n  \n   \n  \n \n 1frameworks.remove(&#x27;Rails&#x27;); // Rails\n\n\nforEach（void）Mapの値を順番に取り出して処理するメソッド\n\n \n  \n   dart\n  \n  \n   \n  \n \n 123frameworks.forEach((key, value) &#123; print(&#x27;$key --- $value&#x27;);&#125;);\n\n\n\n配列メソッド▶  詳細\n\n\n1. forEach()リスト内の各要素に対して関数を実行する。\n\n \n  \n   dart\n  \n  \n   \n  \n \n 1fruits.forEach((fruit) =&gt; print(fruit)); // =&gt; banana pineapple watermelon\n\n\n2.map()与えられた各要素に処理を掛けた後に、その要素群に対する新しいリストを作成する。\n\n \n  \n   dart\n  \n  \n   \n  \n \n 12var mappedFruits = fruits.map((fruit) =&gt; &#x27;I love $fruit&#x27;).toList(); print(mappedFruits); // =&gt; [&#x27;I love banana&#x27;, &#x27;I love pineapple&#x27;, &#x27;I love watermelon&#x27;]\n\n\n空の連想配列を生成したい「{}」もしくは「Map」インタフェースを使用します。\n\n \n  \n   dart\n  \n  \n   \n  \n \n 12var hashMap = &#123;&#125;;var hashMap = new Map();\n\n\nキー・バリューが設定された連想配列を生成したい初期化時にキー・バリューのペアを設定しておくことができます。\n\n \n  \n   dart\n  \n  \n   \n  \n \n\n 12345678910var locale = &#123;  &#x27;japan&#x27; : &#x27;ja-JP&#x27;,  &#x27;usa&#x27; : &#x27;en-US&#x27;&#125;;// NGvar locale = &#123;  japan: &#x27;ja-JP&#x27;,  usa: &#x27;en-US&#x27;&#125;;\n\n\n\n連想配列の値にアクセスしたい角括弧を用いた表記方法で値にアクセスします。\n\n \n  \n   dart\n  \n  \n   \n  \n \n\n 1234locale[&#x27;japan&#x27;]; // == &#x27;ja-JP&#x27;locale[&#x27;france&#x27;] = &#x27;fr-FR&#x27;;locale.japan; // NG\n\n\n\n\n3.List.from()与えられたコレクションから新しいリストを作成する。\n\n \n  \n   dart\n  \n  \n   \n  \n \n 12var clonedFiboNumbers = List.from(fiboNumbers); print(&#x27;Cloned list: $clonedFiboNumbers&#x27;);\n\n\n\n","dateCreated":"2021-01-10T15:35:17+09:00","dateModified":"2021-01-19T07:06:47+09:00","datePublished":"2021-01-10T15:35:17+09:00","description":"welcome to my blog","headline":"flutter忘備録","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2021/01/10/flutter-memorandum/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2021/01/10/flutter-memorandum/","keywords":"タグ名"}</script>
     <meta name="description" content="welcome to my blog">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="flutter忘備録">
@@ -22,7 +22,7 @@
 <meta property="og:description" content="welcome to my blog">
 <meta property="og:locale" content="ja_JP">
 <meta property="article:published_time" content="2021-01-10T06:35:17.000Z">
-<meta property="article:modified_time" content="2021-01-11T15:08:41.958Z">
+<meta property="article:modified_time" content="2021-01-18T22:06:47.707Z">
 <meta property="article:author" content="Narichika Morinaga">
 <meta property="article:tag" content="タグ名">
 <meta name="twitter:card" content="summary">
@@ -351,9 +351,9 @@
 
     
     <i class="fas fa-redo-alt"></i>
-        <time datetime="2021-01-12T00:08:41+09:00">
+        <time datetime="2021-01-19T07:06:47+09:00">
         
-        2021/01/12
+        2021/01/19
         
         </time>
         <br>
@@ -377,14 +377,287 @@
         <div class="main-content-wrap">
             <!-- > これは引用です。 -->
 
-<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SingleChildScrollView"><span class="toc-text">SingleChildScrollView</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Provider"><span class="toc-text">Provider</span></a></li></ol>
+<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SingleChildScrollView"><span class="toc-text">SingleChildScrollView</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Provider"><span class="toc-text">Provider</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TextField"><span class="toc-text">TextField</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#TextEditingController%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="toc-text">TextEditingControllerについて</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TextEditingController%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9"><span class="toc-text">TextEditingControllerの使い方</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-TextEditingController-%E3%82%92%E5%AE%A3%E8%A8%80%E3%81%97%E3%80%81%E5%A4%89%E6%95%B0%E3%81%AB%E4%BB%A3%E5%85%A5"><span class="toc-text">1.TextEditingController を宣言し、変数に代入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-TextEditingController-%E3%81%AE%E9%85%8D%E7%BD%AE"><span class="toc-text">2.TextEditingController の配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-class-%E5%86%85%E3%81%A7%E5%A4%89%E6%95%B0%E3%82%92%E4%BD%BF%E3%81%86"><span class="toc-text">3.class 内で変数を使う</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TextField-%E3%81%A7%E6%8A%98%E8%BF%94%E3%81%97%E8%A1%A8%E7%A4%BA%E3%81%95%E3%81%9B%E3%82%8B%E6%96%B9%E6%B3%95"><span class="toc-text">TextField で折返し表示させる方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%81%9D%E3%81%AE%E4%BB%96"><span class="toc-text">その他</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Map%E5%9E%8B"><span class="toc-text">Map型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%89%E6%95%B0%E5%AE%A3%E8%A8%80"><span class="toc-text">変数宣言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9E%8B%E6%8E%A8%E8%AB%96%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6%E3%81%AE%E5%AE%A3%E8%A8%80"><span class="toc-text">型推論を使っての宣言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%80%A4%E3%82%92%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99"><span class="toc-text">値を取り出す</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%80%A4%E3%82%92%E8%BF%BD%E5%8A%A0%E3%81%99%E3%82%8B"><span class="toc-text">値を追加する</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#addAll%EF%BC%88void%EF%BC%89"><span class="toc-text">addAll（void）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#containsKey%EF%BC%88bool%EF%BC%89"><span class="toc-text">containsKey（bool）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#length%EF%BC%88int%EF%BC%89"><span class="toc-text">length（int）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#remove%EF%BC%88value%EF%BC%89"><span class="toc-text">remove（value）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#forEach%EF%BC%88void%EF%BC%89"><span class="toc-text">forEach（void）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%85%8D%E5%88%97%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89"><span class="toc-text">配列メソッド</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-forEach"><span class="toc-text">1. forEach()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-map"><span class="toc-text">2.map()</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A9%BA%E3%81%AE%E9%80%A3%E6%83%B3%E9%85%8D%E5%88%97%E3%82%92%E7%94%9F%E6%88%90%E3%81%97%E3%81%9F%E3%81%84"><span class="toc-text">空の連想配列を生成したい</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%82%AD%E3%83%BC%E3%83%BB%E3%83%90%E3%83%AA%E3%83%A5%E3%83%BC%E3%81%8C%E8%A8%AD%E5%AE%9A%E3%81%95%E3%82%8C%E3%81%9F%E9%80%A3%E6%83%B3%E9%85%8D%E5%88%97%E3%82%92%E7%94%9F%E6%88%90%E3%81%97%E3%81%9F%E3%81%84"><span class="toc-text">キー・バリューが設定された連想配列を生成したい</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%A3%E6%83%B3%E9%85%8D%E5%88%97%E3%81%AE%E5%80%A4%E3%81%AB%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E3%81%97%E3%81%9F%E3%81%84"><span class="toc-text">連想配列の値にアクセスしたい</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-List-from"><span class="toc-text">3.List.from()</span></a></li></ol></li></ol>
 
-<h2 id="SingleChildScrollView"><a href="#SingleChildScrollView" class="headerlink" title="SingleChildScrollView"></a>SingleChildScrollView</h2><p>通常、スクロールできるリストを表示する場合は、ListView を使いますが、リストでない場合、SingleChildScrollView を使います。</p>
-<h2 id="Provider"><a href="#Provider" class="headerlink" title="Provider"></a>Provider</h2><ul>
+<h1 id="SingleChildScrollView"><a href="#SingleChildScrollView" class="headerlink" title="SingleChildScrollView"></a>SingleChildScrollView</h1><p>通常、スクロールできるリストを表示する場合は、ListView を使いますが、リストでない場合、SingleChildScrollView を使います。</p>
+<h1 id="Provider"><a href="#Provider" class="headerlink" title="Provider"></a>Provider</h1><ul>
 <li>Provider を活用することでシンプルにUIとロジックとステートを分離することができ、リアクティブなアプリを作っていけそう。</li>
 <li>Provider.of() ではプロバイダの子孫にあたる Widget の BuildContext が必要ですが、Consumer() はそれが得られない場合にも使えて便利です。</li>
 </ul>
+<h1 id="TextField"><a href="#TextField" class="headerlink" title="TextField"></a>TextField</h1><p class="postToggle">▶  詳細</p>
+<div class="postToggled postToggledClose">
 
+<h2 id="TextEditingControllerについて"><a href="#TextEditingControllerについて" class="headerlink" title="TextEditingControllerについて"></a>TextEditingControllerについて</h2><p>「TextField」や、「TextFormField」などのテキストフィールドの入力内容を管理するためにTextEditingControllerを使用します。別途パッケージをインストールする必要はなくデフォルトで使用可能です。</p>
+<h3 id="TextEditingControllerの使い方"><a href="#TextEditingControllerの使い方" class="headerlink" title="TextEditingControllerの使い方"></a>TextEditingControllerの使い方</h3><p>TextEditingControllerのコントローラを作成し、後は入力した内容をmyController.textというような形で取り出すことができます。myControllerは適当に名前をつけたTextEditingControllerのコントローラです。</p>
+<h4 id="1-TextEditingController-を宣言し、変数に代入"><a href="#1-TextEditingController-を宣言し、変数に代入" class="headerlink" title="1.TextEditingController を宣言し、変数に代入"></a>1.TextEditingController を宣言し、変数に代入</h4><p>class 宣言のすぐ下に記入することが多いと思われる。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">Dart</span>
+  </div>
+  <div class="code-parent">
+   <!-- <button class="copyButton"><i class="far fa-copy fa-lg"></i></button> -->
+  </div>
+ </div>
+ <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> myController = TextEditingController();</span><br></pre></td></tr></table></figure>
+</div>
+
+<h4 id="2-TextEditingController-の配置"><a href="#2-TextEditingController-の配置" class="headerlink" title="2.TextEditingController の配置"></a>2.TextEditingController の配置</h4><p>Textfield のcontroller 属性にセットします。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">Dart</span>
+  </div>
+  <div class="code-parent">
+   <!-- <button class="copyButton"><i class="far fa-copy fa-lg"></i></button> -->
+  </div>
+ </div>
+ <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Padding(</span><br><span class="line">  padding: <span class="keyword">const</span> EdgeInsets.all(<span class="number">16.0</span>),</span><br><span class="line">  child: TextField(</span><br><span class="line">    controller: myController,</span><br><span class="line">  ),</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+</div>
+
+<h4 id="3-class-内で変数を使う"><a href="#3-class-内で変数を使う" class="headerlink" title="3.class 内で変数を使う"></a>3.class 内で変数を使う</h4><div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">Dart</span>
+  </div>
+  <div class="code-parent">
+   <!-- <button class="copyButton"><i class="far fa-copy fa-lg"></i></button> -->
+  </div>
+ </div>
+
+ <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">onPressed: () &#123;</span><br><span class="line"><span class="comment">// myController.text で入力されたテキストフィールドの内容を取得</span></span><br><span class="line"><span class="comment">// 以下の_addItemは自分で定義済の関数</span></span><br><span class="line">  _addItem(myController.text);</span><br><span class="line"></span><br><span class="line"><span class="comment">// テキストフィールドの内容をクリアする</span></span><br><span class="line">  myController.clear();</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+</div>
+
+<h2 id="TextField-で折返し表示させる方法"><a href="#TextField-で折返し表示させる方法" class="headerlink" title="TextField で折返し表示させる方法"></a>TextField で折返し表示させる方法</h2><p>入力欄（TextField）で、こんな感じで１行に入り切らない場合に、折り返し表示させたい場合は、<font style="background:linear-gradient(transparent 75%, #7fbfff 75%); font-weight:bold;">maxLines</font>属性を「<font style="background:linear-gradient(transparent 75%, #7fbfff 75%); font-weight:bold;">null</font>」にしてやるとうまく行きます。<br>また、maxLinesは入力できる行数の最大行数を設定できます。これによりHTMLで言う所のテキストエリア表示が可能です。</p>
+<h2 id="その他"><a href="#その他" class="headerlink" title="その他"></a>その他</h2><ul>
+<li>enabledは活性、非活性の切り替えに利用します。</li>
+<li>maxLenthは入力可能な文字数です。</li>
+<li>maxLengthEnforcedは入力可能な文字数の制限を超える場合の挙動を制御します。falseにしておくと最大文字数を超えても入力することが可能ですが、見た目はエラー状態となります。</li>
+<li>obscureTextをtrueにするとこのように、パスワード入力のように入力している値をマスクしてくれます。</li>
+<li>decorationを追加することで、表示を整形することも可能です。</li>
+</ul>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">Dart</span>
+  </div>
+  <div class="code-parent">
+   <!-- <button class="copyButton"><i class="far fa-copy fa-lg"></i></button> -->
+  </div>
+ </div>
+ <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">TextField(</span><br><span class="line"> enabled: <span class="keyword">true</span>,</span><br><span class="line"> maxLength: <span class="number">10</span>,</span><br><span class="line"> maxLengthEnforced: <span class="keyword">false</span>,</span><br><span class="line"> obscureText: <span class="keyword">false</span>,</span><br><span class="line"> controller: _textEditingController,</span><br><span class="line"> onChanged: _handleText,</span><br><span class="line"> onSubmitted: _submission,</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+</div>
+
+</div>
+
+<h1 id="Map型"><a href="#Map型" class="headerlink" title="Map型"></a>Map型</h1><p class="postToggle">▶  詳細</p>
+<div class="postToggled postToggledClose">
+
+<p>Map型は、keyと呼ばれる値とvalueと呼ばれる値を紐付けて格納するオブジェクトです。</p>
+<h2 id="変数宣言"><a href="#変数宣言" class="headerlink" title="変数宣言"></a>変数宣言</h2><p>まずは、型を指定して宣言します。<br>今回はフレームワーク名をkeyにして、対応言語名を格納します。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">Dart</span>
+  </div>
+  <div class="code-parent">
+   <!-- <button class="copyButton"><i class="far fa-copy fa-lg"></i></button> -->
+  </div>
+ </div>
+ <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">String</span>&gt; frameworks = &#123;</span><br><span class="line"> <span class="string">&#x27;Flutter&#x27;</span> : <span class="string">&#x27;Dart&#x27;</span>,</span><br><span class="line"> <span class="string">&#x27;Rails&#x27;</span> : <span class="string">&#x27;Ruby&#x27;</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</div>
+
+<h2 id="型推論を使っての宣言"><a href="#型推論を使っての宣言" class="headerlink" title="型推論を使っての宣言"></a>型推論を使っての宣言</h2><p>型推論を使って宣言することもできます。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">Dart</span>
+  </div>
+  <div class="code-parent">
+   <!-- <button class="copyButton"><i class="far fa-copy fa-lg"></i></button> -->
+  </div>
+ </div>
+ <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> frameworks = &#123;</span><br><span class="line"> <span class="string">&#x27;Flutter&#x27;</span> : <span class="string">&#x27;Dart&#x27;</span>,</span><br><span class="line"> <span class="string">&#x27;Rails&#x27;</span> : <span class="string">&#x27;Ruby&#x27;</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</div>
+
+<h2 id="値を取り出す"><a href="#値を取り出す" class="headerlink" title="値を取り出す"></a>値を取り出す</h2><div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">Dart</span>
+  </div>
+  <div class="code-parent">
+   <!-- <button class="copyButton"><i class="far fa-copy fa-lg"></i></button> -->
+  </div>
+ </div>
+ <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">frameworks[<span class="string">&#x27;Flutter&#x27;</span>] <span class="comment">// &#x27;Dart&#x27;</span></span><br></pre></td></tr></table></figure>
+</div>
+
+<h2 id="値を追加する"><a href="#値を追加する" class="headerlink" title="値を追加する"></a>値を追加する</h2><div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">dart</span>
+  </div>
+  <div class="code-parent">
+   <!-- <button class="copyButton"><i class="far fa-copy fa-lg"></i></button> -->
+  </div>
+ </div>
+ <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">frameworks[<span class="string">&#x27;React&#x27;</span>] = <span class="string">&#x27;JavaScript&#x27;</span>;</span><br></pre></td></tr></table></figure>
+</div>
+
+<h2 id="addAll（void）"><a href="#addAll（void）" class="headerlink" title="addAll（void）"></a>addAll（void）</h2><p>MapとMapを結合するメソッド</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">dart</span>
+  </div>
+  <div class="code-parent">
+   <!-- <button class="copyButton"><i class="far fa-copy fa-lg"></i></button> -->
+  </div>
+ </div>
+ <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">frameworks.addAll(</span><br><span class="line"> &#123;</span><br><span class="line">   <span class="string">&#x27;Laravel&#x27;</span> : <span class="string">&#x27;PHP&#x27;</span>,</span><br><span class="line">   <span class="string">&#x27;Bootstrap&#x27;</span> : <span class="string">&#x27;CSS&#x27;</span>,</span><br><span class="line"> &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+</div>
+
+<h2 id="containsKey（bool）"><a href="#containsKey（bool）" class="headerlink" title="containsKey（bool）"></a>containsKey（bool）</h2><p>keyが存在するかどうか確認するメソッド</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">dart</span>
+  </div>
+  <div class="code-parent">
+   <!-- <button class="copyButton"><i class="far fa-copy fa-lg"></i></button> -->
+  </div>
+ </div>
+ <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">frameworks.containsKey(<span class="string">&#x27;Flutter&#x27;</span>); <span class="comment">// true</span></span><br><span class="line">frameworks.containsKey(<span class="string">&#x27;CakePHP&#x27;</span>); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+</div>
+
+<h2 id="length（int）"><a href="#length（int）" class="headerlink" title="length（int）"></a>length（int）</h2><p>Mapに含まれる値の数を取得するメソッド</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">dart</span>
+  </div>
+  <div class="code-parent">
+   <!-- <button class="copyButton"><i class="far fa-copy fa-lg"></i></button> -->
+  </div>
+ </div>
+ <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">frameworks.length <span class="comment">// 5</span></span><br></pre></td></tr></table></figure>
+</div>
+
+<h2 id="remove（value）"><a href="#remove（value）" class="headerlink" title="remove（value）"></a>remove（value）</h2><p>値を削除するメソッド</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">dart</span>
+  </div>
+  <div class="code-parent">
+   <!-- <button class="copyButton"><i class="far fa-copy fa-lg"></i></button> -->
+  </div>
+ </div>
+ <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">frameworks.remove(<span class="string">&#x27;Rails&#x27;</span>); <span class="comment">// Rails</span></span><br></pre></td></tr></table></figure>
+</div>
+
+<h2 id="forEach（void）"><a href="#forEach（void）" class="headerlink" title="forEach（void）"></a>forEach（void）</h2><p>Mapの値を順番に取り出して処理するメソッド</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">dart</span>
+  </div>
+  <div class="code-parent">
+   <!-- <button class="copyButton"><i class="far fa-copy fa-lg"></i></button> -->
+  </div>
+ </div>
+ <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">frameworks.forEach((key, value) &#123;</span><br><span class="line"> <span class="built_in">print</span>(<span class="string">&#x27;<span class="subst">$key</span> --- <span class="subst">$value</span>&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</div>
+</div>
+
+<h1 id="配列メソッド"><a href="#配列メソッド" class="headerlink" title="配列メソッド"></a>配列メソッド</h1><p class="postToggle">▶  詳細</p>
+<div class="postToggled postToggledClose">
+
+<h2 id="1-forEach"><a href="#1-forEach" class="headerlink" title="1. forEach()"></a>1. forEach()</h2><p>リスト内の各要素に対して関数を実行する。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">dart</span>
+  </div>
+  <div class="code-parent">
+   <!-- <button class="copyButton"><i class="far fa-copy fa-lg"></i></button> -->
+  </div>
+ </div>
+ <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fruits.forEach((fruit) =&gt; <span class="built_in">print</span>(fruit)); <span class="comment">// =&gt; banana pineapple watermelon</span></span><br></pre></td></tr></table></figure>
+</div>
+
+<h2 id="2-map"><a href="#2-map" class="headerlink" title="2.map()"></a>2.map()</h2><p>与えられた各要素に処理を掛けた後に、その要素群に対する新しいリストを作成する。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">dart</span>
+  </div>
+  <div class="code-parent">
+   <!-- <button class="copyButton"><i class="far fa-copy fa-lg"></i></button> -->
+  </div>
+ </div>
+ <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> mappedFruits = fruits.map((fruit) =&gt; <span class="string">&#x27;I love <span class="subst">$fruit</span>&#x27;</span>).toList();</span><br><span class="line"> <span class="built_in">print</span>(mappedFruits); <span class="comment">// =&gt; [&#x27;I love banana&#x27;, &#x27;I love pineapple&#x27;, &#x27;I love watermelon&#x27;]</span></span><br></pre></td></tr></table></figure>
+</div>
+
+<h3 id="空の連想配列を生成したい"><a href="#空の連想配列を生成したい" class="headerlink" title="空の連想配列を生成したい"></a>空の連想配列を生成したい</h3><p>「{}」もしくは「Map」インタフェースを使用します。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">dart</span>
+  </div>
+  <div class="code-parent">
+   <!-- <button class="copyButton"><i class="far fa-copy fa-lg"></i></button> -->
+  </div>
+ </div>
+ <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> hashMap = &#123;&#125;;</span><br><span class="line"><span class="keyword">var</span> hashMap = <span class="keyword">new</span> <span class="built_in">Map</span>();</span><br></pre></td></tr></table></figure>
+</div>
+
+<h3 id="キー・バリューが設定された連想配列を生成したい"><a href="#キー・バリューが設定された連想配列を生成したい" class="headerlink" title="キー・バリューが設定された連想配列を生成したい"></a>キー・バリューが設定された連想配列を生成したい</h3><p>初期化時にキー・バリューのペアを設定しておくことができます。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">dart</span>
+  </div>
+  <div class="code-parent">
+   <!-- <button class="copyButton"><i class="far fa-copy fa-lg"></i></button> -->
+  </div>
+ </div>
+
+ <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> locale = &#123;</span><br><span class="line">  <span class="string">&#x27;japan&#x27;</span> : <span class="string">&#x27;ja-JP&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;usa&#x27;</span> : <span class="string">&#x27;en-US&#x27;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// NG</span></span><br><span class="line"><span class="keyword">var</span> locale = &#123;</span><br><span class="line">  japan: <span class="string">&#x27;ja-JP&#x27;</span>,</span><br><span class="line">  usa: <span class="string">&#x27;en-US&#x27;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+</div>
+
+<h3 id="連想配列の値にアクセスしたい"><a href="#連想配列の値にアクセスしたい" class="headerlink" title="連想配列の値にアクセスしたい"></a>連想配列の値にアクセスしたい</h3><p>角括弧を用いた表記方法で値にアクセスします。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">dart</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+
+ <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">locale[<span class="string">&#x27;japan&#x27;</span>]; <span class="comment">// == &#x27;ja-JP&#x27;</span></span><br><span class="line">locale[<span class="string">&#x27;france&#x27;</span>] = <span class="string">&#x27;fr-FR&#x27;</span>;</span><br><span class="line"></span><br><span class="line">locale.japan; <span class="comment">// NG</span></span><br></pre></td></tr></table></figure>
+</div>
+
+
+
+<h2 id="3-List-from"><a href="#3-List-from" class="headerlink" title="3.List.from()"></a>3.List.from()</h2><p>与えられたコレクションから新しいリストを作成する。</p>
+<div class="docs">
+ <div class="control">
+  <div>
+   <span class="codeTitles">dart</span>
+  </div>
+  <div class="code-parent">
+   <button class="copyButton"><i class="far fa-copy fa-lg"></i></button>
+  </div>
+ </div>
+ <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> clonedFiboNumbers = <span class="built_in">List</span>.from(fiboNumbers);</span><br><span class="line"> <span class="built_in">print</span>(<span class="string">&#x27;Cloned list: <span class="subst">$clonedFiboNumbers</span>&#x27;</span>);</span><br></pre></td></tr></table></figure>
+</div>
+
+
+</div>
             
 
 
