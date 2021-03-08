@@ -1,0 +1,724 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Nariのブログ">
+    <title>In‑App Purchase - Nariのブログ - 明日の自分に残すメモ - </title>
+    <meta name="author" content="Narichika Morinaga">
+    
+        <meta name="keywords" content="hexo,javascript,">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n\n\nアプリ内購入概要アプリ内購入は、サブスクリプション、新機能、サービスなど、さまざまなコンテンツの販売に使用できます。アプリ内購入には4つのタイプがあります。ユーザーは、iOS、iPadOS、macOS、watchOS、tvOSでアプリ内購入を行うことができます。\nConsumableユーザーは、さまざまな種類の消耗品を購入して、アプリを介して進行を進めることができます。消耗品のアプリ内購入は、一度使用すると使い果たされ、再度購入できます。\nNon‑Consumableユーザーは、アプリ内で消耗品ではないプレミアム機能を購入できます。写真アプリの追加フィルターなど、非消耗品は1回購入すれば、有効期限はありません。Appleは、消耗品ではないアプリ内購入に関連するコンテンツをホストできます。\nAuto‑Renewable Subscriptionsユーザーは、サービスへのアクセスや、クラウドストレージへの毎月のアクセスや雑誌の毎週の購読など、定期的に更新されるコンテンツを購入できます。ユーザーは、キャンセルすることを決定するまで、定期的に課金されます。\nNon‑Renewing Subscriptionsユーザーは、限られた期間でサービスまたはコンテンツへのアクセスを購入できます。Non‑Renewing Subscriptionsは自動的に更新されないため、ユーザーは毎回更新する必要があります。\n準備アプリ内購入を提供する前に、有料アプリケーション契約に署名し、銀行情報と税務情報を設定する必要があります。App Store Connect ヘルプ：契約、税金、銀行の概要\nXcode構成をセットアップするXcodeを使用して、アプリのアプリ内購入サービスを有効にします。Xcodeヘルプ：ターゲットに機能を追加する\nApp Store Connect でアプリ内購入を作成するApp Store Connect でアプリ内購入を構成する、また、名前、価格、説明など、アプリ内購入の特徴を強調する詳細を含めます。XMLを使用して、アプリ内購入を作成および維持することもできます。App Store Connect ヘルプ：アプリ内購入を作成する\n設計と構築アプリ内購入エクスペリエンスを設計するアプリ内購入のユーザーインターフェースは、アプリの他の部分とうまく適合し、製品を効果的に紹介する必要があります。ヒューマンインターフェイスガイドラインを表示する\nアプリ内購入を実装するStoreKitフレームワークを使用して、アプリ内購入をアプリに組み込み、コンテンツとサービスの購入を安全に処理します。実装チェックリストの手順を必ず完了してください。StoreKitAPIドキュメントを表示する\n領収書を検証する領収書は、販売の貴重な記録を提供します。コンテンツを保護し、不正な購入を防ぐために、レシート検証コードの使用を検討してください。AppStoreの領収書AppStoreサーバーの通知領収書検証手法の選択App Store で領収書を検証する\n払い戻しを管理するApp Storeサーバーの通知には、すべての種類のアプリ内購入の払い戻し通知が含まれます。この情報を使用して、それに応じてアクションを実行できます。たとえば、ゲーム内のユーザーの通貨残高を調整したり、アプリ内購入によってロック解除されたコンテンツへのアクセスを制限したりできます。アクションを実行することを選択した場合は、変更をユーザーに通知し、それに応じてユーザーが行う必要があることがあるかどうかをユーザーに通知します。\n自動更新可能なサブスクリプションを提供する場合は、 App Storeサブスクライバーのステータスを理解するための受信検証付きサーバー通知。詳細については、「領収書を使用してサブスクライバーを保持する」を参照してください。サーバー間通知の有効化払い戻し通知の処理\nテストテストトランザクションAppleサンドボックステスト環境またはXcodeを使用して、アプリ内購入をテストします。App Store Connect ヘルプ：サンドボックステスターアカウントを作成するアプリ内購入トランザクションのテストXcodeでのアプリ内購入のテスト\n完全なユーザーエクスペリエンスをテストするTestFlightを使用して、アプリをリリースする前に、幅広いユーザーからアプリやアプリ内購入に関する貴重なフィードバックを入手してください。 AppStore。 チームのユーザーを App Store Connect、パブリックリンクまたはその電子メールアドレスを使用する最大10,000人の外部テスター。ベータテスト期間中はすべてのアプリ内購入は無料で、テスト期間が終了しても持ち越されません。TestFlightの詳細\n出版レビューのためにアプリ内購入を送信するテストが完了したら、以下を実行したことを確認します。 アプリレビュー ガイドラインと実装チェックリストを使用して送信します App StoreConnect。\nApp StoreConnectワークフローアカウント所有者（Apple Developer Programに参加している人）のみがApp Store Connectにサインインサインインしたら、ホームページのセクションをクリックして機能を見つけます。\n契約に同意し、税金と銀行の情報を入力しますアプリを価格で販売する場合は、[契約、税金、銀行]セクションで、契約、特に有料アプリケーション契約に署名して更新する必要があります。そして、あなたはあなたの連絡先を入力し、銀行情報を入力し、税務情報を提供します。\nユーザーを追加して役割を割り当てるアプリを追加し、ビルドをアップロードしますアプリのステータス、使用状況、売上を監視する","dateCreated":"2021-02-23T14:29:59+09:00","dateModified":"2021-02-23T16:31:53+09:00","datePublished":"2021-02-23T14:29:59+09:00","description":"welcome to my blog","headline":"In‑App Purchase","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://morichnarich.github.io/2021/02/23/In%E2%80%91App-Purchase/"},"publisher":{"@type":"Organization","name":"Narichika Morinaga","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"https://morichnarich.github.io/2021/02/23/In%E2%80%91App-Purchase/","keywords":"Purchase, cordova"}</script>
+    <meta name="description" content="welcome to my blog">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="In‑App Purchase">
+<meta property="og:url" content="https://morichnarich.github.io/2021/02/23/In%E2%80%91App-Purchase/index.html">
+<meta property="og:site_name" content="Nariのブログ">
+<meta property="og:description" content="welcome to my blog">
+<meta property="og:locale" content="ja_JP">
+<meta property="article:published_time" content="2021-02-23T05:29:59.000Z">
+<meta property="article:modified_time" content="2021-02-23T07:31:53.403Z">
+<meta property="article:author" content="Narichika Morinaga">
+<meta property="article:tag" content="Purchase">
+<meta property="article:tag" content="cordova">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-nwhmakibv65xhsdkq7pht98suw06ytb1by3pl3uicngjtr8jerdnj02uz5dw.min.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+    <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.3.2/styles/androidstudio.min.css">
+    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/highlight.min.js"></script> -->
+</head>
+
+    
+<link rel="stylesheet" href="/my_css.css">
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Nariのブログ
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="リンクを開く: /#about"
+            >
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-header">
+        <a href=https://morichnarich.github.io>
+            <h1 class="sidebar-title">
+                Nariのブログ
+            </h1>
+            <h2 class="sidebar-subtitle">
+                - 明日の自分に残すメモ -
+            </h2>
+        </a>
+    </div>
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="ホーム"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">ホーム</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="カテゴリー"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">カテゴリー</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="タグ"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">タグ</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="アーカイブ"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">アーカイブ</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="検索"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">検索</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="プロフィール"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">プロフィール</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="http://stackoverflow.com/users"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Stack Overflow"
+                        >
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://twitter.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://facebook.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://plus.google.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Google Plus"
+                        >
+                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Google Plus</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/profile/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/mailto"
+                            
+                            rel="noopener"
+                            title="メール"
+                        >
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">メール</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            In‑App Purchase
+        </h1>
+    
+    
+        <div class="post-meta">
+    <i class="fas fa-file-alt"></i>
+    <time datetime="2021-02-23T14:29:59+09:00">
+	
+		    2021/02/23
+    	
+    </time>
+
+    
+    <i class="fas fa-redo-alt"></i>
+        <time datetime="2021-02-23T16:31:53+09:00">
+        
+        2021/02/23
+        
+        </time>
+        <br>
+    
+    
+    
+        <i class="far fa-folder-open"></i>
+        <span>カテゴリー </span>
+        
+    <a class="category-link" href="/categories/programming/">programming</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <!-- > これは引用です。 -->
+
+<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E3%82%A2%E3%83%97%E3%83%AA%E5%86%85%E8%B3%BC%E5%85%A5"><span class="toc-text">アプリ内購入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%A6%81"><span class="toc-text">概要</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Consumable"><span class="toc-text">Consumable</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Non%E2%80%91Consumable"><span class="toc-text">Non‑Consumable</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Auto%E2%80%91Renewable-Subscriptions"><span class="toc-text">Auto‑Renewable Subscriptions</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Non%E2%80%91Renewing-Subscriptions"><span class="toc-text">Non‑Renewing Subscriptions</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BA%96%E5%82%99"><span class="toc-text">準備</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Xcode%E6%A7%8B%E6%88%90%E3%82%92%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97%E3%81%99%E3%82%8B"><span class="toc-text">Xcode構成をセットアップする</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#App-Store-Connect-%E3%81%A7%E3%82%A2%E3%83%97%E3%83%AA%E5%86%85%E8%B3%BC%E5%85%A5%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B"><span class="toc-text">App Store Connect でアプリ内購入を作成する</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A8%AD%E8%A8%88%E3%81%A8%E6%A7%8B%E7%AF%89"><span class="toc-text">設計と構築</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%82%A2%E3%83%97%E3%83%AA%E5%86%85%E8%B3%BC%E5%85%A5%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%9A%E3%83%AA%E3%82%A8%E3%83%B3%E3%82%B9%E3%82%92%E8%A8%AD%E8%A8%88%E3%81%99%E3%82%8B"><span class="toc-text">アプリ内購入エクスペリエンスを設計する</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%82%A2%E3%83%97%E3%83%AA%E5%86%85%E8%B3%BC%E5%85%A5%E3%82%92%E5%AE%9F%E8%A3%85%E3%81%99%E3%82%8B"><span class="toc-text">アプリ内購入を実装する</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A0%98%E5%8F%8E%E6%9B%B8%E3%82%92%E6%A4%9C%E8%A8%BC%E3%81%99%E3%82%8B"><span class="toc-text">領収書を検証する</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%95%E3%81%84%E6%88%BB%E3%81%97%E3%82%92%E7%AE%A1%E7%90%86%E3%81%99%E3%82%8B"><span class="toc-text">払い戻しを管理する</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%83%86%E3%82%B9%E3%83%88"><span class="toc-text">テスト</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%83%86%E3%82%B9%E3%83%88%E3%83%88%E3%83%A9%E3%83%B3%E3%82%B6%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3"><span class="toc-text">テストトランザクション</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E5%85%A8%E3%81%AA%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%9A%E3%83%AA%E3%82%A8%E3%83%B3%E3%82%B9%E3%82%92%E3%83%86%E3%82%B9%E3%83%88%E3%81%99%E3%82%8B"><span class="toc-text">完全なユーザーエクスペリエンスをテストする</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BA%E7%89%88"><span class="toc-text">出版</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%83%AC%E3%83%93%E3%83%A5%E3%83%BC%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AB%E3%82%A2%E3%83%97%E3%83%AA%E5%86%85%E8%B3%BC%E5%85%A5%E3%82%92%E9%80%81%E4%BF%A1%E3%81%99%E3%82%8B"><span class="toc-text">レビューのためにアプリ内購入を送信する</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#App-StoreConnect%E3%83%AF%E3%83%BC%E3%82%AF%E3%83%95%E3%83%AD%E3%83%BC"><span class="toc-text">App StoreConnectワークフロー</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E3%82%A2%E3%82%AB%E3%82%A6%E3%83%B3%E3%83%88%E6%89%80%E6%9C%89%E8%80%85%EF%BC%88Apple-Developer-Program%E3%81%AB%E5%8F%82%E5%8A%A0%E3%81%97%E3%81%A6%E3%81%84%E3%82%8B%E4%BA%BA%EF%BC%89%E3%81%AE%E3%81%BF%E3%81%8CApp-Store-Connect%E3%81%AB%E3%82%B5%E3%82%A4%E3%83%B3%E3%82%A4%E3%83%B3"><span class="toc-text">アカウント所有者（Apple Developer Programに参加している人）のみがApp Store Connectにサインイン</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A5%91%E7%B4%84%E3%81%AB%E5%90%8C%E6%84%8F%E3%81%97%E3%80%81%E7%A8%8E%E9%87%91%E3%81%A8%E9%8A%80%E8%A1%8C%E3%81%AE%E6%83%85%E5%A0%B1%E3%82%92%E5%85%A5%E5%8A%9B%E3%81%97%E3%81%BE%E3%81%99"><span class="toc-text">契約に同意し、税金と銀行の情報を入力します</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E3%82%92%E8%BF%BD%E5%8A%A0%E3%81%97%E3%81%A6%E5%BD%B9%E5%89%B2%E3%82%92%E5%89%B2%E3%82%8A%E5%BD%93%E3%81%A6%E3%82%8B"><span class="toc-text">ユーザーを追加して役割を割り当てる</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E3%82%A2%E3%83%97%E3%83%AA%E3%82%92%E8%BF%BD%E5%8A%A0%E3%81%97%E3%80%81%E3%83%93%E3%83%AB%E3%83%89%E3%82%92%E3%82%A2%E3%83%83%E3%83%97%E3%83%AD%E3%83%BC%E3%83%89%E3%81%97%E3%81%BE%E3%81%99"><span class="toc-text">アプリを追加し、ビルドをアップロードします</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E3%82%A2%E3%83%97%E3%83%AA%E3%81%AE%E3%82%B9%E3%83%86%E3%83%BC%E3%82%BF%E3%82%B9%E3%80%81%E4%BD%BF%E7%94%A8%E7%8A%B6%E6%B3%81%E3%80%81%E5%A3%B2%E4%B8%8A%E3%82%92%E7%9B%A3%E8%A6%96%E3%81%99%E3%82%8B"><span class="toc-text">アプリのステータス、使用状況、売上を監視する</span></a></li></ol></li></ol></li></ol></li></ol>
+<h1 id="アプリ内購入"><a href="#アプリ内購入" class="headerlink" title="アプリ内購入"></a>アプリ内購入</h1><h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><p>アプリ内購入は、サブスクリプション、新機能、サービスなど、さまざまなコンテンツの販売に使用できます。<br>アプリ内購入には4つのタイプがあります。<br>ユーザーは、iOS、iPadOS、macOS、watchOS、tvOSでアプリ内購入を行うことができます。</p>
+<h3 id="Consumable"><a href="#Consumable" class="headerlink" title="Consumable"></a>Consumable</h3><p>ユーザーは、さまざまな種類の消耗品を購入して、アプリを介して進行を進めることができます。消耗品のアプリ内購入は、一度使用すると使い果たされ、再度購入できます。</p>
+<h3 id="Non‑Consumable"><a href="#Non‑Consumable" class="headerlink" title="Non‑Consumable"></a>Non‑Consumable</h3><p>ユーザーは、アプリ内で消耗品ではないプレミアム機能を購入できます。写真アプリの追加フィルターなど、<font style="background:linear-gradient(transparent 75%, #7fbfff 75%); font-weight:bold;">非消耗品は1回購入すれば、有効期限はありません</font>。Appleは、消耗品ではないアプリ内購入に関連するコンテンツをホストできます。</p>
+<h3 id="Auto‑Renewable-Subscriptions"><a href="#Auto‑Renewable-Subscriptions" class="headerlink" title="Auto‑Renewable Subscriptions"></a>Auto‑Renewable Subscriptions</h3><p>ユーザーは、サービスへのアクセスや、クラウドストレージへの毎月のアクセスや雑誌の毎週の購読など、定期的に更新されるコンテンツを購入できます。<br><font style="background:linear-gradient(transparent 75%, #fff799 75%); font-weight:bold;">ユーザーは、キャンセルすることを決定するまで、定期的に課金されます。</font></p>
+<h3 id="Non‑Renewing-Subscriptions"><a href="#Non‑Renewing-Subscriptions" class="headerlink" title="Non‑Renewing Subscriptions"></a>Non‑Renewing Subscriptions</h3><p>ユーザーは、限られた期間でサービスまたはコンテンツへのアクセスを購入できます。<font style="background:linear-gradient(transparent 75%, #fff799 75%); font-weight:bold;">Non‑Renewing Subscriptionsは自動的に更新されない</font>ため、<font style="background:linear-gradient(transparent 75%, #7fbfff 75%); font-weight:bold;">ユーザーは毎回更新する必要があります</font>。</p>
+<h2 id="準備"><a href="#準備" class="headerlink" title="準備"></a>準備</h2><p>アプリ内購入を提供する前に、<font style="background:linear-gradient(transparent 75%, #7fbfff 75%); font-weight:bold;">有料アプリケーション契約に署名</font>し、<font style="background:linear-gradient(transparent 75%, #ff7f7f 75%); font-weight:bold;">銀行情報</font>と<font style="background:linear-gradient(transparent 75%, #ff7f7f 75%); font-weight:bold;">税務情報</font>を設定する必要があります。<br><a target="_blank" rel="noopener" href="https://help.apple.com/app-store-connect/#/devb6df5ee51">App Store Connect ヘルプ：契約、税金、銀行の概要</a></p>
+<h3 id="Xcode構成をセットアップする"><a href="#Xcode構成をセットアップする" class="headerlink" title="Xcode構成をセットアップする"></a>Xcode構成をセットアップする</h3><p>Xcodeを使用して、アプリのアプリ内購入サービスを有効にします。<br><a target="_blank" rel="noopener" href="https://help.apple.com/xcode/mac/current/#/dev88ff319e7">Xcodeヘルプ：ターゲットに機能を追加する</a></p>
+<h3 id="App-Store-Connect-でアプリ内購入を作成する"><a href="#App-Store-Connect-でアプリ内購入を作成する" class="headerlink" title="App Store Connect でアプリ内購入を作成する"></a>App Store Connect でアプリ内購入を作成する</h3><p>App Store Connect でアプリ内購入を構成する、また、名前、価格、説明など、アプリ内購入の特徴を強調する詳細を含めます。XMLを使用して、アプリ内購入を作成および維持することもできます。<br><a target="_blank" rel="noopener" href="https://help.apple.com/app-store-connect/#/devae49fb316">App Store Connect ヘルプ：アプリ内購入を作成する</a></p>
+<h2 id="設計と構築"><a href="#設計と構築" class="headerlink" title="設計と構築"></a>設計と構築</h2><h3 id="アプリ内購入エクスペリエンスを設計する"><a href="#アプリ内購入エクスペリエンスを設計する" class="headerlink" title="アプリ内購入エクスペリエンスを設計する"></a>アプリ内購入エクスペリエンスを設計する</h3><p>アプリ内購入のユーザーインターフェースは、アプリの他の部分とうまく適合し、製品を効果的に紹介する必要があります。<br><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/in-app-purchase/overview/introduction/">ヒューマンインターフェイスガイドラインを表示する</a></p>
+<h3 id="アプリ内購入を実装する"><a href="#アプリ内購入を実装する" class="headerlink" title="アプリ内購入を実装する"></a>アプリ内購入を実装する</h3><p>StoreKitフレームワークを使用して、アプリ内購入をアプリに組み込み、コンテンツとサービスの購入を安全に処理します。実装チェックリストの手順を必ず完了してください。<br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/storekit/in-app_purchase">StoreKitAPIドキュメントを表示する</a></p>
+<h3 id="領収書を検証する"><a href="#領収書を検証する" class="headerlink" title="領収書を検証する"></a>領収書を検証する</h3><p>領収書は、販売の貴重な記録を提供します。コンテンツを保護し、不正な購入を防ぐために、レシート検証コードの使用を検討してください。<br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/appstorereceipts">AppStoreの領収書</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/appstoreservernotifications">AppStoreサーバーの通知</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/storekit/in-app_purchase/choosing_a_receipt_validation_technique">領収書検証手法の選択</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/storekit/in-app_purchase/validating_receipts_with_the_app_store">App Store で領収書を検証する</a></p>
+<h3 id="払い戻しを管理する"><a href="#払い戻しを管理する" class="headerlink" title="払い戻しを管理する"></a>払い戻しを管理する</h3><p>App Storeサーバーの通知には、すべての種類のアプリ内購入の払い戻し通知が含まれます。この情報を使用して、それに応じてアクションを実行できます。たとえば、ゲーム内のユーザーの通貨残高を調整したり、アプリ内購入によってロック解除されたコンテンツへのアクセスを制限したりできます。アクションを実行することを選択した場合は、変更をユーザーに通知し、それに応じてユーザーが行う必要があることがあるかどうかをユーザーに通知します。</p>
+<p>自動更新可能なサブスクリプションを提供する場合は、 App Storeサブスクライバーのステータスを理解するための受信検証付きサーバー通知。詳細については、「<a target="_blank" rel="noopener" href="https://developer.apple.com/app-store/subscriptions/#retaining-subscribers-using-receipt-information">領収書を使用してサブスクライバーを保持する</a>」を参照してください。<br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/storekit/in-app_purchase/subscriptions_and_offers/enabling_server-to-server_notifications">サーバー間通知の有効化</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/storekit/in-app_purchase/handling_refund_notifications">払い戻し通知の処理</a></p>
+<h2 id="テスト"><a href="#テスト" class="headerlink" title="テスト"></a>テスト</h2><h3 id="テストトランザクション"><a href="#テストトランザクション" class="headerlink" title="テストトランザクション"></a>テストトランザクション</h3><p>Appleサンドボックステスト環境またはXcodeを使用して、アプリ内購入をテストします。<br><a target="_blank" rel="noopener" href="https://help.apple.com/app-store-connect/#/dev8b997bee1">App Store Connect ヘルプ：サンドボックステスターアカウントを作成する</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/storekit/in-app_purchase/testing_in-app_purchase_transactions">アプリ内購入トランザクションのテスト</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/storekit/in-app_purchase/testing_in-app_purchases_in_xcode">Xcodeでのアプリ内購入のテスト</a></p>
+<h3 id="完全なユーザーエクスペリエンスをテストする"><a href="#完全なユーザーエクスペリエンスをテストする" class="headerlink" title="完全なユーザーエクスペリエンスをテストする"></a>完全なユーザーエクスペリエンスをテストする</h3><p>TestFlightを使用して、アプリをリリースする前に、幅広いユーザーからアプリやアプリ内購入に関する貴重なフィードバックを入手してください。 AppStore。 チームのユーザーを App Store Connect、パブリックリンクまたはその電子メールアドレスを使用する最大10,000人の外部テスター。ベータテスト期間中はすべてのアプリ内購入は無料で、テスト期間が終了しても持ち越されません。<br><a target="_blank" rel="noopener" href="https://developer.apple.com/testflight/">TestFlightの詳細</a></p>
+<h2 id="出版"><a href="#出版" class="headerlink" title="出版"></a>出版</h2><h3 id="レビューのためにアプリ内購入を送信する"><a href="#レビューのためにアプリ内購入を送信する" class="headerlink" title="レビューのためにアプリ内購入を送信する"></a>レビューのためにアプリ内購入を送信する</h3><p>テストが完了したら、以下を実行したことを確認します。 アプリレビュー ガイドラインと実装チェックリストを使用して送信します App StoreConnect。</p>
+<h1 id="App-StoreConnectワークフロー"><a href="#App-StoreConnectワークフロー" class="headerlink" title="App StoreConnectワークフロー"></a>App StoreConnectワークフロー</h1><h4 id="アカウント所有者（Apple-Developer-Programに参加している人）のみがApp-Store-Connectにサインイン"><a href="#アカウント所有者（Apple-Developer-Programに参加している人）のみがApp-Store-Connectにサインイン" class="headerlink" title="アカウント所有者（Apple Developer Programに参加している人）のみがApp Store Connectにサインイン"></a>アカウント所有者（Apple Developer Programに参加している人）のみがApp Store Connectにサインイン</h4><p>サインインしたら、ホームページのセクションをクリックして機能を見つけます。</p>
+<h4 id="契約に同意し、税金と銀行の情報を入力します"><a href="#契約に同意し、税金と銀行の情報を入力します" class="headerlink" title="契約に同意し、税金と銀行の情報を入力します"></a>契約に同意し、税金と銀行の情報を入力します</h4><p>アプリを価格で販売する場合は、[契約、税金、銀行]セクションで、契約、特に有料アプリケーション契約に署名して更新する必要があります。<br>そして、あなたはあなたの連絡先を入力し、銀行情報を入力し、税務情報を提供します。</p>
+<h4 id="ユーザーを追加して役割を割り当てる"><a href="#ユーザーを追加して役割を割り当てる" class="headerlink" title="ユーザーを追加して役割を割り当てる"></a>ユーザーを追加して役割を割り当てる</h4><h4 id="アプリを追加し、ビルドをアップロードします"><a href="#アプリを追加し、ビルドをアップロードします" class="headerlink" title="アプリを追加し、ビルドをアップロードします"></a>アプリを追加し、ビルドをアップロードします</h4><h4 id="アプリのステータス、使用状況、売上を監視する"><a href="#アプリのステータス、使用状況、売上を監視する" class="headerlink" title="アプリのステータス、使用状況、売上を監視する"></a>アプリのステータス、使用状況、売上を監視する</h4>
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">タグ</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Purchase/" rel="tag">Purchase</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/cordova/" rel="tag">cordova</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/02/27/cordova-plugin-purchase/"
+                    data-tooltip="cordova-plugin-purchase"
+                    aria-label="前: cordova-plugin-purchase"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">前</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/02/05/flutter-getter-setter/"
+                    data-tooltip="flutter-getter-setter"
+                    aria-label="次: flutter-getter-setter"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">次</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2021/02/23/In%E2%80%91App-Purchase/"
+                    title="Facebookで共有"
+                    aria-label="Facebookで共有"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2021/02/23/In%E2%80%91App-Purchase/"
+                    title="Twitterで共有"
+                    aria-label="Twitterで共有"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2021/02/23/In%E2%80%91App-Purchase/"
+                    title="Google+で共有"
+                    aria-label="Google+で共有"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目次">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2021 Narichika Morinaga. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/02/27/cordova-plugin-purchase/"
+                    data-tooltip="cordova-plugin-purchase"
+                    aria-label="前: cordova-plugin-purchase"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">前</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/02/05/flutter-getter-setter/"
+                    data-tooltip="flutter-getter-setter"
+                    aria-label="次: flutter-getter-setter"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">次</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2021/02/23/In%E2%80%91App-Purchase/"
+                    title="Facebookで共有"
+                    aria-label="Facebookで共有"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2021/02/23/In%E2%80%91App-Purchase/"
+                    title="Twitterで共有"
+                    aria-label="Twitterで共有"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://morichnarich.github.io/2021/02/23/In%E2%80%91App-Purchase/"
+                    title="Google+で共有"
+                    aria-label="Google+で共有"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目次">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://morichnarich.github.io/2021/02/23/In%E2%80%91App-Purchase/"
+                        aria-label="Facebookで共有"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Facebookで共有</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://morichnarich.github.io/2021/02/23/In%E2%80%91App-Purchase/"
+                        aria-label="Twitterで共有"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Twitterで共有</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://morichnarich.github.io/2021/02/23/In%E2%80%91App-Purchase/"
+                        aria-label="Google+で共有"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Google+で共有</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <h4 id="about-card-name">Narichika Morinaga</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-ixqwvefj8vfsqrsg5wx4vngxhhw8v1hzxnf8nzvk4ihpwzdrs4jr5wdtf9oq.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+        
+<script src="/my_script.js"></script>
+
+    </body>
+</html>
